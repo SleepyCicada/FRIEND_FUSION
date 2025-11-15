@@ -26,6 +26,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     if @event.update(topic_params)
       redirect_to event_path
+    end
   end
 
   def update
@@ -41,6 +42,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event.destroy
     redirect_to topics_path, status: :see_other
+  end
 
   private
 
