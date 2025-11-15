@@ -1,0 +1,4 @@
+class AiMessage < ApplicationRecord
+  belongs_to :ai_chat
+  belongs_to :user
+end

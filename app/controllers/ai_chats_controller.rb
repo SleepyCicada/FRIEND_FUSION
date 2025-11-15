@@ -1,0 +1,2 @@
+class AiChatsController < ApplicationController
+end
