@@ -1,2 +1,72 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<head>
+  <title>Friend Fusion</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+</head>
+
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <!-- Slide 1 -->
+    <div class="carousel-item active">
+      <!-- Desktop -->
+      <div class="d-none d-md-flex align-items-end text-center text-white w-100 position-relative"
+           style="min-height: 664px; background-image: url(<%= image_path 'banner1.jpg' %>);
+                  background-size: cover; background-position: center;">
+        <%# <div class="container mb-4">
+          <h1 class="display-4 meow-script">Welcome to Friend Fusion</h1>
+          <p class="lead meow-script">Connect, chat, and grow together.</p>
+        </div> %>
+      </div>
+
+      <!-- Mobile -->
+      <div class="d-flex d-md-none align-items-end text-center text-white w-100 position-relative"
+           style="min-height: 300px; background-image: url(<%= image_path 'banner1.jpg' %>);
+                  background-size: cover; background-position: center top;">
+        <%# <div class="container mb-3">
+          <h1 class="h3 meow-script">Welcome to Friend Fusion</h1>
+          <p class="small meow-script">Connect, chat, and grow together.</p>
+        </div> %>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="carousel-item">
+      <!-- Desktop -->
+      <div class="d-none d-md-flex align-items-end text-center text-white w-100 position-relative"
+           style="min-height: 664px; background-image: url(<%= image_path 'banner2.jpg' %>);
+                  background-size: cover; background-position: center top;">
+        <%# <div class="container mb-4">
+          <h1 class="display-4 meow-script" style="color: #c2c1baff;">AI-powered Conversations</h1>
+          <p class="lead meow-script">Smart, playful, and emotionally aware.</p>
+        </div> %>
+      </div>
+
+      <!-- Mobile -->
+      <div class="d-flex d-md-none align-items-end text-center text-white w-100 position-relative"
+           style="min-height: 300px; background-image: url(<%= image_path 'banner2.jpg' %>);
+                  background-size: cover; background-position: center;">
+        <%# <div class="container mb-3">
+          <h1 class="h3 meow-script">AI-powered Conversations</h1>
+          <p class="small meow-script">Smart, playful, and emotionally aware.</p>
+        </div> %>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Carousel controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
