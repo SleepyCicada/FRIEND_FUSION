@@ -1,0 +1,66 @@
+<div class="container py-4">
+  <h2 class="mb-4 text-center">AI Language Assistant</h2>
+
+  <div id="ai-chat-window"
+       class="border rounded p-3 mb-3"
+       style="height: 60vh; overflow-y: auto; background: #fafafa;">
+
+    <% @ai_messages.each do |msg| %>
+      <% if msg.user.present? %>
+        <!-- USER MESSAGE -->
+        <div class="d-flex justify-content-end mb-3">
+          <div class="p-2 px-3 rounded bg-primary text-white" style="max-width: 70%;">
+            <strong>You:</strong><br>
+            <%= msg.content %>
+          </div>
+        </div>
+      <% else %>
+        <!-- AI MESSAGE -->
+        <div class="d-flex justify-content-start mb-3">
+          <div class="p-2 px-3 rounded bg-light border" style="max-width: 70%;">
+            <strong>Assistant:</strong><br>
+            <%= msg.content %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+
+  <!-- MESSAGE FORM -->
+  <%= form_with url: ai_chat_ai_messages_path(@ai_chat),
+                method: :post,
+                remote: true,
+                html: { id: "ai-message-form" } do |f| %>
+
+    <div class="input-group">
+      <%= f.text_field :content,
+                       class: "form-control",
+                       placeholder: "Write a message...",
+                       autocomplete: "off",
+                       required: true %>
+
+      <button class="btn btn-primary" type="submit">Send</button>
+    </div>
+
+  <% end %>
+</div>
+
+<script>
+  // Auto-scroll to bottom when page loads
+  const chatWindow = document.getElementById("ai-chat-window");
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+
+  // Auto-clear message input after sending
+  document.addEventListener("ajax:success", (event) => {
+    const form = document.getElementById("ai-message-form");
+    form.reset();
+  });
+
+  // Scroll down after receiving new message
+  document.addEventListener("ajax:complete", () => {
+    setTimeout(() => {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 50);
+  });
+</script>

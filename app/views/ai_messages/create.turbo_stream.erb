@@ -1,0 +1,4 @@
+<%= turbo_stream.append "ai-chat-window" do %>
+  <%= render partial: "ai_messages/message", locals: { message: @user_message } %>
+  <%= render partial: "ai_messages/message", locals: { message: @assistant_message } %>
+<% end %>

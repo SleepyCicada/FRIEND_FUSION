@@ -26,12 +26,15 @@ class AiMessagesController < ApplicationController
       content: assistant_reply
     )
 
-    render json: {
-      user_message: user_message,
-      assistant_message: assistant_message
-    }
-  rescue => e
-    render json: { error: e.message }, status: 500
+    respond_to do |format|
+      format.json {
+        render json: {
+          user_message: @user_message,
+          assistant_message: @assistant_message
+        }
+      }
+      format.turbo_stream
+    end
   end
 
   private
