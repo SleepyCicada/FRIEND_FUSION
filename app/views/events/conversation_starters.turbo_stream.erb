@@ -1,0 +1,11 @@
+<%= turbo_stream.update "conversation-starters" do %>
+  <% @starters.each do |starter| %>
+    <div class="p-3 mb-2 border rounded bg-light">
+      <%= starter %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "starter-loading" do %>
+  ""
+<% end %>
