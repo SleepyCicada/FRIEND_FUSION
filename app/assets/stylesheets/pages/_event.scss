@@ -1,0 +1,35 @@
+.event-block {
+  height: 250px;
+  background-color: #F8F9FA;
+  border: 1px solid #DEE2E6;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+/* Background images */
+.bg-event-1 {
+  background-image: url('/images/cafe.jpg');
+}
+.bg-event-2 {
+  background-image: url('/images/event2.jpg');
+}
+.bg-event-3 {
+  background-image: url('/images/event3.jpg');
+}
+/* Optional: refine badge style */
+.event-block .badge {
+  font-size: 0.7rem;
+  padding: 0.3em 0.6em;
+  border-radius: 0.5rem;
+  font-family:Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
+}
+.event-description {
+  flex: 0 0 25%;
+  font-size: 0.85rem;
+  background-color: #EFEEEF; /* Light gray */
+  color: #333; /* Optional: darker text for contrast */
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}

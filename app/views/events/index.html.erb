@@ -1,25 +1,29 @@
-<div class="row g-4">
-  <% @events.each do |event| %>
-    <div class="col-12 col-sm-6 col-lg-4">
-      <div class="card event-card shadow-sm">
+<div class="container my-4">
+  <div class="row gx-3 gy-4">
+    <% @events.each do |event| %>
+      <div class="col-6 col-md-4">
+        <!-- Card container with border, padding, shadow, and rounded corners -->
+        <div class="border rounded-4 shadow-sm p-3 h-100 d-flex flex-column">
 
-        <!-- Event image -->
-        <%= image_tag event.image_url, alt: event.title, class: "event-image" %>
+          <!-- Event image -->
+          <% if event.image.attached? %>
+            <%= link_to event_path(event) do %>
+              <%= image_tag event.image, alt: event.name,
+                    class: "img-fluid rounded-4 mb-3",
+                    style: "height: 200px; width: 100%; object-fit: cover;" %>
+            <% end %>
+          <% else %>
+            <div style="height: 200px; width: 100%; background: #eee; border-radius: 16px;" class="mb-3"></div>
+          <% end %>
 
-        <!-- Badge -->
-        <% if event.badge.present? %>
-          <span class="badge bg-primary event-badge">
-            <%= event.badge %>
-          </span>
-        <% end %>
+          <!-- Event name -->
+          <h5 class="mb-2"><%= event.name %></h5>
 
-        <!-- Description -->
-        <div class="event-description">
-          <h5 class="card-title"><%= event.title %></h5>
-          <p class="card-text"><%= event.description %></p>
+          <!-- Event description -->
+          <p class="mb-0"><%= event.description %></p>
+
         </div>
-
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

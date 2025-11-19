@@ -7,3 +7,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+event_1 = Event.create!(
+  name: "Coffee & Conversation",
+  description: "Practice speaking in a relaxed café atmosphere ☕️ "
+)
+
+event_1.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  filename: "cafe.jpg",
+  content_type: "image/jpeg"
+)
