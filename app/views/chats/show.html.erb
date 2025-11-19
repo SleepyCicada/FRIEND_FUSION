@@ -1,0 +1,3 @@
+<% @chat.messages.each do |msg| %>
+  <div><%= msg.user.name %>: <%= msg.message_text %></div>
+<% end %>

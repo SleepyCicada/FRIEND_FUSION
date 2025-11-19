@@ -52,6 +52,9 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem "cloudinary", "~> 2.0"
 gem "activestorage-cloudinary-service"
+gem "faker"
+gem "ruby_llm"
+
 
 group :development, :test do
   gem "dotenv-rails"
