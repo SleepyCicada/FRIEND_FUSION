@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_15_223043) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_19_010125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_15_223043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ai_chat_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.integer "sender_type"
     t.text "content"
     t.index ["ai_chat_id"], name: "index_ai_messages_on_ai_chat_id"
@@ -50,6 +50,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_15_223043) do
   create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.text "description"
+    t.datetime "date_time"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -62,7 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_15_223043) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.bigint "chat_id", null: false
-    t.text "message_text"
+    t.text "content"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
@@ -80,6 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_15_223043) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
