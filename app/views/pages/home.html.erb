@@ -19,7 +19,7 @@
       <!-- Desktop -->
       <div class="d-none d-md-flex align-items-end text-center text-white w-100 position-relative"
            style="min-height: 664px; background-image: url(<%= image_path 'banner1.jpg' %>);
-                  background-size: cover; background-position: center;">
+                  background-size: contain; background-position: center; background-repeat: no-repeat">
         <%# <div class="container mb-4">
           <h1 class="display-4 meow-script">Welcome to Friend Fusion</h1>
           <p class="lead meow-script">Connect, chat, and grow together.</p>
@@ -29,7 +29,7 @@
       <!-- Mobile -->
       <div class="d-flex d-md-none align-items-end text-center text-white w-100 position-relative"
            style="min-height: 300px; background-image: url(<%= image_path 'banner1.jpg' %>);
-                  background-size: cover; background-position: center top;">
+                  background-size: contain; background-position: center top;">
         <%# <div class="container mb-3">
           <h1 class="h3 meow-script">Welcome to Friend Fusion</h1>
           <p class="small meow-script">Connect, chat, and grow together.</p>
@@ -42,7 +42,7 @@
       <!-- Desktop -->
       <div class="d-none d-md-flex align-items-end text-center text-white w-100 position-relative"
            style="min-height: 664px; background-image: url(<%= image_path 'banner2.jpg' %>);
-                  background-size: cover; background-position: center top;">
+                  background-size: contain; background-position: center; background-repeat: no-repeat">
         <%# <div class="container mb-4">
           <h1 class="display-4 meow-script" style="color: #c2c1baff;">AI-powered Conversations</h1>
           <p class="lead meow-script">Smart, playful, and emotionally aware.</p>
@@ -52,7 +52,7 @@
       <!-- Mobile -->
       <div class="d-flex d-md-none align-items-end text-center text-white w-100 position-relative"
            style="min-height: 300px; background-image: url(<%= image_path 'banner2.jpg' %>);
-                  background-size: cover; background-position: center;">
+                  background-size: contain; background-position: center;">
         <%# <div class="container mb-3">
           <h1 class="h3 meow-script">AI-powered Conversations</h1>
           <p class="small meow-script">Smart, playful, and emotionally aware.</p>
@@ -69,4 +69,27 @@
   <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
     <span class="carousel-control-next-icon"></span>
   </button>
+</div>
+
+
+<div class="container my-4">
+  <div class="row gx-0 gy-5">
+    <% @topics.each do |topic| %>
+      <div class="col-6 col-md-4 px-2">
+        <div class="topic-block position-relative <%= topic.image_class %> text-white d-flex flex-column justify-content-between">
+          <% if topic.badge.present? %>
+            <span class="badge text-white position-absolute top-0 end-0 m-2"><%= topic.badge %></span>
+          <% end %>
+
+          <div class="topic-content d-flex align-items-center justify-content-center">
+            <%= topic.title %>
+          </div>
+
+          <div class="topic-description px-3 py-2">
+            <%= topic.description %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,1 +1,57 @@
 // Specific CSS for your home-page
+
+body {
+  background: linear-gradient(to bottom right, #fdf5e6, #fdebd5);
+  min-height: 100vh;
+}
+
+.topic-block {
+  height: 250px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+/* Background images */
+.bg-topic-1 {
+  background-image: url('/images/topic1.jpg');
+}
+.bg-topic-2 {
+  background-image: url('/images/topic2.jpg');
+}
+.bg-topic-3 {
+  background-image: url('/images/topic3.jpg');
+
+.bg-topic-4 {
+  background-image: url('/images/topic1.jpg');
+}
+.bg-topic-5 {
+  background-image: url('/images/topic2.jpg');
+}
+.bg-topic-6 {
+  background-image: url('/images/topic3.jpg');
+}
+}
+
+/* Optional: refine badge style */
+.topic-block .badge {
+  font-size: 0.7rem;
+  padding: 0.3em 0.6em;
+  border-radius: 0.5rem;
+  font-family:Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
+  background-color: #c1c2c4;
+  color: white;
+}
+
+.topic-description {
+  flex: 0 0 25%;
+  font-size: 0.85rem;
+  background-color: #e2e3e4;
+  color: #333; /* Optional: darker text for contrast */
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
