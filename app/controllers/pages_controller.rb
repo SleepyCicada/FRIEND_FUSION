@@ -10,5 +10,6 @@ class PagesController < ApplicationController
       OpenStruct.new(title: "Topic 5", description: "Ogni frase sembra un’opera appassionata — anche se stai solo chiedendo indicazioni.", badge: "Italiano", image_class: "bg-topic-5"),
       OpenStruct.new(title: "Topic 6", description: "Ünlüler coşkuyla dans eder, ekler kebap gibi üst üste dizilir — lezzetli ve ifade dolu.", badge: "Türkçe", image_class: "bg-topic-6")
     ]
+    @events = Event.all
   end
 end

@@ -1,0 +1,6 @@
+<% @messages.each do |message| %>
+  <p>
+    <strong><%= message.sender_type %>:</strong>
+    <%= message.content %>
+  </p>
+<% end %>

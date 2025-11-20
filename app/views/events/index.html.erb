@@ -1,0 +1,25 @@
+<div class="row g-4">
+  <% @events.each do |event| %>
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="card event-card shadow-sm">
+
+        <!-- Event image -->
+        <%= image_tag event.image_url, alt: event.title, class: "event-image" %>
+
+        <!-- Badge -->
+        <% if event.badge.present? %>
+          <span class="badge bg-primary event-badge">
+            <%= event.badge %>
+          </span>
+        <% end %>
+
+        <!-- Description -->
+        <div class="event-description">
+          <h5 class="card-title"><%= event.title %></h5>
+          <p class="card-text"><%= event.description %></p>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+</div>
