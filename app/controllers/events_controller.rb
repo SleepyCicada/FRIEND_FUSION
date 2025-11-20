@@ -44,6 +44,12 @@ class EventsController < ApplicationController
     redirect_to topics_path, status: :see_other
   end
 
+  def conversation_starters
+    event = Event.find(params[:id])
+    starters = AiStarterService.generate_event_starters(event, current_user)
+    render json: { starters: starters}
+  end
+
   private
 
   def event_params
