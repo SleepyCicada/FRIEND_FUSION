@@ -7,57 +7,77 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-<<<<<<< HEAD
+
+Event.destroy_all
 
 event_1 = Event.create!(
-  name: "Coffee & Conversation",
-  description: "Practice speaking in a relaxed café atmosphere ☕️ "
+  name: "Coffee & Conversation ☕️",
+  description: "Practice speaking in a relaxed café atmosphere",
+  date: Date.new(2025, 12, 13)
 )
 
 event_1.image.attach(
   io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
   filename: "cafe.jpg",
   content_type: "image/jpeg"
-=======
-# Create a test user
-user = User.create!(
-  name: "Anna",
-  email: "anna@example.com",
-  password: "password"
 )
 
-# Create an event
-event = Event.create!(
-  title: "French Café Meetup",
-  description: "Practice French with newcomers.",
-  date_time: Time.now + 3.days
+event_2 = Event.create!(
+  name: "Film & Discussion Club 🎬",
+  description: "Watch a short film followed by a guided discussion",
+  date: Date.new(2025, 12, 14)
 )
 
-# Create the pre-event chat
-chat = Chat.create!(event: event)
-
-# Add sample messages
-5.times do
-  Message.create!(
-    user: user,
-    chat: chat,
-    content: Faker::Lorem.sentence
-  )
-end
-
-# Create an AI chat assistant
-ai_chat = AiChat.create!(
-  user: user,
-  language_target: "French",
-  persona: "Friendly coach",
-  settings: { tone: "warm", style: "helpful" }
+event_2.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/movie.jpg")),
+  filename: "movie.jpg",
+  content_type: "image/jpeg"
 )
 
-# Add an AI message example
-AiMessage.create!(
-  ai_chat: ai_chat,
-  user: user,
-  sender_type: :user,
-  content: "How do I introduce myself?"
->>>>>>> master
+event_3 = Event.create!(
+  name: "Board Game Night 🎲",
+  description: "Play classic board games adapted for language learners",
+  date: Date.new(2025, 12, 15)
+)
+
+event_3.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
+  filename: "game.jpg",
+  content_type: "image/jpeg"
+)
+
+event_4 = Event.create!(
+  name: "Cooking & Conversation Class 👨‍🍳 ",
+  description: "Learn to cook a simple dish while practicing with a small group",
+  date: Date.new(2025, 12, 18)
+)
+
+event_4.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/cook.jpg")),
+  filename: "cook.jpg",
+  content_type: "image/jpeg"
+)
+
+event_5 = Event.create!(
+  name: "Survival Workshop 🗣 ",
+  description: "A small-group mini lesson covering essential phrases for travel and more",
+  date: Date.new(2025, 12, 19)
+)
+
+event_5.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  filename: "workshop.jpg",
+  content_type: "image/jpeg"
+)
+
+event_6 = Event.create!(
+  name: "Speed Networking 🗣 ",
+  description: "Meet multiple partners in short, timed rounds. Practice introductions, small talk and more",
+  date: Date.new(2025, 12, 19)
+)
+
+event_6.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  filename: "networking.jpg",
+  content_type: "image/jpeg"
 )

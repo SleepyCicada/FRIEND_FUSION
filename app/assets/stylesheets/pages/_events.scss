@@ -1,3 +1,7 @@
+.body {
+  background: linear-gradient(to bottom right, #FDF5E6, #FDEBD5);
+  min-height: 100vh;
+}
 .event-block {
   height: 250px;
   background-color: #F8F9FA;
@@ -32,4 +36,15 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.custom-btn {
+  background-color: #FDEBD5;
+  color: #333;
+  border: 1px solid #FAD7A0;
+}
+
+.custom-btn:hover {
+  background-color: #FAD7A0;
+  color: #fff;
 }

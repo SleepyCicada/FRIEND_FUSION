@@ -1,27 +1,45 @@
 <div class="container my-4">
-  <div class="row gx-3 gy-4">
+  <div class="row g-4">
     <% @events.each do |event| %>
-      <div class="col-6 col-md-4">
-        <!-- Card container with border, padding, shadow, and rounded corners -->
-        <div class="border rounded-4 shadow-sm p-3 h-100 d-flex flex-column">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
 
-          <!-- Event image -->
+          <!-- Event Image -->
           <% if event.image.attached? %>
             <%= link_to event_path(event) do %>
               <%= image_tag event.image, alt: event.name,
-                    class: "img-fluid rounded-4 mb-3",
-                    style: "height: 200px; width: 100%; object-fit: cover;" %>
+                    class: "card-img-top rounded-top-4",
+                    style: "height: 180px; object-fit: cover;" %>
             <% end %>
           <% else %>
-            <div style="height: 200px; width: 100%; background: #eee; border-radius: 16px;" class="mb-3"></div>
+            <div class="bg-light rounded-top-4" style="height: 180px; width: 100%;"></div>
           <% end %>
 
-          <!-- Event name -->
-          <h5 class="mb-2"><%= event.name %></h5>
+          <!-- Card Body -->
+          <div class="card-body d-flex flex-column">
 
-          <!-- Event description -->
-          <p class="mb-0"><%= event.description %></p>
+            <!-- Event Name -->
+            <h5 class="card-title mb-2">
+              <%= event.name %>
+            </h5>
 
+            <!-- Description -->
+            <p class="card-text text-muted mb-2 event-description-clamp">
+              <%= event.description %>
+            </p>
+
+            <!-- Date (below description, lowercase) -->
+            <% if event.date.present? %>
+              <small class="text-muted text-lowercase mb-3">
+                <%= event.date.strftime("%B") %> <%= event.date.day.ordinalize %>, <%= event.date.year %>
+              </small>
+            <% end %>
+
+            <!-- Button -->
+            <%= link_to "View Event", event_path(event),
+                  class: "btn btn-primary mt-auto rounded-pill px-3 py-2" %>
+
+          </div>
         </div>
       </div>
     <% end %>
