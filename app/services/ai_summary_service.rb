@@ -1,30 +1,18 @@
 class AiSummaryService
   def self.generate_chat_summary(messages, event)
-    chat_context = messages.map do |msg|
-      "#{msg.user.name}: #{msg.content}"
-    end.join("\n")
-
-    event_context = <<~INFO
-      Event Title: #{event.title}
-      Date/Time: #{event.date_time}
-    INFO
+    text = messages.map { |m| "#{m.user&.name || 'User'}: #{m.content}" }.join("\n")
 
     prompt = <<~PROMPT
-      Summarize the following event chat in 2-3 friendly sentences.
-      Focus on:
-      - Introductions
-      - Plans made
-      - Questions asked & answered
-      - Tips shared
-      - Anything newcomers should know
+      Summarize this chat in 2–3 sentences.
+      Focus on questions, introductions, and plans made by participants.
 
-      Chat messages:
-      #{chat_context}
-
-      Event:
-      #{event_context}
+      Event Title: #{event.title}
+      Chat:
+      #{text}
     PROMPT
 
-    RubyLLM.chat(prompt)
+    response = RubyLLM.chat.ask(prompt)
+    raw = response.content
+    raw.is_a?(String) ? raw : raw.text
   end
 end

@@ -4,18 +4,18 @@
       <div class="card event-card shadow-sm">
 
         <!-- Event image -->
-        <%= image_tag event.image_url, alt: event.title, class: "event-image" %>
+        <%= image_tag url_for(event.image) if event.image.attached? %>
 
         <!-- Badge -->
-        <% if event.badge.present? %>
-          <span class="badge bg-primary event-badge">
-            <%= event.badge %>
-          </span>
-        <% end %>
+        <%# <% if event.badge.present? %> %>
+          <%# <span class="badge bg-primary event-badge"> %>
+          <%# <%= event.badge %> %>
+          <%# </span> %>
+        <%# <% end %> %>
 
         <!-- Description -->
         <div class="event-description">
-          <h5 class="card-title"><%= event.title %></h5>
+          <h5 class="card-title"><%= link_to event.title, event_path(event) %></h5>
           <p class="card-text"><%= event.description %></p>
         </div>
 

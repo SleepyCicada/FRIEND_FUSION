@@ -6,6 +6,25 @@
   <% end %>
 <% end %>
 
+<%= turbo_stream.update "chat-starters" do %>
+  <% @starters.each do |starter| %>
+    <div class="p-3 mb-2 border rounded bg-white">
+      <%= starter %>
+
+      <%= button_to "Send to chat",
+          chat_messages_path(@event.chat),
+          method: :post,
+          params: { message_text: starter },
+          class: "btn btn-sm btn-primary mt-2" %>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- Clear loaders -->
 <%= turbo_stream.update "starter-loading" do %>
+  ""
+<% end %>
+
+<%= turbo_stream.update "chat-starter-loading" do %>
   ""
 <% end %>

@@ -1,3 +1,64 @@
 <% @chat.messages.each do |msg| %>
   <div><%= msg.user.name %>: <%= msg.message_text %></div>
 <% end %>
+
+<div class="mb-4">
+  <h4 class="mb-2">Chat Summary ✨</h4>
+
+  <!-- Summary container -->
+  <div id="chat-summary" class="p-3 border rounded bg-light mb-2">
+    <em class="text-muted">No summary generated yet.</em>
+  </div>
+
+  <div class="mb-4">
+    <h4 class="mb-2">Conversation Starters 💡</h4>
+
+    <!-- Starters container -->
+    <div id="chat-starters"></div>
+
+    <!-- Button -->
+    <%= button_to "Generate Starters",
+          conversation_starters_event_path(@chat.event),
+          method: :get,
+          remote: true,
+          class: "btn btn-outline-secondary",
+          id: "chat-starter-button" %>
+
+    <!-- Loading spinner -->
+    <div id="chat-starter-loading" class="text-muted mt-2" style="display: none;">
+      <div class="spinner-border spinner-border-sm"></div>
+      Generating ideas...
+    </div>
+  </div>
+
+
+  <!-- Generate button -->
+  <%= button_to "Generate Summary",
+        summary_chat_path(@chat),
+        method: :get,
+        remote: true,
+        class: "btn btn-outline-primary",
+        id: "summary-button" %>
+
+  <!-- Loading spinner -->
+  <div id="summary-loading" class="text-muted mt-2" style="display: none;">
+    <div class="spinner-border spinner-border-sm"></div>
+    Generating summary...
+  </div>
+</div>
+
+<script>
+  document.addEventListener("turbo:before-fetch-request", (e) => {
+    if (e.target.id === "summary-button") {
+      document.getElementById("summary-loading").style.display = "block";
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("turbo:before-fetch-request", (e) => {
+    if (e.target.id === "chat-starter-button") {
+      document.getElementById("chat-starter-loading").style.display = "block";
+    }
+  });
+</script>

@@ -7,7 +7,7 @@
   <%= button_to "Generate Starters",
         conversation_starters_event_path(@event),
         method: :get,
-        remote: true,
+        form: { data: { turbo_stream: true } },
         class: "btn btn-secondary",
         id: "starter-button" %>
 

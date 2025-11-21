@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :events do
+    get :conversation_starters, on: :member
     resources :confirmations, only: [:create, :destroy]
   end
 
-  get "/events/:id/conversation_starters", to: "events#conversation_starters"
+  # get "/events/:id/conversation_starters", to: "events#conversation_starters", as: :conversation_starters_event
 
   resources :chats, only: :show do
     resources :messages, only: [:index, :create]

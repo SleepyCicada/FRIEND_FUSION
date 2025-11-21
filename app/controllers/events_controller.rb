@@ -45,10 +45,11 @@ class EventsController < ApplicationController
   end
 
   def conversation_starters
-    event = Event.find(params[:id])
-    starters = AiStarterService.generate_event_starters(event, current_user)
+    @event = Event.find(params[:id])
+    @starters = AiStarterService.generate_event_starters(@event, current_user) || []
     respond_to do |format|
       format.turbo_stream
+      format.html { render :conversation_starters, layout: false }
       format.json { render json: { starters: @starters } }
     end
   end
