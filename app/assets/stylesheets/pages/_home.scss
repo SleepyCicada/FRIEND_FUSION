@@ -6,34 +6,56 @@ body {
 }
 
 .topic-block {
-  height: 250px;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  height: 275px; // or any fixed height
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #fbf8f8; // fallback color
 }
-/* Background images */
+
+.topic-content {
+  flex: 1 1 auto;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2rem 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgb(255, 255, 255);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.topic-description {
+  flex: 0 0 auto;
+  background: rgb(217, 217, 217); // optional for contrast
+  font-size: 0.95rem;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color:rgb(7, 7, 7);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 .bg-topic-1 {
-  background-image: url('/images/topic1.jpg');
+  background-image: asset-url('english.jpg');
 }
 .bg-topic-2 {
-  background-image: url('/images/topic2.jpg');
+  background-image: asset-url('french.jpg');
 }
 .bg-topic-3 {
-  background-image: url('/images/topic3.jpg');
-
+  background-image: asset-url('spanish.jpg');
+}
 .bg-topic-4 {
-  background-image: url('/images/topic1.jpg');
+  background-image: asset-url('japanese.jpg');
 }
 .bg-topic-5 {
-  background-image: url('/images/topic2.jpg');
+  background-image: asset-url('italian.jpg');
 }
 .bg-topic-6 {
-  background-image: url('/images/topic3.jpg');
+  background-image: asset-url('polish.jpg');
 }
-}
+
 
 /* Optional: refine badge style */
 .topic-block .badge {
@@ -43,15 +65,4 @@ body {
   font-family:Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
   background-color: #c1c2c4;
   color: white;
-}
-
-.topic-description {
-  flex: 0 0 25%;
-  font-size: 0.85rem;
-  background-color: #e2e3e4;
-  color: #333; /* Optional: darker text for contrast */
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
