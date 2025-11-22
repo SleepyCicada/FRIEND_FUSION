@@ -5,4 +5,5 @@ class Event < ApplicationRecord
   has_one :chat
   has_many :users, through: :confirmations
   has_one_attached :image
+  validates :date, presence: true
 end
