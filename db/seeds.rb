@@ -8,18 +8,35 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # Create a test user
+Message.destroy_all
+Chat.destroy_all
+Topic.destroy_all
+Event.destroy_all
+AiChat.destroy_all
+AiMessage.destroy_all
+User.destroy_all
+
 user = User.create!(
   name: "Anna",
   email: "anna@example.com",
   password: "password"
 )
 
+topic1 =Topic.create!( topic_description: "The language that borrowed from everyone, forgot to return it, and now makes the rules up as it goes.", topic_name: "English"),
+topic2 =Topic.create!( topic_description: "Even their sarcasm sounds like it’s been aged in oak barrels and served with cheese.", topic_name: "Français"),
+topic3 =Topic.create!( topic_description: "Passionate, rhythmic, and always ready to dance. Rolls their R’s like maracas.", topic_name: "Español"),
+topic4 =Topic.create!( topic_description: "Polite, precise, and secretly a pun master. Brings origami and philosophical haikus.", topic_name: "Japanese"),
+topic5 =Topic.create!( topic_description: "Speaks with their hands, sings their sentences, and turns every conversation into an opera.", topic_name: "Italiano"),
+topic6 =Topic.create!( topic_description: "Consonant gymnastics. Can say “przyszczyna” without blinking.", topic_name: "Polski")
+
 # Create an event
-event = Event.create!(
+event = Event.new(
   title: "French Café Meetup",
   description: "Practice French with newcomers.",
   date_time: Time.now + 3.days
 )
+event.topic = topic2
+event.save
 
 # Create the pre-event chat
 chat = Chat.create!(event: event)

@@ -2,9 +2,15 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :events do
-    resources :confirmations, only: [:create, :destroy]
+  resources :topics do
+    resources :events, only: :index
   end
+
+  get "/events", to: "events#index", as: :events
+
+  # resources :events do
+  #   resources :confirmations, only: [:create, :destroy]
+  # end
 
   get "/events/:id/conversation_starters", to: "events#conversation_starters"
 
@@ -23,4 +29,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+#   resources :topics do
+#   resources :events, only: [:index, :show]
+# end
+
 end
