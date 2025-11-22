@@ -2,11 +2,18 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
 
   def index
-    @events = Event.all
+    if params[:date].present?
+      @events = Event.where(date_time: params[:date].to_date.all_day)
+    else
+      @events = Event.all
+    end
   end
 
   def show
     @event = Event.find(params[:id])
+  end
+
+  def register
   end
 
   def new
@@ -24,9 +31,9 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
-    if @event.update(topic_params)
-      redirect_to event_path
-    end
+    return unless @event.update(event_params)
+
+    redirect_to event_path(@event)
   end
 
   def update
@@ -41,7 +48,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
-    redirect_to topics_path, status: :see_other
+    redirect_to events_path, status: :see_other
   end
 
   def conversation_starters

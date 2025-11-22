@@ -10,6 +10,7 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+@import "pages/events";
 
 @import "events";
 @import "components/messages";
@@ -72,4 +73,11 @@
   .starter-card {
     padding: 1rem;
   }
+.topic-link .topic-block {
+  transition: transform 0.2s ease-in-out;
+}
+
+.topic-link:hover .topic-block {
+  transform: scale(1.03); /* tiny zoom */
+}
 }
