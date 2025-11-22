@@ -80,6 +80,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_22_173919) do
     t.datetime "updated_at", null: false
     t.string "title"
     t.datetime "date_time"
+    t.text "description"
     t.integer "max_capacity"
     t.string "location"
     t.bigint "topic_id"
