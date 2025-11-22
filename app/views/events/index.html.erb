@@ -1,13 +1,16 @@
-<div class="container my-4">
+
+<div class="container my-5">
+  <h2 class="text-center mb-4 fw-bold">Upcoming Events</h2>
+
   <div class="row g-4">
     <% @events.each do |event| %>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card h-100 shadow-sm border-0 rounded-4">
 
-          <!-- Event Image -->
+          <!-- /Event Image -->
           <% if event.image.attached? %>
             <%= link_to event_path(event) do %>
-              <%= image_tag event.image, alt: event.name,
+              <%= image_tag event.image, alt: event.title,
                     class: "card-img-top rounded-top-4",
                     style: "height: 180px; object-fit: cover;" %>
             <% end %>
@@ -18,9 +21,9 @@
           <!-- Card Body -->
           <div class="card-body d-flex flex-column">
 
-            <!-- Event Name -->
+            <!-- Event Title -->
             <h5 class="card-title mb-2">
-              <%= event.name %>
+              <%= event.title %>
             </h5>
 
             <!-- Description -->
@@ -29,9 +32,9 @@
             </p>
 
             <!-- Date (below description, lowercase) -->
-            <% if event.date.present? %>
+            <% if event.date_time.present? %>
               <small class="text-muted text-lowercase mb-3">
-                <%= event.date.strftime("%B") %> <%= event.date.day.ordinalize %>, <%= event.date.year %>
+                <%= event.date_time.strftime("%B") %> <%= event.date_time.day.ordinalize %>, <%= event.date_time.year %>
               </small>
             <% end %>
 

@@ -9,6 +9,9 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def register
+  end
+
   def new
     @event = Event.new
   end
@@ -24,9 +27,9 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
-    if @event.update(topic_params)
-      redirect_to event_path
-    end
+    return unless @event.update(event_params)
+
+    redirect_to event_path(@event)
   end
 
   def update
@@ -41,13 +44,13 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
-    redirect_to topics_path, status: :see_other
+    redirect_to events_path, status: :see_other
   end
 
   def conversation_starters
     event = Event.find(params[:id])
     starters = AiStarterService.generate_event_starters(event, current_user)
-    render json: { starters: starters}
+    render json: { starters: starters }
   end
 
   private
