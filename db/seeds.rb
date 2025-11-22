@@ -7,7 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-# Create a test user
 Message.destroy_all
 Chat.destroy_all
 Topic.destroy_all
@@ -22,21 +21,133 @@ user = User.create!(
   password: "password"
 )
 
-topic1 =Topic.create!( topic_description: "The language that borrowed from everyone, forgot to return it, and now makes the rules up as it goes.", topic_name: "English"),
-topic2 =Topic.create!( topic_description: "Even their sarcasm sounds like it’s been aged in oak barrels and served with cheese.", topic_name: "Français"),
-topic3 =Topic.create!( topic_description: "Passionate, rhythmic, and always ready to dance. Rolls their R’s like maracas.", topic_name: "Español"),
-topic4 =Topic.create!( topic_description: "Polite, precise, and secretly a pun master. Brings origami and philosophical haikus.", topic_name: "Japanese"),
-topic5 =Topic.create!( topic_description: "Speaks with their hands, sings their sentences, and turns every conversation into an opera.", topic_name: "Italiano"),
-topic6 =Topic.create!( topic_description: "Consonant gymnastics. Can say “przyszczyna” without blinking.", topic_name: "Polski")
+english =Topic.create!( topic_description: "The language that borrowed from everyone, forgot to return it, and now makes the rules up as it goes.", topic_name: "English"),
+french =Topic.create!( topic_description: "Even their sarcasm sounds like it’s been aged in oak barrels and served with cheese.", topic_name: "Français"),
+spanish =Topic.create!( topic_description: "Passionate, rhythmic, and always ready to dance. Rolls their R’s like maracas.", topic_name: "Español"),
+japanese =Topic.create!( topic_description: "Polite, precise, and secretly a pun master. Brings origami and philosophical haikus.", topic_name: "Japanese"),
+italian =Topic.create!( topic_description: "Speaks with their hands, sings their sentences, and turns every conversation into an opera.", topic_name: "Italiano"),
+polish =Topic.create!( topic_description: "Consonant gymnastics. Can say “przyszczyna” without blinking.", topic_name: "Polski")
+
+topics = [english, french, spanish, japanese, italian, polish]
+
+event_1 = Event.create!(
+ title: "Coffee & Conversation - english☕️",
+ description: "Practice speaking in a relaxed café atmosphere",
+ date_time: DateTime.new(2025, 12, 13),
+ topic: english
+)
+
+event_1.image.attach(
+ io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+ filename: "cafe.jpg",
+ content_type: "image/jpeg"
+)
+
+
+event_2 = Event.create!(
+ title: "Film & Discussion Club - french 🎬",
+ description: "Watch a short film followed by a guided discussion",
+ date_time: DateTime.new(2025, 12, 14),
+ topic: french
+)
+
+
+event_2.image.attach(
+ io: File.open(Rails.root.join("db/seeds/images/movie.jpg")),
+ filename: "movie.jpg",
+ content_type: "image/jpeg"
+)
+
+
+event_3 = Event.create!(
+ title: "Board Game Night - Spanish 🎲",
+ description: "Play classic board games adapted for language learners",
+ date_time: DateTime.new(2025, 12, 19),
+ topic: spanish
+)
+
+
+event_3.image.attach(
+ io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
+ filename: "game.jpg",
+ content_type: "image/jpeg"
+)
+
+
+event_4 = Event.create!(
+ title: "Cooking & Conversation Class - Japanese 👨‍🍳 ",
+ description: "Learn to cook a simple dish while practicing with a small group",
+ date_time: DateTime.new(2025, 12, 16),
+ topic: japanese
+)
+
+
+event_4.image.attach(
+ io: File.open(Rails.root.join("db/seeds/images/cook.jpg")),
+ filename: "cook.jpg",
+ content_type: "image/jpeg"
+)
+
+
+event_5 = Event.create!(
+ title: "Survival Workshop - Italian 🗣 ",
+ description: "A small-group mini lesson covering essential phrases for travel and more",
+ date_time: DateTime.new(2025, 12, 17),
+ topic: italian
+)
+
+
+event_5.image.attach(
+ io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+ filename: "workshop.jpg",
+ content_type: "image/jpeg"
+)
+
+
+event_6 = Event.create!(
+  title: "Speed Networking - Polish🗣 ",
+  description: "Meet multiple partners in short, timed rounds. Practice introductions, small talk and more",
+  date_time: DateTime.new(2025, 12, 19),
+  topic: polish
+)
+
+event_6.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  filename: "networking.jpg",
+  content_type: "image/jpeg"
+)
+
+event_7 = Event.create!(
+  title: "Online Conversation Bootcamp - English 👥",
+  description: "Timed rounds, mini debates, and interactive prompts in a virtual setting",
+  date_time: DateTime.new(2025, 12, 19),
+  topic: english
+)
+
+event_7.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/online.jpg")),
+  filename: "online.jpg",
+  content_type: "image/jpeg"
+)
+event_8 = Event.create!(
+  title: "Study Buddy Matchup - French 📖",
+  description: "Pair learners for long-term language progress",
+  date_time: DateTime.new(2025, 12, 19),
+  topic: french
+)
+
+event_8.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  filename: "study.jpg",
+  content_type: "image/jpeg"
 
 # Create an event
-event = Event.new(
+event = Event.create!(
   title: "French Café Meetup",
   description: "Practice French with newcomers.",
-  date_time: Time.now + 3.days
+  date_time: 3.days.from.now,
+  topic: french
 )
-event.topic = topic2
-event.save
 
 # Create the pre-event chat
 chat = Chat.create!(event: event)

@@ -1,0 +1,20 @@
+<div class="container mt-5 text-center">
+
+  <h1 class="display-5 fw-bold mb-3"><%= @event.title %></h1>
+
+  <% if @event.description.present? %>
+    <p class="lead text-muted mb-4">
+      <%= @event.description %>
+    </p>
+  <% end %>
+
+  <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+
+  <p class="lead text-muted mb-4">
+    <strong><%= @event.title %></strong>.
+  </p>
+
+  <%= link_to register(@event), class: "btn btn-success btn-lg px-4 py-2 shadow-sm text-white" do %>
+    <i class="bi bi-lightning-fill me-2"></i> Register
+  <% end %>
+</div>
