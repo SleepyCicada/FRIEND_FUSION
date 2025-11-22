@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_21_023333) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_22_173919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,7 +80,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_023333) do
     t.datetime "updated_at", null: false
     t.string "title"
     t.datetime "date_time"
-    t.text "description"
+    t.integer "max_capacity"
+    t.string "location"
+    t.bigint "topic_id"
+    t.index ["topic_id"], name: "index_events_on_topic_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -103,6 +106,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_023333) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "topics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "topic_name"
+    t.text "topic_description"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -122,6 +132,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_21_023333) do
   add_foreign_key "ai_messages", "ai_chats"
   add_foreign_key "ai_messages", "users"
   add_foreign_key "chats", "events"
+  add_foreign_key "events", "topics"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users"
 end
