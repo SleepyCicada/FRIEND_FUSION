@@ -1,6 +1,20 @@
-<% @chat.messages.each do |msg| %>
-  <div><%= msg.user.name %>: <%= msg.message_text %></div>
-<% end %>
+<h2>Event Chat</h2>
+
+<div id="chat-messages">
+  <% @messages.each do |msg| %>
+    <div class="mb-2 p-2 border rounded <%= msg.ai? ? 'ai-message' : 'user-message' %>">
+
+      <% if msg.ai? %>
+        <strong>AI Assistant:</strong>
+      <% else %>
+        <strong><%= msg.user.name %>:</strong>
+      <% end %>
+
+      <div><%= msg.content %></div>
+    </div>
+  <% end %>
+</div>
+
 
 <div class="mb-4">
   <h4 class="mb-2">Chat Summary ✨</h4>
@@ -20,7 +34,7 @@
     <%= button_to "Generate Starters",
           conversation_starters_event_path(@chat.event),
           method: :get,
-          remote: true,
+          data: { turbo_stream: true },
           class: "btn btn-outline-secondary",
           id: "chat-starter-button" %>
 
@@ -34,7 +48,7 @@
 
   <!-- Generate button -->
   <%= button_to "Generate Summary",
-        summary_chat_path(@chat),
+        summary_chat_path(@chat.id),
         method: :get,
         remote: true,
         class: "btn btn-outline-primary",

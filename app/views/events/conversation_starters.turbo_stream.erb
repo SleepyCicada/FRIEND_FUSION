@@ -1,30 +1,16 @@
 <%= turbo_stream.update "conversation-starters" do %>
-  <% @starters.each do |starter| %>
-    <div class="p-3 mb-2 border rounded bg-light">
-      <%= starter %>
-    </div>
-  <% end %>
-<% end %>
+  <div class="conversation-starter-container">
 
-<%= turbo_stream.update "chat-starters" do %>
-  <% @starters.each do |starter| %>
-    <div class="p-3 mb-2 border rounded bg-white">
-      <%= starter %>
+    <!-- Generate Again Button -->
+    <%= button_to "Generate Again",
+      conversation_starters_event_path(@event),
+      method: :get,
+      class: "btn btn-warning mb-3",
+      data: { turbo_stream: true } %>
 
-      <%= button_to "Send to chat",
-          chat_messages_path(@event.chat),
-          method: :post,
-          params: { message_text: starter },
-          class: "btn btn-sm btn-primary mt-2" %>
-    </div>
-  <% end %>
-<% end %>
+    <% @starters.each do |starter| %>
+      <%= render partial: "events/conversation_starter_card", locals: { starter: starter, event: @event } %>
+    <% end %>
 
-<!-- Clear loaders -->
-<%= turbo_stream.update "starter-loading" do %>
-  ""
-<% end %>
-
-<%= turbo_stream.update "chat-starter-loading" do %>
-  ""
+  </div>
 <% end %>

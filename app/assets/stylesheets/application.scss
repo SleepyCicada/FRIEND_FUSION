@@ -12,3 +12,42 @@
 @import "pages/index";
 
 @import "events";
+@import "components/messages";
+
+// Conversation Starter Card Styling
+.starter-card {
+  background: #f8f9fa;
+  border: 1px solid #e4e4e4;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.starter-text {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.conversation-starter-container {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-message {
+  background: #eef6ff;
+  border-left: 4px solid #007bff;
+}
+
+.user-message {
+  background: #ffffff;
+}

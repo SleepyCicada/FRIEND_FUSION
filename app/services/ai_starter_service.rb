@@ -1,30 +1,17 @@
 class AiStarterService
   def self.generate_event_starters(event, user)
-    # event_context = <<~INFO
-    #   Event Title: #{event.title}
-    #   Description: #{event.description}
-    #   Location: #{event.location if event.respond_to?(:location)}
-    #   Date/Time: #{event.date_time}
-    # INFO
-
-    # user_context = <<~USERINFO
-    #   User Name: #{user.name}
-    #   Interests: #{user.interests if user.respond_to?(:interests)}
-    #   Language Level: #{user.language_level if user.respond_to?(:language_level)}
-    # USERINFO
-
-    # prompt = <<~PROMPT
-    #   Generate 3 short, friendly conversation starters for someone attending this event.
-    #   They should be simple, natural and welcoming for newcomers to a city.
-
-    #   Event information:
-    #   #{event_context}
-
-    #   User information:
-    #   #{user_context}
-    # PROMPT
     prompt = <<~PROMPT
-      Generate 3 short and friendly conversation starters.
+      Generate exactly 3 short, friendly conversation starters.
+      They MUST be formatted like:
+
+      1. ...
+      2. ...
+      3. ...
+
+      Do NOT include any introduction.
+      Do NOT include any conclusion.
+      Do NOT include any greetings.
+      Only return the 3 lines.
 
       Event:
       Title: #{event.title}
@@ -35,8 +22,19 @@ class AiStarterService
       Name: #{user.name}
     PROMPT
 
+    # Ask the AI
     response = RubyLLM.chat.ask(prompt)
-    text = response.content
-    text.split("\n").reject(&:blank?)
+    text = response.content.to_s
+
+    # Split lines + strip whitespace
+    lines = text.split("\n").map(&:strip).reject(&:blank?)
+
+    # Extract ONLY numbered lines
+    starters = lines.select { |line| line.match?(/^\d+\./) }
+
+    # Remove the "1. " prefix
+    starters.map! { |line| line.sub(/^\d+\.\s*/, "") }
+
+    return starters
   end
 end

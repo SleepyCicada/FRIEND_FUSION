@@ -1,14 +1,26 @@
 class AiChatService
-  def self.generate_reply(message:, user:, ai_chat:)
+  def self.generate_conversation_starters(event)
     prompt = <<~PROMPT
-      You are a helpful language-learning assistant.
-      User's target language: #{ai_chat.language_target || "English"}
-      Persona: #{ai_chat.persona || "friendly"}.
+      Give me 3 friendly, short conversation starters for this event:
 
-      User says: #{message}
-      Reply in a friendly way to keep the conversation going.
+      #{event.title} — #{event.description}
+
+      Return ONLY the starters, formatted as bullet points:
+
+      - Starter 1
+      - Starter 2
+      - Starter 3
     PROMPT
 
-    RubyLLM.chat.ask(prompt)
+    response = RubyLLM.chat.ask(prompt).to_s
+
+    # Extract only bullet points
+    starters = response
+      .lines
+      .map(&:strip)
+      .select { |line| line.start_with?("-", "•", "*") }
+      .map { |line| line.sub(/^[-•*]\s*/, "") } # remove bullet symbol
+
+    starters
   end
 end
