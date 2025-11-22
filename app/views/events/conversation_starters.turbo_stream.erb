@@ -1,16 +1,4 @@
 <%= turbo_stream.update "conversation-starters" do %>
-  <div class="conversation-starter-container">
-
-    <!-- Generate Again Button -->
-    <%= button_to "Generate Again",
-      conversation_starters_event_path(@event),
-      method: :get,
-      class: "btn btn-warning mb-3",
-      data: { turbo_stream: true } %>
-
-    <% @starters.each do |starter| %>
-      <%= render partial: "events/conversation_starter_card", locals: { starter: starter, event: @event } %>
-    <% end %>
-
-  </div>
+  <%= render partial: "events/conversation_starters",
+             locals: { starters: @starters, event: @event } %>
 <% end %>

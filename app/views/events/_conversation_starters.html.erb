@@ -18,14 +18,15 @@
         </button>
 
         <!-- Send to Chat -->
-        <% if @event.chat.present? %>
+        <% if event.chat.present? %>
           <%= button_to "Send to Chat",
-            send_starter_event_path(@event, starter: starter),
-            method: :post,
-            data: { turbo: false, disable_with: "Sending..." },
-            class: "btn btn-primary btn-sm mt-2" %>
+                send_starter_event_path(event, starter: starter),
+                method: :post,
+                class: "btn btn-primary btn-sm" %>
         <% end %>
 
-  </div>
+      </div>
+    </div>
+  <% end %>
 
 </div>
