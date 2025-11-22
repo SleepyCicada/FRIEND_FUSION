@@ -8,13 +8,10 @@ Rails.application.routes.draw do
 
   get "/events", to: "events#index", as: :events
 
-  resources :events, only: [:index, :show] do
+  resources :events do
     resources :confirmations, only: [:create, :destroy]
-    # member do
-    #   get :conversation_starters
-    # end
+    get :conversation_starters, on: :member
   end
-
 
   get "/events/:id/conversation_starters", to: "events#conversation_starters"
 
