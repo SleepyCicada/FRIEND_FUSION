@@ -15,8 +15,6 @@ Rails.application.routes.draw do
     # end
   end
 
->>>>>>> master
-
   get "/events/:id/conversation_starters", to: "events#conversation_starters"
 
   resources :chats, only: :show do
