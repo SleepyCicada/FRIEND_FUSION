@@ -2,7 +2,11 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
 
   def index
-    @events = Event.all
+    if params[:date].present?
+      @events = Event.where(date_time: params[:date].to_date.all_day)
+    else
+      @events = Event.all
+    end
   end
 
   def show

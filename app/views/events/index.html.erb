@@ -1,13 +1,28 @@
 
 <div class="container my-5">
-  <h2 class="text-center mb-4 fw-bold">Upcoming Events</h2>
 
+  <!-- Title and Filter Row -->
+  <div class="row mb-4 align-items-center">
+    <!-- Title -->
+    <div class="col-12 col-md-6 mb-2 mb-md-0">
+      <h2 class="fw-bold mb-0">Upcoming Events</h2>
+    </div>
+
+  <!-- Filter -->
+  <div class="col-12 col-md-6">
+    <%= form_with url: events_path, method: :get, local: true, class: "d-flex flex-column flex-md-row align-items-stretch align-items-md-center" do %>
+      <%= date_field_tag :date, params[:date], class: "form-control mb-2 mb-md-0 me-md-2", placeholder: "Select a date", style: "max-width: 200px;" %>
+
+      <%= submit_tag "Filter", class: "btn btn-outline-primary mb-2 mb-md-0 me-md-2 btn-sm btn-md-auto" %>
+      <%= link_to "Clear", events_path, class: "btn btn-outline-secondary btn-sm btn-md-auto" %>
+    <% end %>
+  </div>
+
+  <!-- Events Grid -->
   <div class="row g-4">
     <% @events.each do |event| %>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card h-100 shadow-sm border-0 rounded-4">
-
-          <!-- /Event Image -->
           <% if event.image.attached? %>
             <%= link_to event_path(event) do %>
               <%= image_tag event.image, alt: event.title,
@@ -18,30 +33,16 @@
             <div class="bg-light rounded-top-4" style="height: 180px; width: 100%;"></div>
           <% end %>
 
-          <!-- Card Body -->
           <div class="card-body d-flex flex-column">
-
-            <!-- Event Title -->
-            <h5 class="card-title mb-2">
-              <%= event.title %>
-            </h5>
-
-            <!-- Description -->
-            <p class="card-text text-muted mb-2 event-description-clamp">
-              <%= event.description %>
-            </p>
-
-            <!-- Date (below description, lowercase) -->
+            <h5 class="card-title mb-2"><%= event.title %></h5>
+            <p class="card-text text-muted mb-2 event-description-clamp"><%= event.description %></p>
             <% if event.date_time.present? %>
               <small class="text-muted text-lowercase mb-3">
                 <%= event.date_time.strftime("%B") %> <%= event.date_time.day.ordinalize %>, <%= event.date_time.year %>
               </small>
             <% end %>
-
-            <!-- Button -->
             <%= link_to "View Event", event_path(event),
                   class: "btn btn-primary mt-auto rounded-pill px-3 py-2" %>
-
           </div>
         </div>
       </div>
