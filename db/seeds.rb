@@ -21,11 +21,11 @@ user = User.create!(
   password: "password"
 )
 
-english =Topic.create!( topic_description: "The language that borrowed from everyone, forgot to return it, and now makes the rules up as it goes.", topic_name: "English"),
-french =Topic.create!( topic_description: "Even their sarcasm sounds like it’s been aged in oak barrels and served with cheese.", topic_name: "Français"),
-spanish =Topic.create!( topic_description: "Passionate, rhythmic, and always ready to dance. Rolls their R’s like maracas.", topic_name: "Español"),
-japanese =Topic.create!( topic_description: "Polite, precise, and secretly a pun master. Brings origami and philosophical haikus.", topic_name: "Japanese"),
-italian =Topic.create!( topic_description: "Speaks with their hands, sings their sentences, and turns every conversation into an opera.", topic_name: "Italiano"),
+english =Topic.create!( topic_description: "The language that borrowed from everyone, forgot to return it, and now makes the rules up as it goes.", topic_name: "English")
+french =Topic.create!( topic_description: "Even their sarcasm sounds like it’s been aged in oak barrels and served with cheese.", topic_name: "Français")
+spanish =Topic.create!( topic_description: "Passionate, rhythmic, and always ready to dance. Rolls their R’s like maracas.", topic_name: "Español")
+japanese =Topic.create!( topic_description: "Polite, precise, and secretly a pun master. Brings origami and philosophical haikus.", topic_name: "Japanese")
+italian =Topic.create!( topic_description: "Speaks with their hands, sings their sentences, and turns every conversation into an opera.", topic_name: "Italiano")
 polish =Topic.create!( topic_description: "Consonant gymnastics. Can say “przyszczyna” without blinking.", topic_name: "Polski")
 
 topics = [english, french, spanish, japanese, italian, polish]
@@ -140,12 +140,13 @@ event_8.image.attach(
   io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
   filename: "study.jpg",
   content_type: "image/jpeg"
+)
 
 # Create an event
 event = Event.create!(
   title: "French Café Meetup",
   description: "Practice French with newcomers.",
-  date_time: 3.days.from.now,
+  date_time: Date.today + 3.days,
   topic: french
 )
 
