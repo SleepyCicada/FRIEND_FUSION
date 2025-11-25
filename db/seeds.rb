@@ -135,8 +135,8 @@ event_8.image.attach(
 event = Event.create!(
   title: "French Café Meetup",
   description: "Practice French with newcomers.",
-  date_time: Time.now + 3.days,
-  topic: french  # <--- topic assigned
+  date_time: Date.today + 3.days,
+  topic: french
 )
 
 chat = Chat.create!(event: event)
