@@ -30,7 +30,7 @@ event_1 = Event.create!(
   title: "Coffee & Conversation ☕️",
   description: "Practice speaking in a relaxed café atmosphere",
   date_time: DateTime.new(2025, 12, 13),
-  topic: english      # <---- assigned to English topic
+  topic: english
 )
 
 event_1.image.attach(
