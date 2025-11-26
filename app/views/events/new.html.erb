@@ -24,16 +24,10 @@
       <%= form.text_field :location, class: "form-control", placeholder: "Where is the event happening?" %>
     </div>
 
-    <!-- Date -->
+    <!-- Date & Time -->
     <div class="mb-3">
-      <%= form.label :date, "Date", class: "form-label fw-bold" %>
-      <%= form.date_field :date, class: "form-control" %>
-    </div>
-
-    <!-- Time -->
-    <div class="mb-3">
-      <%= form.label :time, "Time", class: "form-label fw-bold" %>
-      <%= form.time_field :time, class: "form-control" %>
+      <%= form.label :date_time, "Date & Time", class: "form-label fw-bold" %>
+      <%= form.datetime_local_field :date_time, class: "form-control" %>
     </div>
 
     <!-- Max Capacity -->

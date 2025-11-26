@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  belongs_to :topic
+  belongs_to :topic, optional: true
   has_many :feedbacks
   has_many :confirmations
   has_one :chat
