@@ -50,7 +50,7 @@ class AiChatService
     response = RubyLLM.chat.ask(prompt)
 
     # Handle both string and object responses
-    response.is_a?(String) ? response : response.text
+    response.is_a?(String) ? response : response.content.to_s
   rescue => e
     Rails.logger.error("AI chat error: #{e.message}")
     "I apologize, but I'm having trouble generating a response right now. Please try again."
@@ -87,7 +87,7 @@ class AiChatService
     PROMPT
 
     response = RubyLLM.chat.ask(prompt)
-    response.is_a?(String) ? response : response.text
+    response.is_a?(String) ? response : response.content.to_s
   rescue => e
     Rails.logger.error("AI event chat error: #{e.message}")
     "I'm having trouble generating a response right now. Please try again!"

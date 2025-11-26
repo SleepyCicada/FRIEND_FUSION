@@ -1,45 +1,346 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-lg-8 mx-auto">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Event Feedback</h2>
-        <%= link_to "Back to Event", @event, class: "btn btn-outline-secondary" %>
-      </div>
+<div class="feedbacks-page">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <!-- Header Section -->
+        <div class="feedbacks-header mb-5">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h1 class="feedbacks-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                Event Feedback
+              </h1>
+              <p class="feedbacks-subtitle">See what attendees are saying about <strong><%= @event.title %></strong></p>
+            </div>
+            <%= link_to @event, class: "btn btn-back-modern" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+              </svg>
+              Back to Event
+            <% end %>
+          </div>
+        </div>
 
-      <% if @feedbacks.any? %>
-        <div class="mb-4">
-          <% @feedbacks.each do |feedback| %>
-            <div class="card mb-3">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <div>
-                    <strong><%= feedback.user.name %></strong>
-                    <div class="text-warning">
-                      <%= "⭐" * feedback.rating %>
+        <!-- Feedbacks List -->
+        <% if @feedbacks.any? %>
+          <div class="feedbacks-grid">
+            <% @feedbacks.each do |feedback| %>
+              <div class="feedback-card">
+                <div class="feedback-card-header">
+                  <div class="feedback-user">
+                    <div class="user-avatar">
+                      <%= feedback.user.name.first.upcase %>
+                    </div>
+                    <div>
+                      <div class="user-name"><%= feedback.user.name %></div>
+                      <div class="feedback-date">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                        <%= feedback.created_at.strftime("%b %d, %Y") %>
+                      </div>
                     </div>
                   </div>
-                  <small class="text-muted"><%= feedback.created_at.strftime("%b %d, %Y") %></small>
+                  <div class="feedback-rating">
+                    <%= "⭐" * feedback.rating %>
+                  </div>
                 </div>
-                <p class="mb-0"><%= feedback.comment %></p>
+
+                <div class="feedback-comment">
+                  <%= feedback.comment %>
+                </div>
+
+                <% if feedback.pictures.attached? %>
+                  <div class="feedback-pictures">
+                    <% feedback.pictures.each do |picture| %>
+                      <div class="picture-item">
+                        <%= image_tag picture, alt: "Event picture", class: "feedback-picture" %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
 
                 <% if feedback.user == current_user %>
-                  <div class="mt-2">
-                    <%= link_to "Edit", edit_event_feedback_path(@event, feedback), class: "btn btn-sm btn-outline-primary" %>
-                    <%= button_to "Delete", event_feedback_path(@event, feedback),
+                  <div class="feedback-actions">
+                    <%= link_to edit_event_feedback_path(@event, feedback), class: "btn-action-edit" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg>
+                      Edit
+                    <% end %>
+                    <%= button_to event_feedback_path(@event, feedback),
                           method: :delete,
-                          data: { turbo_confirm: "Are you sure?" },
-                          class: "btn btn-sm btn-outline-danger" %>
+                          data: { turbo_confirm: "Are you sure you want to delete your feedback?" },
+                          class: "btn-action-delete" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                      Delete
+                    <% end %>
                   </div>
                 <% end %>
               </div>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="alert alert-info">
-          No feedback has been submitted for this event yet.
-        </div>
-      <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state">
+            <div class="empty-icon">💭</div>
+            <h3>No feedback yet</h3>
+            <p>Be the first to share your thoughts about this event!</p>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .feedbacks-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .feedbacks-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .feedbacks-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .feedbacks-title svg {
+    color: #f59e0b;
+  }
+
+  .feedbacks-subtitle {
+    color: #718096;
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  .feedbacks-subtitle strong {
+    color: #2d3748;
+  }
+
+  .btn-back-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-back-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  .feedbacks-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .feedback-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .feedback-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .feedback-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+
+  .feedback-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .user-name {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #2d3748;
+  }
+
+  .feedback-date {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #a0aec0;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .feedback-rating {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .feedback-comment {
+    color: #4a5568;
+    line-height: 1.7;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .feedback-pictures {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .picture-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .picture-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .feedback-picture {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .feedback-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .btn-action-edit,
+  .btn-action-delete {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .btn-action-edit {
+    background: #edf2f7;
+    color: #667eea;
+  }
+
+  .btn-action-edit:hover {
+    background: #667eea;
+    color: white;
+  }
+
+  .btn-action-delete {
+    background: #fff5f5;
+    color: #e53e3e;
+  }
+
+  .btn-action-delete:hover {
+    background: #e53e3e;
+    color: white;
+  }
+
+  .empty-state {
+    background: white;
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: #718096;
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .feedbacks-header .d-flex {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start !important;
+    }
+
+    .feedbacks-title {
+      font-size: 1.5rem;
+    }
+
+    .feedback-card {
+      padding: 1.5rem;
+    }
+
+    .feedback-actions {
+      flex-direction: column;
+    }
+  }
+</style>

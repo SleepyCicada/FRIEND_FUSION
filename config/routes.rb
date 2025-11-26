@@ -15,16 +15,12 @@ Rails.application.routes.draw do
     resources :feedbacks
   end
 
-  # get "/events/:id/conversation_starters", to: "events#conversation_starters", as: :conversation_starters_event
-
   resources :chats, only: :show do
     get :summary, on: :member
     resources :messages, only: [:index, :create] do
       get :smart_replies, on: :collection
     end
   end
-
-  get"/chats/:id/summary", to: "chats#summary"
 
   resources :ai_chats do
     resources :ai_messages, only: [:index, :create]
@@ -34,14 +30,5 @@ Rails.application.routes.draw do
     post :mark_as_read, on: :member
     post :mark_all_as_read, on: :collection
   end
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
-#   resources :topics do
-#   resources :events, only: [:index, :show]
-# end
-
 end

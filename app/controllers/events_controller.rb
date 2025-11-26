@@ -43,11 +43,13 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
+    authorize @event
     @topics = Topic.all
   end
 
   def update
     @event = Event.find(params[:id])
+    authorize @event
     if @event.update(event_params)
       redirect_to events_path
     else
@@ -57,8 +59,9 @@ class EventsController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
+    authorize @event
     @event.destroy
-    redirect_to events_path, status: :see_other
+    redirect_to events_path, status: :see_other, notice: "Event deleted successfully."
   end
 
   def conversation_starters
