@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   get "/events", to: "events#index", as: :events
+  get "/my_events", to: "events#my_events", as: :my_events
 
   resources :events do
     get :conversation_starters, on: :member

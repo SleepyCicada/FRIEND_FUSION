@@ -18,6 +18,10 @@ class EventsController < ApplicationController
     @events = @events.order(date_time: :asc)
   end
 
+  def my_events
+    @events = current_user.events.order(date_time: :asc)
+  end
+
   def show
     @event = Event.find(params[:id])
   end
