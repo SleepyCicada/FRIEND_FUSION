@@ -47,7 +47,7 @@
       <%= form.label :image, "Event Image", class: "form-label fw-bold" %>
       <%= form.file_field :image, class: "form-control" %>
 
-      <% if @event.image.attached? %>
+      <% if @event.persisted? && @event.image.attached? %>
         <div class="mt-2">
           <p class="text-muted small mb-1">Current Image:</p>
           <%= image_tag @event.image, class: "rounded-3", style: "width: 150px; height: auto;" %>

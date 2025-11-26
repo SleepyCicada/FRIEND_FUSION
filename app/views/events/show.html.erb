@@ -39,6 +39,7 @@
             <div class="col-md-6">
               <strong>📍 Location:</strong><br>
               <%= @event.location || "To be announced" %>
+              <div id="map" style="height: 300px; width: 100%;" class="mt-3"></div>
             </div>
 
             <div class="col-md-6">
@@ -50,7 +51,6 @@
               <strong>👤 Organizer:</strong><br>
               <%= @event.user&.name || "Friend Fusion" %>
             </div>
-            <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js" %>
           </div>
         </div>
       </div>
@@ -137,4 +137,25 @@
       document.getElementById("starter-loading").style.display = "block";
     }
   });
+</script>
+
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['AIzaSyBlbndBBdfGlYmNuiTkcTo6hJO2JQQfh2Q']}" %>
+
+<script>
+  function initMap() {
+    const eventLocation = { lat: 48.8566, lng: 2.3522 }; // Replace with actual event coords
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: eventLocation,
+    });
+
+    new google.maps.Marker({
+      position: eventLocation,
+      map: map,
+      title: "<%= @event.title %>"
+    });
+  }
+
+  window.onload = initMap;
 </script>
