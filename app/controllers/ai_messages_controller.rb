@@ -15,7 +15,7 @@ class AiMessagesController < ApplicationController
     )
 
     assistant_reply = AiChatService.generate_reply(
-      message: user_message.content,
+      message: user_msg.content,
       user: current_user,
       ai_chat: @ai_chat
     )
@@ -26,12 +26,15 @@ class AiMessagesController < ApplicationController
       content: assistant_reply
     )
 
-    render json: {
-      user_message: user_message,
-      assistant_message: assistant_message
-    }
-  rescue => e
-    render json: { error: e.message }, status: 500
+    respond_to do |format|
+      format.json {
+        render json: {
+          user_message: user_msg,
+          assistant_message: assistant_message
+        }
+      }
+      format.turbo_stream
+    end
   end
 
   private

@@ -1,0 +1,9 @@
+<%= turbo_stream.update "chat-summary" do %>
+  <div class="p-3 rounded border bg-white">
+    <%= @summary %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "summary-loading" do %>
+  ""
+<% end %>

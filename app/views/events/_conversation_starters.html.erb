@@ -1,0 +1,32 @@
+<div class="conversation-starters-container">
+
+  <% starters.each do |starter| %>
+    <div class="starter-card p-3 mb-3 rounded shadow-sm">
+
+      <div class="starter-text mb-2">
+        <%= starter %>
+      </div>
+
+      <div class="d-flex gap-2">
+
+        <!-- Copy Button -->
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          data-controller="clipboard"
+          data-clipboard-text-value="<%= starter %>">
+          Copy
+        </button>
+
+        <!-- Send to Chat -->
+        <% if event.chat.present? %>
+          <%= button_to "Send to Chat",
+                send_starter_event_path(event, starter: starter),
+                method: :post,
+                class: "btn btn-primary btn-sm" %>
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>
+
+</div>

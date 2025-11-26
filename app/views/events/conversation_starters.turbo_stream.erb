@@ -1,0 +1,4 @@
+<%= turbo_stream.update "conversation-starters" do %>
+  <%= render partial: "events/conversation_starters",
+             locals: { starters: @starters, event: @event } %>
+<% end %>

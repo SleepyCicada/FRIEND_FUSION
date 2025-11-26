@@ -1,0 +1,15 @@
+<% if message.user.present? %>
+  <div class="d-flex justify-content-end mb-3">
+    <div class="p-2 px-3 rounded bg-primary text-white" style="max-width: 70%;">
+      <strong>You:</strong><br>
+      <%= message.content %>
+    </div>
+  </div>
+<% else %>
+  <div class="d-flex justify-content-start mb-3">
+    <div class="p-2 px-3 rounded bg-light border" style="max-width: 70%;">
+      <strong>Assistant:</strong><br>
+      <%= message.content %>
+    </div>
+  </div>
+<% end %>
