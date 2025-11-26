@@ -1,13 +1,13 @@
 <h2>Event Chat</h2>
 
-<div id="chat-messages">
+<div id="chat-messages" class="mb-3" style="max-height: 500px; overflow-y: auto;">
   <% @messages.each do |msg| %>
-    <div class="mb-2 p-2 border rounded <%= msg.ai? ? 'ai-message' : 'user-message' %>">
+    <div class="mb-2 p-2 border rounded <%= msg.ai? ? 'ai-message bg-info bg-opacity-10' : 'user-message bg-light' %>">
 
       <% if msg.ai? %>
         <strong>AI Assistant:</strong>
       <% else %>
-        <strong><%= msg.user.name %>:</strong>
+        <strong><%= msg.user&.name || 'User' %>:</strong>
       <% end %>
 
       <div><%= msg.content %></div>
@@ -15,6 +15,18 @@
   <% end %>
 </div>
 
+<!-- Message Input Form -->
+<div class="mb-4">
+  <%= form_with url: chat_messages_path(@chat), method: :post, data: { turbo_stream: true }, class: "d-flex gap-2" do |form| %>
+    <%= form.text_field :message_text,
+        placeholder: "Type your message...",
+        class: "form-control",
+        required: true,
+        id: "message-input" %>
+    <%= form.hidden_field :chat_id, value: @chat.id %>
+    <%= form.submit "Send", class: "btn btn-primary" %>
+  <% end %>
+</div>
 
 <div class="mb-4">
   <h4 class="mb-2">Chat Summary ✨</h4>

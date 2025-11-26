@@ -22,6 +22,7 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
+    @event.user = current_user
     if @event.save
       redirect_to event_path(@event)
     else
@@ -59,29 +60,29 @@ class EventsController < ApplicationController
       format.html { render :conversation_starters, layout: false }
       format.json { render json: { starters: @starters } }
     end
+  end
 
-    def send_starter
-      @event = Event.find(params[:id])
+  def send_starter
+    @event = Event.find(params[:id])
 
-      chat = @event.chat || @event.create_chat!
+    chat = @event.chat || @event.create_chat!
 
-      Message.create!(
-        chat: chat,
-        user: nil,
-        content: params[:starter].strip,
-        ai: true
-      )
+    Message.create!(
+      chat: chat,
+      user: nil,
+      content: params[:starter].strip,
+      ai: true
+    )
 
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to chat_path(@event), notice: "Sent to chat!"}
-      end
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to chat_path(@event), notice: "Sent to chat!"}
     end
   end
 
   private
 
   def event_params
-    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :time, :image)
+    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :image, :topic_id)
   end
 end

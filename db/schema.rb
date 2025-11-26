@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_22_193850) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_25_013433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_22_193850) do
   create_table "confirmations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_confirmations_on_event_id"
+    t.index ["user_id"], name: "index_confirmations_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -84,12 +88,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_22_193850) do
     t.integer "max_capacity"
     t.string "location"
     t.bigint "topic_id"
+    t.bigint "user_id"
     t.index ["topic_id"], name: "index_events_on_topic_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.integer "rating"
+    t.text "comment"
+    t.index ["event_id"], name: "index_feedbacks_on_event_id"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -106,6 +118,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_22_193850) do
   create_table "notifications", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.text "message"
+    t.boolean "read", default: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -134,7 +150,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_22_193850) do
   add_foreign_key "ai_messages", "ai_chats"
   add_foreign_key "ai_messages", "users"
   add_foreign_key "chats", "events"
+  add_foreign_key "confirmations", "events"
+  add_foreign_key "confirmations", "users"
   add_foreign_key "events", "topics"
+  add_foreign_key "events", "users"
+  add_foreign_key "feedbacks", "events"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users"
+  add_foreign_key "notifications", "users"
 end

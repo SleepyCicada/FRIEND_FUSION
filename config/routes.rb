@@ -12,19 +12,25 @@ Rails.application.routes.draw do
     get :conversation_starters, on: :member
     post :send_starter, on: :member
     resources :confirmations, only: [:create, :destroy]
+    resources :feedbacks
   end
 
   # get "/events/:id/conversation_starters", to: "events#conversation_starters", as: :conversation_starters_event
 
   resources :chats, only: :show do
     get :summary, on: :member
-    # resources :messages, only: [:index, :create]
+    resources :messages, only: [:index, :create]
   end
 
   get"/chats/:id/summary", to: "chats#summary"
 
   resources :ai_chats, only: :show do
     resources :ai_messages, only: [:index, :create]
+  end
+
+  resources :notifications, only: [:index, :show] do
+    post :mark_as_read, on: :member
+    post :mark_all_as_read, on: :collection
   end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

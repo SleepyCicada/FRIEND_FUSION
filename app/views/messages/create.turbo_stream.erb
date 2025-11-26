@@ -1,0 +1,15 @@
+<%= turbo_stream.append "chat-messages" do %>
+  <div class="mb-2 p-2 border rounded <%= @message.ai? ? 'ai-message bg-info bg-opacity-10' : 'user-message bg-light' %>">
+    <% if @message.ai? %>
+      <strong>AI Assistant:</strong>
+    <% else %>
+      <strong><%= @message.user&.name || 'User' %>:</strong>
+    <% end %>
+
+    <div><%= @message.content %></div>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "message-input" do %>
+  <input type="text" name="message_text" placeholder="Type your message..." class="form-control" required="required" id="message-input">
+<% end %>

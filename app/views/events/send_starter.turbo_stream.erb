@@ -1,0 +1,11 @@
+<%= turbo_stream.prepend "flash-messages" do %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    Conversation starter sent to chat!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "conversation-starters" do %>
+  <%= render partial: "events/conversation_starters",
+             locals: { starters: [], event: @event } %>
+<% end %>

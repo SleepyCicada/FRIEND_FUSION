@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+          Notifications
+          <% if @unread_count > 0 %>
+            <span class="badge bg-primary"><%= @unread_count %></span>
+          <% end %>
+        </h2>
+        <% if @unread_count > 0 %>
+          <%= button_to "Mark All as Read",
+                mark_all_as_read_notifications_path,
+                method: :post,
+                class: "btn btn-outline-primary btn-sm" %>
+        <% end %>
+      </div>
+
+      <% if @notifications.any? %>
+        <div class="list-group">
+          <% @notifications.each do |notification| %>
+            <%= link_to notification_path(notification),
+                  class: "list-group-item list-group-item-action #{'list-group-item-light' unless notification.read?}" do %>
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">
+                  <%= notification.title %>
+                  <% unless notification.read? %>
+                    <span class="badge bg-primary">New</span>
+                  <% end %>
+                </h5>
+                <small class="text-muted"><%= time_ago_in_words(notification.created_at) %> ago</small>
+              </div>
+              <p class="mb-1"><%= notification.message %></p>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          You have no notifications.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
