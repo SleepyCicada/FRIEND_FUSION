@@ -5,7 +5,7 @@ class Event < ApplicationRecord
   has_one :chat
   has_many :users, through: :confirmations
   has_one_attached :image
-  belongs_to :user
+  belongs_to :user, optional: true
   after_create :schedule_reminder
   validates :date_time, presence: true
   validates :title, presence: true
