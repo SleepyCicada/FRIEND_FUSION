@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  belongs_to :topic, optional: true
+  belongs_to :topic
   has_many :feedbacks
   has_many :confirmations
   has_one :chat
@@ -7,8 +7,10 @@ class Event < ApplicationRecord
   has_one_attached :image
   belongs_to :user
   after_create :schedule_reminder
+  after_create :create_event_chat
   validates :date_time, presence: true
   validates :title, presence: true
+  validates :topic, presence: true
 
   private
   def schedule_reminder
@@ -16,5 +18,10 @@ class Event < ApplicationRecord
 
     reminder_time = date_time - 1.day
     EventReminderJob.set(wait_until: reminder_time).perform_later(self.id)
+  end
+
+  def create_event_chat
+    # Ensure every event has a chat
+    Chat.find_or_create_by(event: self)
   end
 end

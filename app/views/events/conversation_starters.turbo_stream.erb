@@ -2,3 +2,12 @@
   <%= render partial: "events/conversation_starters",
              locals: { starters: @starters, event: @event } %>
 <% end %>
+
+<%= turbo_stream.update "chat-starters" do %>
+  <%= render partial: "events/chat_starters",
+             locals: { starters: @starters, event: @event } %>
+<% end %>
+
+<%= turbo_stream.update "chat-starter-loading" do %>
+  ""
+<% end %>

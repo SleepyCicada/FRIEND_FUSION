@@ -2,11 +2,20 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
 
   def index
-    if params[:date].present?
-      @events = Event.where(date_time: params[:date].to_date.all_day)
-    else
-      @events = Event.all
+    @events = Event.all
+
+    # Filter by topic if topic_id is present in params
+    if params[:topic_id].present?
+      @topic = Topic.find(params[:topic_id])
+      @events = @events.where(topic_id: params[:topic_id])
     end
+
+    # Filter by date if present
+    if params[:date].present?
+      @events = @events.where(date_time: params[:date].to_date.all_day)
+    end
+
+    @events = @events.order(date_time: :asc)
   end
 
   def show
@@ -18,6 +27,7 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @topics = Topic.all
   end
 
   def create
@@ -26,15 +36,14 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to event_path(@event)
     else
-      render :new
+      @topics = Topic.all
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     @event = Event.find(params[:id])
-    return unless @event.update(event_params)
-
-    redirect_to event_path(@event)
+    @topics = Topic.all
   end
 
   def update

@@ -1,0 +1,95 @@
+<div class="chat-starters-list">
+  <% if starters.present? %>
+    <% starters.each do |starter| %>
+      <div class="starter-item">
+        <div class="starter-text"><%= starter %></div>
+        <button
+          class="btn-paste-starter"
+          onclick="pasteToChat('<%= j(starter) %>')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+          Use This
+        </button>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-muted text-center">No starters generated yet.</p>
+  <% end %>
+</div>
+
+<style>
+  .chat-starters-list {
+    margin-top: 1rem;
+  }
+
+  .starter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .starter-item:hover {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  }
+
+  .starter-text {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #2d3748;
+    line-height: 1.5;
+  }
+
+  .btn-paste-starter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .btn-paste-starter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .starter-item {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-paste-starter {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  function pasteToChat(text) {
+    const messageInput = document.getElementById('message-input');
+    if (messageInput) {
+      messageInput.value = text;
+      messageInput.focus();
+      messageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+</script>

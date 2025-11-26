@@ -19,12 +19,14 @@ Rails.application.routes.draw do
 
   resources :chats, only: :show do
     get :summary, on: :member
-    resources :messages, only: [:index, :create]
+    resources :messages, only: [:index, :create] do
+      get :smart_replies, on: :collection
+    end
   end
 
   get"/chats/:id/summary", to: "chats#summary"
 
-  resources :ai_chats, only: :show do
+  resources :ai_chats do
     resources :ai_messages, only: [:index, :create]
   end
 

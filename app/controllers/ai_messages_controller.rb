@@ -8,19 +8,19 @@ class AiMessagesController < ApplicationController
   end
 
   def create
-    user_msg = @ai_chat.ai_messages.create!(
+    @user_message = @ai_chat.ai_messages.create!(
       user: current_user,
       sender_type: :user,
       content: params[:content]
     )
 
     assistant_reply = AiChatService.generate_reply(
-      message: user_msg.content,
+      message: @user_message.content,
       user: current_user,
       ai_chat: @ai_chat
     )
 
-    assistant_message = @ai_chat.ai_messages.create!(
+    @assistant_message = @ai_chat.ai_messages.create!(
       user_id: nil,
       sender_type: :assistant,
       content: assistant_reply
@@ -29,8 +29,8 @@ class AiMessagesController < ApplicationController
     respond_to do |format|
       format.json {
         render json: {
-          user_message: user_msg,
-          assistant_message: assistant_message
+          user_message: @user_message,
+          assistant_message: @assistant_message
         }
       }
       format.turbo_stream

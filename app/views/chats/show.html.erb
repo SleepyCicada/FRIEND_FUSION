@@ -1,90 +1,781 @@
-<h2>Event Chat</h2>
+<div class="chat-container">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h3 class="mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots me-2" viewBox="0 0 16 16">
+            <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+          </svg>
+          <%= @chat.event.title %>
+        </h3>
+        <p class="text-muted mb-0 small">
+          <%= @chat.messages.count %> messages
+          <span class="mx-2">•</span>
+          <span id="online-count"><%= @chat.event.confirmations.count %></span> attendees
+        </p>
+      </div>
+      <div>
+        <%= link_to "Event Details", event_path(@chat.event), class: "btn btn-sm btn-outline-primary" %>
+      </div>
+    </div>
+  </div>
 
-<div id="chat-messages" class="mb-3" style="max-height: 500px; overflow-y: auto;">
-  <% @messages.each do |msg| %>
-    <div class="mb-2 p-2 border rounded <%= msg.ai? ? 'ai-message bg-info bg-opacity-10' : 'user-message bg-light' %>">
-
-      <% if msg.ai? %>
-        <strong>AI Assistant:</strong>
-      <% else %>
-        <strong><%= msg.user&.name || 'User' %>:</strong>
+  <!-- Messages Container -->
+  <div id="chat-messages" class="chat-messages">
+    <% if @messages.empty? %>
+      <div class="empty-chat-state">
+        <div class="empty-icon">💬</div>
+        <h5>Start the conversation!</h5>
+        <p class="text-muted">Be the first to say hello or use the AI assistant below for help.</p>
+      </div>
+    <% else %>
+      <% @messages.each do |msg| %>
+        <%= render partial: 'messages/message', locals: { message: msg } %>
       <% end %>
+    <% end %>
 
-      <div><%= msg.content %></div>
-    </div>
-  <% end %>
-</div>
-
-<!-- Message Input Form -->
-<div class="mb-4">
-  <%= form_with url: chat_messages_path(@chat), method: :post, data: { turbo_stream: true }, class: "d-flex gap-2" do |form| %>
-    <%= form.text_field :message_text,
-        placeholder: "Type your message...",
-        class: "form-control",
-        required: true,
-        id: "message-input" %>
-    <%= form.hidden_field :chat_id, value: @chat.id %>
-    <%= form.submit "Send", class: "btn btn-primary" %>
-  <% end %>
-</div>
-
-<div class="mb-4">
-  <h4 class="mb-2">Chat Summary ✨</h4>
-
-  <!-- Summary container -->
-  <div id="chat-summary" class="p-3 border rounded bg-light mb-2">
-    <em class="text-muted">No summary generated yet.</em>
-  </div>
-
-  <div class="mb-4">
-    <h4 class="mb-2">Conversation Starters 💡</h4>
-
-    <!-- Starters container -->
-    <div id="chat-starters"></div>
-
-    <!-- Button -->
-    <%= button_to "Generate Starters",
-          conversation_starters_event_path(@chat.event),
-          method: :get,
-          data: { turbo_stream: true },
-          class: "btn btn-outline-secondary",
-          id: "chat-starter-button" %>
-
-    <!-- Loading spinner -->
-    <div id="chat-starter-loading" class="text-muted mt-2" style="display: none;">
-      <div class="spinner-border spinner-border-sm"></div>
-      Generating ideas...
+    <!-- Typing Indicator (hidden by default) -->
+    <div id="typing-indicator" class="typing-indicator" style="display: none;">
+      <div class="message-bubble ai-bubble">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- Smart Reply Suggestions (shown when AI generates them) -->
+  <div id="smart-replies" class="smart-replies-container" style="display: none;">
+    <div class="smart-replies-label">Quick Replies:</div>
+    <div id="smart-replies-list" class="smart-replies-list"></div>
+  </div>
 
-  <!-- Generate button -->
-  <%= button_to "Generate Summary",
-        summary_chat_path(@chat.id),
-        method: :get,
-        remote: true,
-        class: "btn btn-outline-primary",
-        id: "summary-button" %>
+  <!-- Message Input Form -->
+  <div class="chat-input-container">
+    <%= form_with url: chat_messages_path(@chat), method: :post, data: { turbo_stream: true }, class: "chat-input-form", id: "message-form" do |form| %>
+      <div class="input-group">
+        <%= form.text_field :message_text,
+            placeholder: "Type your message...",
+            class: "form-control chat-input",
+            required: true,
+            id: "message-input",
+            autocomplete: "off" %>
+        <%= form.hidden_field :chat_id, value: @chat.id %>
+        <%= form.hidden_field :ai_mode, value: "false", id: "ai-mode-field" %>
 
-  <!-- Loading spinner -->
-  <div id="summary-loading" class="text-muted mt-2" style="display: none;">
-    <div class="spinner-border spinner-border-sm"></div>
-    Generating summary...
+        <!-- AI Assistant Toggle -->
+        <button type="button" class="btn btn-outline-secondary" id="ai-assist-btn" title="Ask AI Assistant">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+            <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
+          </svg>
+        </button>
+
+        <%= form.submit "Send", class: "btn btn-primary", id: "send-btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- AI Features Section -->
+<div class="ai-features-section">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Conversation Starters Card -->
+      <div class="col-lg-6">
+        <div class="feature-card">
+          <div class="feature-header">
+            <h4 class="feature-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13z"/>
+              </svg>
+              Conversation Starters
+            </h4>
+            <%= button_to conversation_starters_event_path(@chat.event),
+                  method: :get,
+                  data: { turbo_stream: true },
+                  class: "btn-feature-action",
+                  id: "chat-starter-button" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+              </svg>
+              Generate
+            <% end %>
+          </div>
+
+          <div id="chat-starter-loading" class="loading-state" style="display: none;">
+            <div class="spinner-border spinner-border-sm"></div>
+            <span>Generating ideas...</span>
+          </div>
+
+          <div id="chat-starters" class="feature-content"></div>
+        </div>
+      </div>
+
+      <!-- Chat Summary Card -->
+      <div class="col-lg-6">
+        <div class="feature-card">
+          <div class="feature-header">
+            <h4 class="feature-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M3 4.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 3.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+              Chat Summary
+            </h4>
+            <%= button_to summary_chat_path(@chat.id),
+                  method: :get,
+                  remote: true,
+                  class: "btn-feature-action",
+                  id: "summary-button" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+              </svg>
+              Generate
+            <% end %>
+          </div>
+
+          <div id="summary-loading" class="loading-state" style="display: none;">
+            <div class="spinner-border spinner-border-sm"></div>
+            <span>Generating summary...</span>
+          </div>
+
+          <div id="chat-summary" class="feature-content">
+            <p class="empty-state-text">No summary generated yet. Click Generate to create one!</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   document.addEventListener("turbo:before-fetch-request", (e) => {
     if (e.target.id === "summary-button") {
-      document.getElementById("summary-loading").style.display = "block";
+      document.getElementById("summary-loading").style.display = "flex";
+    }
+    if (e.target.id === "chat-starter-button") {
+      document.getElementById("chat-starter-loading").style.display = "flex";
     }
   });
 </script>
 
+<style>
+  .ai-features-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 3rem 0;
+    margin-top: 2rem;
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+  }
+
+  .feature-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+  }
+
+  .feature-title svg {
+    color: #667eea;
+  }
+
+  .btn-feature-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-feature-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  .loading-state {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .feature-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .empty-state-text {
+    padding: 2rem;
+    text-align: center;
+    color: #718096;
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (max-width: 992px) {
+    .ai-features-section {
+      padding: 2rem 0;
+    }
+
+    .feature-card {
+      min-height: 250px;
+    }
+  }
+</style>
+
+<style>
+  /* Chat Container */
+  .chat-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 150px);
+  }
+
+  /* Chat Header */
+  .chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .chat-header h3 {
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Messages Area */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  }
+
+  .chat-messages::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Empty State */
+  .empty-chat-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Message Wrapper */
+  .message-wrapper {
+    margin-bottom: 1.5rem;
+    animation: fadeInMessage 0.3s ease;
+  }
+
+  @keyframes fadeInMessage {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .message-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+
+  .message-user .message-content {
+    justify-content: flex-start;
+  }
+
+  .message-ai .message-content {
+    justify-content: flex-end;
+  }
+
+  /* Avatar */
+  .message-avatar {
+    flex-shrink: 0;
+  }
+
+  .avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .ai-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Message Bubble */
+  .message-bubble {
+    max-width: 600px;
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .user-bubble {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-bottom-left-radius: 4px;
+  }
+
+  .ai-bubble {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .message-sender {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #667eea;
+    margin-bottom: 0.25rem;
+  }
+
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .message-text p {
+    margin: 0;
+  }
+
+  .message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+
+  .user-bubble .message-time {
+    color: #6c757d;
+  }
+
+  .ai-bubble .message-time {
+    color: white;
+  }
+
+  /* Typing Indicator */
+  .typing-indicator {
+    margin-bottom: 1rem;
+  }
+
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 1rem;
+  }
+
+  .typing-dots span {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+
+  .typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typing {
+    0%, 60%, 100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Smart Replies */
+  .smart-replies-container {
+    padding: 1rem 2rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .smart-replies-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  .smart-replies-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .smart-reply-chip {
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .smart-reply-chip:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Chat Input */
+  .chat-input-container {
+    padding: 1.5rem 2rem;
+    background: white;
+    border-top: 2px solid #e9ecef;
+  }
+
+  .chat-input-form .input-group {
+    border: 2px solid #e9ecef;
+    border-radius: 30px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .chat-input-form .input-group:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+  }
+
+  .chat-input {
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .chat-input:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  #ai-assist-btn {
+    border: none;
+    border-left: 1px solid #e9ecef;
+    border-radius: 0;
+    transition: all 0.3s ease;
+  }
+
+  #ai-assist-btn:hover {
+    background: #667eea;
+    color: white;
+  }
+
+  #ai-assist-btn.active {
+    background: #667eea;
+    color: white;
+  }
+
+  #send-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 0 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  #send-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .chat-container {
+      height: calc(100vh - 100px);
+      margin: 0;
+      border-radius: 0;
+    }
+
+    .chat-messages {
+      padding: 1rem;
+    }
+
+    .message-bubble {
+      max-width: 85%;
+    }
+
+    .chat-input-container {
+      padding: 1rem;
+    }
+  }
+</style>
+
 <script>
-  document.addEventListener("turbo:before-fetch-request", (e) => {
-    if (e.target.id === "chat-starter-button") {
-      document.getElementById("chat-starter-loading").style.display = "block";
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+    const aiAssistBtn = document.getElementById('ai-assist-btn');
+    const aiModeField = document.getElementById('ai-mode-field');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const chatId = <%= @chat.id %>;
+    let aiMode = false;
+
+    // Auto-scroll to bottom
+    function scrollToBottom() {
+      if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    // Initial scroll
+    scrollToBottom();
+
+    // AI Assistant Toggle
+    if (aiAssistBtn) {
+      aiAssistBtn.addEventListener('click', function() {
+        aiMode = !aiMode;
+        this.classList.toggle('active');
+
+        // Update hidden field
+        if (aiModeField) {
+          aiModeField.value = aiMode ? "true" : "false";
+        }
+
+        if (aiMode) {
+          messageInput.placeholder = "Ask the AI assistant anything...";
+          this.title = "Switch to normal chat";
+        } else {
+          messageInput.placeholder = "Type your message...";
+          this.title = "Ask AI Assistant";
+        }
+
+        messageInput.focus();
+      });
+    }
+
+    // Handle form submission
+    if (messageForm) {
+      messageForm.addEventListener('submit', function(e) {
+        const messageText = messageInput.value.trim();
+
+        if (!messageText) {
+          e.preventDefault();
+          return;
+        }
+
+        // If AI mode, show typing indicator
+        if (aiMode) {
+          setTimeout(() => {
+            if (typingIndicator) {
+              typingIndicator.style.display = 'block';
+              scrollToBottom();
+            }
+          }, 300);
+        }
+
+        // Clear input
+        setTimeout(() => {
+          messageInput.value = '';
+          messageInput.focus();
+        }, 10);
+      });
+    }
+
+    // Fetch and display smart reply suggestions
+    function fetchSmartReplies() {
+      const smartRepliesContainer = document.getElementById('smart-replies');
+      const smartRepliesList = document.getElementById('smart-replies-list');
+
+      // Only fetch if there are messages
+      const messageCount = chatMessages.querySelectorAll('.message-wrapper').length;
+      if (messageCount < 2 || Math.random() > 0.6) {
+        return; // Don't always show them
+      }
+
+      fetch(`/chats/${chatId}/messages/smart_replies`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.replies && data.replies.length > 0) {
+            smartRepliesList.innerHTML = '';
+
+            data.replies.forEach(reply => {
+              const chip = document.createElement('button');
+              chip.className = 'smart-reply-chip';
+              chip.textContent = reply;
+              chip.addEventListener('click', function() {
+                messageInput.value = reply;
+                messageInput.focus();
+                smartRepliesContainer.style.display = 'none';
+              });
+              smartRepliesList.appendChild(chip);
+            });
+
+            smartRepliesContainer.style.display = 'block';
+
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+              smartRepliesContainer.style.display = 'none';
+            }, 10000);
+          }
+        })
+        .catch(error => {
+          console.log('Could not fetch smart replies:', error);
+        });
+    }
+
+    // Turbo Stream handling
+    document.addEventListener('turbo:submit-end', function(e) {
+      if (e.target.id === 'message-form') {
+        // Hide typing indicator after AI responds
+        setTimeout(() => {
+          if (typingIndicator) {
+            typingIndicator.style.display = 'none';
+          }
+        }, 1500);
+
+        // Scroll to bottom after new message
+        setTimeout(scrollToBottom, 100);
+
+        // Fetch smart replies occasionally
+        setTimeout(fetchSmartReplies, 1500);
+
+        // Reset AI mode
+        if (aiMode) {
+          aiMode = false;
+          if (aiAssistBtn) aiAssistBtn.classList.remove('active');
+          if (aiModeField) aiModeField.value = "false";
+          messageInput.placeholder = "Type your message...";
+        }
+      }
+    });
+
+    // Handle conversation starters button
+    const starterButton = document.getElementById('chat-starter-button');
+    if (starterButton) {
+      starterButton.addEventListener('click', function() {
+        const loading = document.getElementById('chat-starter-loading');
+        if (loading) loading.style.display = 'block';
+      });
+    }
+
+    // Handle summary button
+    const summaryButton = document.getElementById('summary-button');
+    if (summaryButton) {
+      summaryButton.addEventListener('click', function() {
+        const loading = document.getElementById('summary-loading');
+        if (loading) loading.style.display = 'block';
+      });
+    }
+
+    // Load smart replies on page load occasionally
+    setTimeout(fetchSmartReplies, 2000);
+  });
+
+  // Turbo Stream handlers for new messages
+  document.addEventListener('turbo:before-fetch-request', (e) => {
+    if (e.target.id === 'chat-starter-button') {
+      document.getElementById('chat-starter-loading').style.display = 'block';
     }
   });
 </script>
