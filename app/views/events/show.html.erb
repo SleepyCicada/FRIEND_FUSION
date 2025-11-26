@@ -50,6 +50,7 @@
               <strong>👤 Organizer:</strong><br>
               <%= @event.user&.name || "Friend Fusion" %>
             </div>
+            <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js" %>
           </div>
         </div>
       </div>

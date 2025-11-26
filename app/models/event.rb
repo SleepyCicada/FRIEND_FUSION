@@ -5,16 +5,17 @@ class Event < ApplicationRecord
   has_one :chat
   has_many :users, through: :confirmations
   has_one_attached :image
-  belongs_to :user
+  belongs_to :user, optional: true
   after_create :schedule_reminder
   validates :date_time, presence: true
   validates :title, presence: true
 
   private
+
   def schedule_reminder
     return unless date_time && date_time > Time.current
 
     reminder_time = date_time - 1.day
-    EventReminderJob.set(wait_until: reminder_time).perform_later(self.id)
+    EventReminderJob.set(wait_until: reminder_time).perform_later(id)
   end
 end
