@@ -83,6 +83,14 @@
           <% end %>
 
           <%= link_to "Give Feedback", new_event_feedback_path(@event), class: "btn btn-outline-secondary" %>
+
+          <% if @event.user == current_user %>
+            <%= button_to "Delete Event",
+                  event_path(@event),
+                  method: :delete,
+                  class: "btn btn-danger",
+                  data: { turbo_confirm: "Are you sure you want to delete this event? This action cannot be undone." } %>
+          <% end %>
         <% else %>
           <%= link_to "Sign in to Join", new_user_session_path, class: "btn btn-primary btn-lg" %>
         <% end %>
@@ -142,15 +150,15 @@
       document.getElementById("starter-loading").style.display = "block";
     }
   });
-</script>
 
-<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['AIzaSyBlbndBBdfGlYmNuiTkcTo6hJO2JQQfh2Q']}" %>
-
-<script>
+  // Initialize map on page load and Turbo navigation
   function initMap() {
+    const mapElement = document.getElementById("map");
+    if (!mapElement || typeof google === 'undefined') return;
+
     const eventLocation = { lat: 48.8566, lng: 2.3522 }; // Replace with actual event coords
 
-    const map = new google.maps.Map(document.getElementById("map"), {
+    const map = new google.maps.Map(mapElement, {
       zoom: 12,
       center: eventLocation,
     });
@@ -161,5 +169,17 @@
       title: "<%= @event.title %>"
      });
   }
+
   document.addEventListener('turbo:load', ()=> {console.log("I'm here");initMap();})
+
+  // Handle both initial page load and Turbo navigation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
+
+  // Re-initialize on Turbo navigation
+  document.addEventListener('turbo:load', initMap);
+
 </script>
