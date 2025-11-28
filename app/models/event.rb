@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  belongs_to :topic
+  belongs_to :topic, optional: true
   has_many :feedbacks
   has_many :confirmations
   has_one :chat
@@ -11,10 +11,11 @@ class Event < ApplicationRecord
   validates :title, presence: true
 
   private
+
   def schedule_reminder
     return unless date_time && date_time > Time.current
 
     reminder_time = date_time - 1.day
-    EventReminderJob.set(wait_until: reminder_time).perform_later(self.id)
+    EventReminderJob.set(wait_until: reminder_time).perform_later(id)
   end
 end

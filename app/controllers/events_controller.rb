@@ -21,7 +21,9 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
+    combined_datetime = combine_date_time(event_params[:date], event_params[:time])
+    @event = Event.new(event_params.except(:date, :time))
+    @event.date_time = combined_datetime
     @event.user = current_user
     if @event.save
       redirect_to event_path(@event)
@@ -76,13 +78,19 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to chat_path(@event), notice: "Sent to chat!"}
+      format.html { redirect_to chat_path(@event), notice: "Sent to chat!" }
     end
   end
 
   private
 
+  def combine_date_time(date, time)
+    return nil if date.blank? || time.blank?
+
+    Time.zone.parse("#{date} #{time}")
+  end
+
   def event_params
-    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :image, :topic_id)
+    params.require(:event).permit(:title, :description, :location, :max_capacity, :date, :time, :image, :topic_id)
   end
 end
