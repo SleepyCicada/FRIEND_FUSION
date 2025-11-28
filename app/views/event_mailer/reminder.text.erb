@@ -1,0 +1,12 @@
+Event Reminder
+
+Hello <%= @event.user.name %>,
+
+This is a reminder that your event "<%= @event.title %>" starts tomorrow!
+
+Date: <%= @event.date_time.strftime("%B %d, %Y %H:%M") %>
+Location: <%= @event.location %>
+
+We look forward to seeing you there!
+
+Thanks for using Friend Fusion!
