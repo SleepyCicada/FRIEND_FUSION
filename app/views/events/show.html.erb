@@ -32,8 +32,13 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-6">
-              <strong>📅 Date & Time:</strong><br>
-              <%= @event.date_time ? @event.date_time.strftime("%B %d, %Y at %I:%M %p") : "TBD" %>
+              <strong>📅 Date:</strong><br>
+              <%= @event.date_time ? @event.date_time.strftime("%B %d, %Y") : "TBD" %>
+
+              <div class="mt-2"></div>
+
+              <strong>⏰ Time:</strong>
+              <%= @event.time ? @event.time.strftime("%I:%M %p") : "TBD" %>
             </div>
 
             <div class="col-md-6">
@@ -154,8 +159,7 @@
       position: eventLocation,
       map: map,
       title: "<%= @event.title %>"
-    });
+     });
   }
-
-  window.onload = initMap;
+  document.addEventListener('turbo:load', ()=> {console.log("I'm here");initMap();})
 </script>

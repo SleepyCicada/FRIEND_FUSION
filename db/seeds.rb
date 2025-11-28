@@ -30,6 +30,7 @@ event_1 = Event.create!(
   title: "Coffee & Conversation ☕️",
   description: "Practice speaking in a relaxed café atmosphere",
   date_time: DateTime.new(2025, 12, 13),
+  time: Time.parse("10:30"),
   topic: english
 )
 
