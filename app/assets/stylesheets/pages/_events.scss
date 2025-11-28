@@ -12,15 +12,15 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 /* Background images */
-.bg-event-1 {
-  background-image: url('/images/cafe.jpg');
-}
-.bg-event-2 {
-  background-image: url('/images/event2.jpg');
-}
-.bg-event-3 {
-  background-image: url('/images/event3.jpg');
-}
+// .bg-event-1 {
+//   background-image: url('/images/cafe.jpg');
+// }
+// .bg-event-2 {
+//   background-image: url('/images/event2.jpg');
+// }
+// .bg-event-3 {
+//   background-image: url('/images/event3.jpg');
+// }
 /* Optional: refine badge style */
 .event-block .badge {
   font-size: 0.7rem;
@@ -47,4 +47,31 @@
 .custom-btn:hover {
   background-color: #FAD7A0;
   color: #fff;
+}
+
+/* Custom primary button */
+.btn-custom {
+  background-color: hsl(195, 34%, 53%); /* your custom color */
+  border-color: hsl(195, 34%, 53%);
+  color: white;
+}
+
+.btn-custom:hover,
+.btn-custom:focus {
+  background-color: hsl(195, 34%, 53%); /* slightly darker hover */
+  border-color: hsl(195, 34%, 53%);
+  color: white;
+}
+
+/* Custom outline button (for Clear) */
+.btn-outline-custom {
+  color: hsl(195, 34%, 53%);
+  border-color: hsl(195, 34%, 53%);
+}
+
+.btn-outline-custom:hover,
+.btn-outline-custom:focus {
+  background-color: hsl(195, 34%, 53%);
+  color: white;
+  border-color: hsl(195, 34%, 53%);
 }

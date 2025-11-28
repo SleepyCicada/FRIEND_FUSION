@@ -1,28 +1,46 @@
 
 <div class="container my-5">
 
-  <div class="text-center mb-4">
+  <!-- Main Title -->
+  <h2 class="fw-bold mb-3 text-center">Upcoming Events</h2>
 
-  <h2 class="fw-bold mb-2">Upcoming Events</h2>
+  <!-- Buttons + Filter Row -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
 
-  <%= link_to new_event_path,
-      class: "btn btn-primary px-3 py-2 rounded-pill shadow-sm small-create-btn" do %>
-    <i class="bi bi-plus-circle me-1"></i> Create Event
-  <% end %>
-
-</div>
-
-  <!-- Filter -->
-  <div class="col-12 col-md-6">
-    <%= form_with url: events_path, method: :get, local: true, class: "d-flex flex-column flex-md-row align-items-stretch align-items-md-center" do %>
-      <%= date_field_tag :date, params[:date], class: "form-control mb-2 mb-md-0 me-md-2", placeholder: "Select a date", style: "max-width: 200px;" %>
-
-      <%= submit_tag "Filter", class: "btn btn-outline-primary mb-2 mb-md-0 me-md-2 btn-sm btn-md-auto" %>
-      <%= link_to "Clear", events_path, class: "btn btn-outline-secondary btn-sm btn-md-auto" %>
+    <!-- Create Event Button (Left) -->
+    <%= link_to new_event_path,
+        class: "btn btn-custom btn-sm px-2 py-1 rounded-pill shadow-sm" do %>
+      <i class="bi bi-plus-circle me-1"></i> Create
     <% end %>
+
+    <!-- Filter (Right) -->
+    <div class="d-flex align-items-center gap-1 flex-grow-1 justify-content-end mt-2 mt-sm-0">
+      <%= form_with url: events_path, method: :get, local: true,
+                    class: "d-flex align-items-center gap-1 flex-wrap" do %>
+
+        <!-- Date Field -->
+        <div class="input-group input-group-sm" style="max-width: 140px;">
+          <span class="input-group-text bg-light rounded-pill rounded-end-0 p-1">
+            <i class="bi bi-calendar-event"></i>
+          </span>
+          <%= date_field_tag :date, params[:date],
+              class: "form-control form-control-sm rounded-pill rounded-start-0 p-1",
+              placeholder: "Date" %>
+        </div>
+
+        <!-- Filter Button -->
+        <%= submit_tag "Filter",
+            class: "btn btn-custom btn-sm rounded-pill px-2 py-1" %>
+
+        <!-- Clear Button -->
+        <%= link_to events_path,
+            class: "btn btn-outline-custom btn-sm rounded-pill px-2 py-1" do %>
+          Clear
+        <% end %>
+      <% end %>
+    </div>
+
   </div>
-
-
 
   <!-- Events Grid -->
   <div class="row g-4">
@@ -48,7 +66,7 @@
               </small>
             <% end %>
             <%= link_to "View Event", event_path(event),
-                  class: "btn btn-primary mt-auto rounded-pill px-3 py-2" %>
+                  class: "btn btn-custom mt-auto rounded-pill px-3 py-2" %>
           </div>
         </div>
       </div>

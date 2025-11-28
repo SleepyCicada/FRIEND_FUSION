@@ -43,7 +43,8 @@ event_1 = Event.create!(
   description: "Practice speaking in a relaxed café atmosphere",
   date_time: DateTime.new(2025, 12, 13),
   time: Time.parse("10:30"),
-  topic: english
+  topic: english,
+  location: "1847 Maple Crest Road,  ON M0A 2K9"
 )
 
 event_1.image.attach(
@@ -56,7 +57,9 @@ event_2 = Event.create!(
   title: "Film & Discussion Club 🎬",
   description: "Watch a short film followed by a guided discussion",
   date_time: DateTime.new(2025, 12, 14),
-  topic: french
+  time: Time.parse("20:30"),
+  topic: french,
+  location: "92 Silver Grove Avenue, ON M0B 4T1"
 )
 
 event_2.image.attach(
@@ -69,7 +72,9 @@ event_3 = Event.create!(
   title: "Board Game Night 🎲",
   description: "Play classic board games adapted for language learners",
   date_time: DateTime.new(2025, 12, 19),
-  topic: spanish
+  time: Time.parse("20:00"),
+  topic: spanish,
+  location: "3300 Kingswell Street, ON M0C 1R4"
 )
 
 event_3.image.attach(
@@ -82,7 +87,9 @@ event_4 = Event.create!(
   title: "Cooking & Conversation Class 👨‍🍳",
   description: "Cook and practice conversations in a small group",
   date_time: DateTime.new(2025, 12, 16),
-  topic: italian
+  time: Time.parse("11:00"),
+  topic: italian,
+  location: "557 Lakefront View Drive, ON M0A 9P2"
 )
 
 event_4.image.attach(
@@ -95,7 +102,9 @@ event_5 = Event.create!(
   title: "Survival Workshop 🗣",
   description: "Essential travel phrases and emergency conversation practice",
   date_time: DateTime.new(2025, 12, 17),
-  topic: japanese
+  time: Time.parse("18:00"),
+  topic: japanese,
+  location: "214 Brighton Hollow Lane, ON M0B 3L7"
 )
 
 event_5.image.attach(
@@ -108,7 +117,9 @@ event_6 = Event.create!(
   title: "Speed Networking 🗣",
   description: "Short timed rounds to practice introductions & small talk",
   date_time: DateTime.new(2025, 12, 19),
-  topic: french
+  time: Time.parse("19:00"),
+  topic: french,
+  location: "782 Forest Willow Crescent, ON M0A 6H3"
 )
 
 event_6.image.attach(
@@ -122,7 +133,9 @@ event_7 = Event.create!(
   title: "Online Conversation Bootcamp 👥",
   description: "Mini debates & interactive prompts in a virtual setting",
   date_time: DateTime.new(2025, 12, 19),
-  topic: english
+  time: Time.parse("20:30"),
+  topic: english,
+  location: "45 Windermere Gate, ON M0C 7N1"
 )
 
 event_7.image.attach(
@@ -135,7 +148,9 @@ event_8 = Event.create!(
   title: "Study Buddy Matchup 📖",
   description: "Find a long-term partner for language progress",
   date_time: DateTime.new(2025, 12, 19),
-  topic: polish
+  time: Time.parse("18:00"),
+  topic: polish,
+  location: "1209 Riverbend Parkway, ON M0A 5W4"
 )
 
 event_8.image.attach(
@@ -148,8 +163,10 @@ event_8.image.attach(
 event = Event.create!(
   title: "French Café Meetup",
   description: "Practice French with newcomers.",
-  date_time: Date.today + 3.days,
-  topic: french
+  date_time: DateTime.new(2025, 12, 01),
+  time: Time.parse("16:00"),
+  topic: french,
+  location: "608 Cedarbrook Terrace, ON M0B 8Q6"
 )
 
 chat = Chat.create!(event: event)
