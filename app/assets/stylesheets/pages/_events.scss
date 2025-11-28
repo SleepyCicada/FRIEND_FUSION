@@ -1,15 +1,15 @@
 .body {
-  background: linear-gradient(to bottom right, #FDF5E6, #FDEBD5);
+  background: linear-gradient(to bottom right, #E3F2FD, #FFFFFF);
   min-height: 100vh;
 }
 .event-block {
   height: 250px;
-  background-color: #F8F9FA;
-  border: 1px solid #DEE2E6;
+  background-color: #FFFFFF;
+  border: 1px solid #BBDEFB;
   border-radius: 8px;
   text-align: center;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.15);
 }
 /* Background images */
 .bg-event-1 {
@@ -31,20 +31,22 @@
 .event-description {
   flex: 0 0 25%;
   font-size: 0.85rem;
-  background-color: #EFEEEF; /* Light gray */
-  color: #333; /* Optional: darker text for contrast */
+  background-color: #F5F9FC;
+  color: #424242;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(30, 136, 229, 0.2);
 }
 
 .custom-btn {
-  background-color: #FDEBD5;
-  color: #333;
-  border: 1px solid #FAD7A0;
+  background-color: #FFD700;
+  color: #424242;
+  border: 1px solid #FFD700;
+  font-weight: 600;
 }
 
 .custom-btn:hover {
-  background-color: #FAD7A0;
-  color: #fff;
+  background-color: #FFC107;
+  color: #424242;
+  border-color: #FFC107;
 }

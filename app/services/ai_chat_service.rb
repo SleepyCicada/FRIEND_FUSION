@@ -138,4 +138,51 @@ class AiChatService
       "I'm interested!"
     ]
   end
+
+  # Generate Kai AI response for Ask AI feature
+  def self.generate_kai_response(question:, event:, chat:)
+    # Build context about the event and chat
+    event_context = <<~CONTEXT
+      Event: #{event.title}
+      Description: #{event.description}
+      Date: #{event.date_time&.strftime("%B %d, %Y at %I:%M %p") || "TBD"}
+      Topic: #{event.topic&.topic_name}
+      Attendees: #{event.confirmations.count} people
+    CONTEXT
+
+    # Get recent chat messages for context
+    recent_messages = chat.messages.order(created_at: :desc).limit(5).reverse
+    chat_context = if recent_messages.any?
+      recent_messages.map { |msg|
+        sender = msg.user ? msg.user.name : "AI"
+        "#{sender}: #{msg.content}"
+      }.join("\n")
+    else
+      "No messages yet in the chat."
+    end
+
+    prompt = <<~PROMPT
+      You are Kai, a friendly and helpful AI assistant for language learning events.
+      You help attendees with questions about the event, generate conversation starters,
+      provide tips, and assist with any questions they have.
+
+      Event Information:
+      #{event_context}
+
+      Recent Chat Messages:
+      #{chat_context}
+
+      User Question: #{question}
+
+      Respond helpfully and naturally. Be concise (2-4 sentences) unless more detail is needed.
+      If asked to generate conversation starters, provide 3-5 specific starters related to the event.
+      Always be encouraging and supportive of language learners.
+    PROMPT
+
+    response = RubyLLM.chat.ask(prompt)
+    response.is_a?(String) ? response : response.content.to_s
+  rescue => e
+    Rails.logger.error("Kai AI response error: #{e.message}")
+    "I apologize, but I'm having trouble generating a response right now. Please try again!"
+  end
 end

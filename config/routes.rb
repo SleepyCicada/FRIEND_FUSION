@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   resources :chats, only: :show do
     get :summary, on: :member
+    post :ask_ai, on: :member
     resources :messages, only: [:index, :create] do
       get :smart_replies, on: :collection
     end

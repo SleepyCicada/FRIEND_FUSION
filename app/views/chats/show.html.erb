@@ -28,7 +28,7 @@
       <div class="empty-chat-state">
         <div class="empty-icon">💬</div>
         <h5>Start the conversation!</h5>
-        <p class="text-muted">Be the first to say hello or use the AI assistant below for help.</p>
+        <p class="text-muted">Be the first to say hello or ask Kai below for help.</p>
       </div>
     <% else %>
       <% @messages.each do |msg| %>
@@ -65,14 +65,6 @@
             id: "message-input",
             autocomplete: "off" %>
         <%= form.hidden_field :chat_id, value: @chat.id %>
-        <%= form.hidden_field :ai_mode, value: "false", id: "ai-mode-field" %>
-
-        <!-- AI Assistant Toggle -->
-        <button type="button" class="btn btn-outline-secondary" id="ai-assist-btn" title="Ask AI Assistant">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
-            <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
-          </svg>
-        </button>
 
         <%= form.submit "Send", class: "btn btn-primary", id: "send-btn" %>
       </div>
@@ -84,35 +76,33 @@
 <div class="ai-features-section">
   <div class="container">
     <div class="row g-4">
-      <!-- Conversation Starters Card -->
+      <!-- Ask AI Section -->
       <div class="col-lg-6">
         <div class="feature-card">
           <div class="feature-header">
             <h4 class="feature-title">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13z"/>
+                <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
               </svg>
-              Conversation Starters
+              Ask Kai
             </h4>
-            <%= button_to conversation_starters_event_path(@chat.event),
-                  method: :get,
-                  data: { turbo_stream: true },
-                  class: "btn-feature-action",
-                  id: "chat-starter-button" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
-                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
-              </svg>
-              Generate
-            <% end %>
           </div>
 
-          <div id="chat-starter-loading" class="loading-state" style="display: none;">
-            <div class="spinner-border spinner-border-sm"></div>
-            <span>Generating ideas...</span>
+          <div id="ask-ai-responses" class="feature-content ask-ai-content">
+            <p class="empty-state-text">Ask Kai anything! Generate conversation starters, get tips, or ask questions about the event.</p>
           </div>
 
-          <div id="chat-starters" class="feature-content"></div>
+          <%= form_with url: ask_ai_chat_path(@chat.id), method: :post, data: { turbo_stream: true }, class: "ask-ai-form", id: "ask-ai-form" do |form| %>
+            <div class="ask-ai-input-group">
+              <%= form.text_area :question,
+                  placeholder: "Ask Kai anything... (e.g., 'Generate conversation starters' or 'Give me tips for this event')",
+                  class: "form-control ask-ai-input",
+                  rows: 2,
+                  id: "ask-ai-input",
+                  autocomplete: "off" %>
+              <%= form.submit "Ask Kai", class: "btn btn-ask-ai", id: "ask-ai-submit-btn" %>
+            </div>
+          <% end %>
         </div>
       </div>
 
@@ -129,7 +119,7 @@
             </h4>
             <%= button_to summary_chat_path(@chat.id),
                   method: :get,
-                  remote: true,
+                  data: { turbo_stream: true },
                   class: "btn-feature-action",
                   id: "summary-button" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -252,6 +242,90 @@
     color: #718096;
     font-style: italic;
     margin: 0;
+  }
+
+  /* Ask AI Styles */
+  .ask-ai-content {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+
+  .ask-ai-form {
+    margin-top: auto;
+  }
+
+  .ask-ai-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ask-ai-input {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    resize: none;
+    transition: all 0.3s ease;
+  }
+
+  .ask-ai-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+  }
+
+  .btn-ask-ai {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.625rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ask-ai:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  .kai-response {
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+    margin-bottom: 0.75rem;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .kai-response-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .kai-response-text {
+    color: #2d3748;
+    line-height: 1.6;
+    font-size: 0.95rem;
   }
 
   @media (max-width: 992px) {
@@ -559,23 +633,6 @@
     outline: none;
   }
 
-  #ai-assist-btn {
-    border: none;
-    border-left: 1px solid #e9ecef;
-    border-radius: 0;
-    transition: all 0.3s ease;
-  }
-
-  #ai-assist-btn:hover {
-    background: #667eea;
-    color: white;
-  }
-
-  #ai-assist-btn.active {
-    background: #667eea;
-    color: white;
-  }
-
   #send-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
@@ -615,11 +672,8 @@
     const chatMessages = document.getElementById('chat-messages');
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
-    const aiAssistBtn = document.getElementById('ai-assist-btn');
-    const aiModeField = document.getElementById('ai-mode-field');
     const typingIndicator = document.getElementById('typing-indicator');
     const chatId = <%= @chat.id %>;
-    let aiMode = false;
 
     // Auto-scroll to bottom
     function scrollToBottom() {
@@ -631,29 +685,6 @@
     // Initial scroll
     scrollToBottom();
 
-    // AI Assistant Toggle
-    if (aiAssistBtn) {
-      aiAssistBtn.addEventListener('click', function() {
-        aiMode = !aiMode;
-        this.classList.toggle('active');
-
-        // Update hidden field
-        if (aiModeField) {
-          aiModeField.value = aiMode ? "true" : "false";
-        }
-
-        if (aiMode) {
-          messageInput.placeholder = "Ask the AI assistant anything...";
-          this.title = "Switch to normal chat";
-        } else {
-          messageInput.placeholder = "Type your message...";
-          this.title = "Ask AI Assistant";
-        }
-
-        messageInput.focus();
-      });
-    }
-
     // Handle form submission
     if (messageForm) {
       messageForm.addEventListener('submit', function(e) {
@@ -662,16 +693,6 @@
         if (!messageText) {
           e.preventDefault();
           return;
-        }
-
-        // If AI mode, show typing indicator
-        if (aiMode) {
-          setTimeout(() => {
-            if (typingIndicator) {
-              typingIndicator.style.display = 'block';
-              scrollToBottom();
-            }
-          }, 300);
         }
 
         // Clear input
@@ -739,25 +760,8 @@
 
         // Fetch smart replies occasionally
         setTimeout(fetchSmartReplies, 1500);
-
-        // Reset AI mode
-        if (aiMode) {
-          aiMode = false;
-          if (aiAssistBtn) aiAssistBtn.classList.remove('active');
-          if (aiModeField) aiModeField.value = "false";
-          messageInput.placeholder = "Type your message...";
-        }
       }
     });
-
-    // Handle conversation starters button
-    const starterButton = document.getElementById('chat-starter-button');
-    if (starterButton) {
-      starterButton.addEventListener('click', function() {
-        const loading = document.getElementById('chat-starter-loading');
-        if (loading) loading.style.display = 'block';
-      });
-    }
 
     // Handle summary button
     const summaryButton = document.getElementById('summary-button');
