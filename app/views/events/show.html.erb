@@ -13,6 +13,21 @@
     <div class="row">
       <div class="col-lg-10 mx-auto">
 
+        <!-- Event Completed Notice -->
+        <% if @event.event_ended? %>
+          <div class="event-completed-notice">
+            <div class="completed-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+              </svg>
+            </div>
+            <div class="completed-content">
+              <h4 class="completed-title">This Event Has Been Completed</h4>
+              <p class="completed-text">This event ended on <%= @event.end_time.strftime("%B %d, %Y at %I:%M %p") %>. Thank you to everyone who participated!</p>
+            </div>
+          </div>
+        <% end %>
+
         <!-- Event Hero Section -->
         <div class="event-hero mb-5">
           <% if @event.image.attached? %>
@@ -68,7 +83,13 @@
             <div class="info-icon">👤</div>
             <div class="info-content">
               <div class="info-label">Organizer</div>
-              <div class="info-value"><%= @event.user&.name || "Friend Fusion" %></div>
+              <div class="info-value">
+                <% if @event.user.present? %>
+                  <%= link_to @event.user.name, organizer_path(@event.user), class: "organizer-link" %>
+                <% else %>
+                  Friend Fusion
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
@@ -125,12 +146,14 @@
                 Go to Event Chat
               <% end %>
 
-              <%= link_to new_event_feedback_path(@event), class: "btn-action btn-secondary-action" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                  <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
-                </svg>
-                Give Feedback
+              <% if @event.event_ended? %>
+                <%= link_to new_event_feedback_path(@event), class: "btn-action btn-secondary-action" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                  </svg>
+                  Give Feedback
+                <% end %>
               <% end %>
 
               <%= button_to event_confirmation_path(@event, @event.confirmations.find_by(user: current_user)),
@@ -144,13 +167,15 @@
                 Leave Event
               <% end %>
             <% else %>
-              <%= button_to event_confirmations_path(@event),
-                    method: :post,
-                    class: "btn-action btn-join-event" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-                </svg>
-                Join Event
+              <% unless @event.event_ended? %>
+                <%= button_to event_confirmations_path(@event),
+                      method: :post,
+                      class: "btn-action btn-join-event" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                  </svg>
+                  Join Event
+                <% end %>
               <% end %>
             <% end %>
           <% else %>
@@ -185,292 +210,56 @@
           </div>
         <% end %>
 
+        <!-- Event Feedbacks -->
+        <% if @event.feedbacks.any? %>
+          <div class="feedbacks-section mt-5">
+            <h3 class="section-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+              </svg>
+              Event Feedback
+              <span class="count-badge"><%= @event.feedback_count %></span>
+              <span class="average-rating-badge">⭐ <%= @event.average_rating %> average</span>
+            </h3>
+            <div class="feedbacks-grid">
+              <% @event.feedbacks.order(created_at: :desc).each do |feedback| %>
+                <div class="feedback-card">
+                  <div class="feedback-header">
+                    <div class="feedback-user">
+                      <div class="feedback-avatar">
+                        <%= feedback.user.name&.first&.upcase || '?' %>
+                      </div>
+                      <div>
+                        <div class="feedback-user-name"><%= feedback.user.name %></div>
+                        <div class="feedback-date"><%= feedback.created_at.strftime("%b %d, %Y") %></div>
+                      </div>
+                    </div>
+                    <div class="feedback-rating">
+                      <%= "⭐" * feedback.rating %>
+                    </div>
+                  </div>
+                  <div class="feedback-comment">
+                    <%= feedback.comment %>
+                  </div>
+                  <% if feedback.pictures.attached? %>
+                    <div class="feedback-photos">
+                      <% feedback.pictures.each do |picture| %>
+                        <div class="feedback-photo">
+                          <%= image_tag picture, alt: "Event photo" %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
       </div>
     </div>
   </div>
 </div>
-
-<style>
-  .event-details-page {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-  }
-
-  .event-hero {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .event-hero-image {
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-  }
-
-  .event-hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .event-hero-content {
-    padding: 2.5rem;
-  }
-
-  .topic-badge {
-    display: inline-block;
-    padding: 0.5rem 1.25rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 50px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .event-title {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #1a202c;
-    margin: 1.5rem 0;
-    line-height: 1.2;
-  }
-
-  .event-description {
-    font-size: 1.25rem;
-    color: #4a5568;
-    line-height: 1.8;
-    margin: 0;
-  }
-
-  .event-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .info-card {
-    background: white;
-    border-radius: 15px;
-    padding: 1.75rem;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-  }
-
-  .info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  }
-
-  .info-icon {
-    font-size: 2.5rem;
-    flex-shrink: 0;
-  }
-
-  .info-content {
-    flex: 1;
-  }
-
-  .info-label {
-    font-size: 0.875rem;
-    color: #718096;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
-  }
-
-  .info-value {
-    font-size: 1.125rem;
-    color: #2d3748;
-    font-weight: 600;
-  }
-
-  .action-buttons-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .btn-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .btn-primary-action {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-
-  .btn-primary-action:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    color: white;
-  }
-
-  .btn-secondary-action {
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-  }
-
-  .btn-secondary-action:hover {
-    background: #667eea;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
-  }
-
-  .btn-danger-action {
-    background: white;
-    color: #e53e3e;
-    border: 2px solid #e53e3e;
-  }
-
-  .btn-danger-action:hover {
-    background: #e53e3e;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.3);
-  }
-
-  .btn-join-event {
-    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-    color: white;
-    padding: 1.25rem 3rem;
-    font-size: 1.25rem;
-  }
-
-  .btn-join-event:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
-    color: white;
-  }
-
-  .map-section {
-    background: white;
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  #event-map {
-    height: 450px;
-    min-height: 450px;
-    width: 100%;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    background: #f5f7fa;
-  }
-
-  .attendees-section {
-    background: white;
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1a202c;
-    margin-bottom: 2rem;
-  }
-
-  .count-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 0.375rem 1rem;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  .attendees-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .attendee-badge {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-    transition: all 0.3s ease;
-  }
-
-  .attendee-badge:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .attendee-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.125rem;
-    flex-shrink: 0;
-  }
-
-  .attendee-name {
-    font-weight: 600;
-    color: #2d3748;
-    font-size: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .event-title {
-      font-size: 2rem;
-    }
-
-    .event-info-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .action-buttons-section {
-      flex-direction: column;
-    }
-
-    .btn-action {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .attendees-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
 
 <script>
   function initializeEventMap() {

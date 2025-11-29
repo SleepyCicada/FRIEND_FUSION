@@ -12,6 +12,20 @@ class Event < ApplicationRecord
   validates :title, presence: true
   validates :topic, presence: true
 
+  def event_ended?
+    return false unless end_time.present?
+    end_time < Time.current
+  end
+
+  def average_rating
+    return 0 if feedbacks.empty?
+    (feedbacks.average(:rating).to_f).round(1)
+  end
+
+  def feedback_count
+    feedbacks.count
+  end
+
   private
 
   def schedule_reminder
