@@ -35,29 +35,21 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
+    combined_datetime = combine_date_time(event_params[:date], event_params[:time])
+    @event = Event.new(event_params.except(:date, :time))
+    @event.date_time = combined_datetime
     @event.user = current_user
+
     if @event.save
-      redirect_to event_path(@event)
+      # 👇 Trigger the mailer here
+      EventMailer.event_created(@event, current_user).deliver_now
+
+      redirect_to event_path(@event), notice: 'Event was successfully created. A confirmation email has been sent.'
     else
       @topics = Topic.all
       render :new, status: :unprocessable_entity
     end
-def create
-  combined_datetime = combine_date_time(event_params[:date], event_params[:time])
-  @event = Event.new(event_params.except(:date, :time))
-  @event.date_time = combined_datetime
-  @event.user = current_user
-
-  if @event.save
-    # 👇 Trigger the mailer here
-    EventMailer.event_created(@event, current_user).deliver_now
-
-    redirect_to event_path(@event), notice: 'Event was successfully created. A confirmation email has been sent.'
-  else
-    render :new
   end
-end
 
 
   def edit
