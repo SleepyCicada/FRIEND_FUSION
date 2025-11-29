@@ -89,6 +89,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_29_180928) do
     t.string "location"
     t.bigint "topic_id"
     t.bigint "user_id"
+    t.time "time"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "end_time"
     t.index ["topic_id"], name: "index_events_on_topic_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
