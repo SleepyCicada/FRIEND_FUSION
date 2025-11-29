@@ -23,16 +23,38 @@
             </svg>
             Language/Topic *
           </label>
-          <%= form.select :topic_id,
-              options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
-              { prompt: "Select a language..." },
-              {
-                class: "form-control form-select",
-                required: true,
-                data: { validate: "topic" }
-              } %>
-          <div class="invalid-feedback" id="topic-error"></div>
-          <div class="form-text">Choose the language community for this event</div>
+          <% if @topics.size == 1 %>
+            <%= form.select :topic_id,
+                options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
+                {},
+                {
+                  class: "form-control form-select",
+                  required: true,
+                  disabled: true,
+                  data: { validate: "topic" }
+                } %>
+            <%= form.hidden_field :topic_id, value: @event.topic_id %>
+            <div class="invalid-feedback" id="topic-error"></div>
+            <div class="form-text">
+              <span class="badge bg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 16 16">
+                  <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                Topic locked to <%= @topics.first.topic_name %>
+              </span>
+            </div>
+          <% else %>
+            <%= form.select :topic_id,
+                options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
+                { prompt: "Select a language..." },
+                {
+                  class: "form-control form-select",
+                  required: true,
+                  data: { validate: "topic" }
+                } %>
+            <div class="invalid-feedback" id="topic-error"></div>
+            <div class="form-text">Choose the language community for this event</div>
+          <% end %>
         </div>
 
         <!-- Title -->
@@ -95,21 +117,43 @@
         </div>
 
         <!-- Date & Time -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
-              <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-            </svg>
-            Date & Time
-          </label>
-          <%= form.datetime_local_field :date_time,
-              class: "form-control",
-              required: true,
-              data: { validate: "date_time" },
-              min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
-          <div class="invalid-feedback" id="date_time-error"></div>
-          <div class="form-text">When should attendees arrive?</div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
+                  <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                Start Date & Time *
+              </label>
+              <%= form.datetime_local_field :date_time,
+                  class: "form-control",
+                  required: true,
+                  data: { validate: "date_time" },
+                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              <div class="invalid-feedback" id="date_time-error"></div>
+              <div class="form-text">When should attendees arrive?</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-check me-2" viewBox="0 0 16 16">
+                  <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                End Date & Time *
+              </label>
+              <%= form.datetime_local_field :end_time,
+                  class: "form-control",
+                  required: true,
+                  data: { validate: "end_time" },
+                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              <div class="invalid-feedback" id="end_time-error"></div>
+              <div class="form-text">When will the event end?</div>
+            </div>
+          </div>
         </div>
 
         <!-- Max Capacity -->
@@ -348,12 +392,27 @@
 
       date_time: function(value) {
         if (!value) {
-          return 'Date and time are required';
+          return 'Start date and time are required';
         }
         const selectedDate = new Date(value);
         const now = new Date();
         if (selectedDate <= now) {
           return 'Event must be scheduled in the future';
+        }
+        return null;
+      },
+
+      end_time: function(value) {
+        if (!value) {
+          return 'End date and time are required';
+        }
+        const startDateField = document.querySelector('[data-validate="date_time"]');
+        if (startDateField && startDateField.value) {
+          const startDate = new Date(startDateField.value);
+          const endDate = new Date(value);
+          if (endDate <= startDate) {
+            return 'End time must be after start time';
+          }
         }
         return null;
       }

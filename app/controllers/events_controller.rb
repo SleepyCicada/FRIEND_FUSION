@@ -31,13 +31,18 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
-    @topics = Topic.all
+    # Pre-select topic if coming from a topic-specific page
+    if params[:topic_id].present?
+      @event.topic_id = params[:topic_id]
+      @topic = Topic.find(params[:topic_id])
+      @topics = [@topic] # Only show the selected topic
+    else
+      @topics = Topic.all
+    end
   end
 
   def create
-    combined_datetime = combine_date_time(event_params[:date], event_params[:time])
-    @event = Event.new(event_params.except(:date, :time))
-    @event.date_time = combined_datetime
+    @event = Event.new(event_params)
     @event.user = current_user
 
     if @event.save
@@ -46,7 +51,13 @@ class EventsController < ApplicationController
 
       redirect_to event_path(@event), notice: 'Event was successfully created. A confirmation email has been sent.'
     else
-      @topics = Topic.all
+      # Restore topics for the form
+      if params[:event][:topic_id].present?
+        @topic = Topic.find_by(id: params[:event][:topic_id])
+        @topics = @topic ? [@topic] : Topic.all
+      else
+        @topics = Topic.all
+      end
       render :new, status: :unprocessable_entity
     end
   end
@@ -105,13 +116,7 @@ class EventsController < ApplicationController
 
   private
 
-  def combine_date_time(date, time)
-    return nil if date.blank? || time.blank?
-
-    Time.zone.parse("#{date} #{time}")
-  end
-
   def event_params
-    params.require(:event).permit(:title, :description, :location, :max_capacity, :date, :time, :image, :topic_id)
+    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :end_time, :image, :topic_id)
   end
 end
