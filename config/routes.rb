@@ -32,5 +32,8 @@ Rails.application.routes.draw do
     post :mark_as_read, on: :member
     post :mark_all_as_read, on: :collection
   end
+
+  resources :organizers, only: [:show]
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

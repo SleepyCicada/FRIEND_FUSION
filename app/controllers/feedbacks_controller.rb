@@ -12,6 +12,12 @@ class FeedbacksController < ApplicationController
   end
 
   def new
+    # Check if event has ended
+    unless @event.event_ended?
+      redirect_to @event, alert: "You can only submit feedback after the event has ended."
+      return
+    end
+
     # Check if user has already submitted feedback
     if @event.feedbacks.exists?(user: current_user)
       redirect_to event_feedbacks_path(@event), alert: "You've already submitted feedback for this event."
@@ -22,6 +28,12 @@ class FeedbacksController < ApplicationController
   end
 
   def create
+    # Check if event has ended
+    unless @event.event_ended?
+      redirect_to @event, alert: "You can only submit feedback after the event has ended."
+      return
+    end
+
     # Check if user has already submitted feedback
     if @event.feedbacks.exists?(user: current_user)
       redirect_to event_feedbacks_path(@event), alert: "You've already submitted feedback for this event."
