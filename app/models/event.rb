@@ -11,6 +11,8 @@ class Event < ApplicationRecord
   validates :date_time, presence: true
   validates :title, presence: true
   validates :topic, presence: true
+  geocoded_by :location
+  after_validation :geocode, if: :will_save_change_to_location?
 
   def event_ended?
     return false unless end_time.present?

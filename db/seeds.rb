@@ -85,9 +85,9 @@ event_1 = Event.create!(
   description: "Practice speaking in a relaxed café atmosphere",
   date_time: DateTime.new(2025, 11, 13, 10, 0),
   end_time: DateTime.new(2025, 11, 13, 12, 0),
-  location: "Downtown Café, Main Street",
   topic: english,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_1.image.attach(
@@ -101,9 +101,9 @@ event_2 = Event.create!(
   description: "Watch a short film followed by a guided discussion",
   date_time: DateTime.new(2025, 11, 14, 18, 0),
   end_time: DateTime.new(2025, 11, 14, 21, 0),
-  location: "Community Cinema, Oak Avenue",
   topic: french,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_2.image.attach(
@@ -134,9 +134,9 @@ event_4 = Event.create!(
   description: "Cook and practice conversations in a small group",
   date_time: DateTime.new(2025, 12, 16, 15, 0),
   end_time: DateTime.new(2025, 12, 16, 18, 0),
-  location: "Culinary School, Chef Lane",
   topic: italian,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_4.image.attach(
@@ -166,9 +166,9 @@ event_6 = Event.create!(
   description: "Short timed rounds to practice introductions & small talk",
   date_time: DateTime.new(2025, 12, 19, 17, 0),
   end_time: DateTime.new(2025, 12, 19, 19, 0),
-  location: "Business Center, Corporate Drive",
   topic: french,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_6.image.attach(
@@ -184,7 +184,7 @@ event_7 = Event.create!(
   end_time: DateTime.new(2025, 12, 20, 12, 0),
   location: "Online - Zoom Link will be shared",
   topic: english,
-  user: user
+  user: user,
 )
 
 event_7.image.attach(

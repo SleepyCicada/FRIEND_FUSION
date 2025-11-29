@@ -11,9 +11,7 @@ class EventsController < ApplicationController
     end
 
     # Filter by date if present
-    if params[:date].present?
-      @events = @events.where(date_time: params[:date].to_date.all_day)
-    end
+    @events = @events.where(date_time: params[:date].to_date.all_day) if params[:date].present?
 
     @events = @events.order(date_time: :asc)
   end
@@ -42,7 +40,9 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
+    combined_datetime = combine_date_time(event_params[:date], event_params[:time])
+    @event = Event.new(event_params.except(:date, :time))
+    @event.date_time = combined_datetime
     @event.user = current_user
 
     if @event.save
@@ -61,7 +61,6 @@ class EventsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
 
   def edit
     @event = Event.find(params[:id])
@@ -117,6 +116,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :end_time, :image, :topic_id)
+    params.require(:event).permit(:title, :description, :location, :max_capacity, :date_time, :end_time, :image,
+                                  :topic_id)
   end
 end
