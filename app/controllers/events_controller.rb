@@ -43,6 +43,7 @@ class EventsController < ApplicationController
       @topics = Topic.all
       render :new, status: :unprocessable_entity
     end
+  end
 def create
   combined_datetime = combine_date_time(event_params[:date], event_params[:time])
   @event = Event.new(event_params.except(:date, :time))
