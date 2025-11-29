@@ -98,7 +98,7 @@
           <% end %>
         </div>
         <div class="col-lg-4 text-lg-end">
-          <%= link_to new_event_path, class: "btn btn-create-event" do %>
+          <%= link_to new_event_path(topic_id: params[:topic_id]), class: "btn btn-create-event" do %>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
               <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -120,8 +120,7 @@
               <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
               <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
             </svg>
-            <span><strong><%= @events.count %></strong> <%= @events.count == 1 ? 'Event' : 'Events' %> Available</span>
-
+            <span><strong><%= @events.size %></strong> <%= @events.size == 1 ? 'Event' : 'Events' %> Available</span>
           </div>
         </div>
         <div class="col-md-6">
@@ -161,15 +160,28 @@
                   </div>
                 <% end %>
 
-                <!-- Attendees Badge -->
-                <% if event.confirmations.any? %>
-                  <div class="event-badge">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-                    </svg>
-                    <%= event.confirmations.count %>
-                  </div>
-                <% end %>
+                <!-- Badges -->
+                <div class="event-badges">
+                  <% if event.event_ended? %>
+                    <!-- Completed Event Badge -->
+                    <div class="event-badge event-badge-completed">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                      </svg>
+                      COMPLETED
+                    </div>
+                  <% else %>
+                    <!-- Attendee Count for Ongoing Events (only if 3 or more) -->
+                    <% if event.confirmations.count >= 3 %>
+                      <div class="event-badge event-badge-attendees">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                        </svg>
+                        <%= event.confirmations.count %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
               </div>
 
               <!-- Event Content -->
@@ -214,6 +226,33 @@
                     </svg>
                   </span>
                 </div>
+
+                <!-- Rating Display (only show for completed events) -->
+                <% if event.feedback_count > 0 && event.event_ended? %>
+                  <div class="event-rating-display">
+                    <div class="rating-stars">
+                      <% event.average_rating.floor.times do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="star-icon star-filled" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                      <% end %>
+                      <% if event.average_rating % 1 >= 0.5 %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="star-icon star-half" viewBox="0 0 16 16">
+                          <path d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z"/>
+                        </svg>
+                      <% end %>
+                      <% (5 - event.average_rating.ceil).times do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="star-icon star-empty" viewBox="0 0 16 16">
+                          <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg>
+                      <% end %>
+                    </div>
+                    <span class="rating-text">
+                      <strong><%= event.average_rating %></strong>
+                      (<%= event.feedback_count %> <%= event.feedback_count == 1 ? 'review' : 'reviews' %>)
+                    </span>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>
@@ -415,10 +454,17 @@
     color: rgba(255, 255, 255, 0.6);
   }
 
-  .event-badge {
+  .event-badges {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .event-badge {
     background: rgba(255, 255, 255, 0.95);
     color: #667eea;
     padding: 0.4rem 0.8rem;
@@ -429,6 +475,70 @@
     align-items: center;
     gap: 0.4rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .event-badge-attendees {
+    color: #667eea;
+  }
+
+  .event-badge-rating {
+    color: #f59e0b;
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  .event-badge-completed {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .rating-count {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  /* Rating Display Below Card */
+  .event-rating-display {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .star-icon {
+    flex-shrink: 0;
+  }
+
+  .star-filled {
+    color: #f59e0b;
+  }
+
+  .star-half {
+    color: #f59e0b;
+  }
+
+  .star-empty {
+    color: #d1d5db;
+  }
+
+  .rating-text {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .rating-text strong {
+    color: #2d3748;
+    font-size: 1.1rem;
   }
 
   .event-card-content {

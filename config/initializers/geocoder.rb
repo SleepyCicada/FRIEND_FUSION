@@ -25,6 +25,6 @@ Geocoder.configure(
   #   prefix: 'geocoder:'
   # }
   lookup: :google,
-  api_key:   ENV['AIzaSyBlbndBBdfGlYmNuiTkcTo6hJO2JQQfh2Q'],
+  api_key:   ENV['GOOGLE_MAPS_API_KEY'],
   use_https: true,
 )

@@ -15,8 +15,13 @@ AiChat.destroy_all
 # EVENT TABLE
 Event.destroy_all
 
+# TOPIC TABLE
+Topic.destroy_all
+
 # USERS LAST
 User.destroy_all
+
+puts "Creating test data..."
 
 # --- USERS ---
 user = User.create!(
@@ -74,10 +79,13 @@ topics = [english, french, spanish, japanese, italian, polish, german, portugues
 
 # --- EVENTS (each assigned one topic) ---
 
+# Past events (with end_time in the past - for feedback testing)
 event_1 = Event.create!(
   title: "Coffee & Conversation ☕️",
   description: "Practice speaking in a relaxed café atmosphere",
-  date_time: DateTime.new(2025, 12, 13, 14, 30),
+  date_time: DateTime.new(2025, 11, 13, 10, 0),
+  end_time: DateTime.new(2025, 11, 13, 12, 0),
+  location: "Downtown Café, Main Street",
   topic: english,
   user: user,
   location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
@@ -92,7 +100,9 @@ event_1.image.attach(
 event_2 = Event.create!(
   title: "Film & Discussion Club 🎬",
   description: "Watch a short film followed by a guided discussion",
-  date_time: DateTime.new(2025, 12, 14, 20, 0),
+  date_time: DateTime.new(2025, 11, 14, 18, 0),
+  end_time: DateTime.new(2025, 11, 14, 21, 0),
+  location: "Community Cinema, Oak Avenue",
   topic: french,
   user: user,
   location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
@@ -107,10 +117,11 @@ event_2.image.attach(
 event_3 = Event.create!(
   title: "Board Game Night 🎲",
   description: "Play classic board games adapted for language learners",
-  date_time: DateTime.new(2025, 12, 19, 19, 0),
+  date_time: DateTime.new(2025, 11, 19, 19, 0),
+  end_time: DateTime.new(2025, 11, 19, 22, 0),
+  location: "Game Hub, Park Street",
   topic: spanish,
-  user: user,
-  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
+  user: user2
 )
 
 event_3.image.attach(
@@ -119,10 +130,13 @@ event_3.image.attach(
   content_type: "image/jpeg"
 )
 
+# Future events (no feedback yet)
 event_4 = Event.create!(
   title: "Cooking & Conversation Class 👨‍🍳",
   description: "Cook and practice conversations in a small group",
-  date_time: DateTime.new(2025, 12, 16, 11, 0),
+  date_time: DateTime.new(2025, 12, 16, 15, 0),
+  end_time: DateTime.new(2025, 12, 16, 18, 0),
+  location: "Culinary School, Chef Lane",
   topic: italian,
   user: user,
   location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
@@ -137,10 +151,11 @@ event_4.image.attach(
 event_5 = Event.create!(
   title: "Survival Workshop 🗣",
   description: "Essential travel phrases and emergency conversation practice",
-  date_time: DateTime.new(2025, 12, 17, 18,0),
+  date_time: DateTime.new(2025, 12, 17, 14, 0),
+  end_time: DateTime.new(2025, 12, 17, 16, 0),
+  location: "Language Center, University Road",
   topic: japanese,
-  user: user,
-  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
+  user: user2
 )
 
 event_5.image.attach(
@@ -152,7 +167,9 @@ event_5.image.attach(
 event_6 = Event.create!(
   title: "Speed Networking 🗣",
   description: "Short timed rounds to practice introductions & small talk",
-  date_time: DateTime.new(2025, 12, 19, 18,0),
+  date_time: DateTime.new(2025, 12, 19, 17, 0),
+  end_time: DateTime.new(2025, 12, 19, 19, 0),
+  location: "Business Center, Corporate Drive",
   topic: french,
   user: user,
   location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
@@ -164,11 +181,12 @@ event_6.image.attach(
   content_type: "image/jpeg"
 )
 
-# Example: more events for English topic
 event_7 = Event.create!(
   title: "Online Conversation Bootcamp 👥",
   description: "Mini debates & interactive prompts in a virtual setting",
-  date_time: DateTime.new(2025, 12, 19),
+  date_time: DateTime.new(2025, 12, 20, 10, 0),
+  end_time: DateTime.new(2025, 12, 20, 12, 0),
+  location: "Online - Zoom Link will be shared",
   topic: english,
   user: user,
 )
@@ -182,16 +200,121 @@ event_7.image.attach(
 event_8 = Event.create!(
   title: "Study Buddy Matchup 📖",
   description: "Find a long-term partner for language progress",
-  date_time: DateTime.new(2025, 12, 19),
+  date_time: DateTime.new(2025, 12, 21, 13, 0),
+  end_time: DateTime.new(2025, 12, 21, 15, 0),
+  location: "City Library, Reading Room",
   topic: polish,
-  user: user,
-  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
+  user: user2
 )
 
 event_8.image.attach(
   io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
   filename: "study.jpg",
   content_type: "image/jpeg"
+)
+
+# --- CONFIRMATIONS ---
+puts "Creating confirmations..."
+
+# Event 1 attendees
+Confirmation.create!(user: user2, event: event_1)
+Confirmation.create!(user: user3, event: event_1)
+Confirmation.create!(user: user4, event: event_1)
+Confirmation.create!(user: user5, event: event_1)
+
+# Event 2 attendees
+Confirmation.create!(user: user3, event: event_2)
+Confirmation.create!(user: user4, event: event_2)
+Confirmation.create!(user: user5, event: event_2)
+Confirmation.create!(user: user6, event: event_2)
+
+# Event 3 attendees
+Confirmation.create!(user: user, event: event_3)
+Confirmation.create!(user: user3, event: event_3)
+Confirmation.create!(user: user4, event: event_3)
+Confirmation.create!(user: user5, event: event_3)
+Confirmation.create!(user: user6, event: event_3)
+
+# Event 4 attendees (future)
+Confirmation.create!(user: user2, event: event_4)
+Confirmation.create!(user: user3, event: event_4)
+Confirmation.create!(user: user4, event: event_4)
+Confirmation.create!(user: user5, event: event_4)
+
+# Event 5 attendees (future)
+Confirmation.create!(user: user, event: event_5)
+Confirmation.create!(user: user3, event: event_5)
+Confirmation.create!(user: user4, event: event_5)
+Confirmation.create!(user: user5, event: event_5)
+Confirmation.create!(user: user6, event: event_5)
+
+# --- FEEDBACKS ---
+puts "Creating feedbacks..."
+
+# Feedbacks for Event 1 (past event)
+Feedback.create!(
+  user: user2,
+  event: event_1,
+  rating: 5,
+  comment: "Absolutely loved this event! The atmosphere was perfect for practicing English, and everyone was so friendly and supportive. Can't wait for the next one!"
+)
+
+Feedback.create!(
+  user: user3,
+  event: event_1,
+  rating: 4,
+  comment: "Great experience overall. The café was a bit noisy at times, but the conversations were engaging and I learned a lot. Would definitely recommend!"
+)
+
+Feedback.create!(
+  user: user4,
+  event: event_1,
+  rating: 5,
+  comment: "This was my first language meetup and it exceeded all expectations! Anna did a fantastic job organizing everything. The coffee was great too!"
+)
+
+# Feedbacks for Event 2 (past event)
+Feedback.create!(
+  user: user3,
+  event: event_2,
+  rating: 5,
+  comment: "The film selection was perfect for our level. The discussion afterwards really helped me practice my French in a natural way. Merci beaucoup!"
+)
+
+Feedback.create!(
+  user: user4,
+  event: event_2,
+  rating: 4,
+  comment: "Really enjoyed the film and the discussion. Would have liked a bit more time for conversation practice, but overall a wonderful evening."
+)
+
+Feedback.create!(
+  user: user6,
+  event: event_2,
+  rating: 5,
+  comment: "Excellent event! The movie was engaging and the discussion questions were thought-provoking. Perfect mix of entertainment and learning."
+)
+
+# Feedbacks for Event 3 (past event)
+Feedback.create!(
+  user: user,
+  event: event_3,
+  rating: 5,
+  comment: "Marcus organized an amazing game night! The board games were a fun way to practice Spanish naturally. Everyone was laughing and learning at the same time."
+)
+
+Feedback.create!(
+  user: user3,
+  event: event_3,
+  rating: 4,
+  comment: "Fun night! The games were well-chosen for language practice. Would love to see more variety in game types next time."
+)
+
+Feedback.create!(
+  user: user5,
+  event: event_3,
+  rating: 5,
+  comment: "Best language event I've attended! The competitive element of the games made learning Spanish so much more engaging. Marcus was an excellent host!"
 )
 
 # --- CHAT DEMOS WITH MULTI-USER CONVERSATIONS ---
@@ -237,3 +360,463 @@ Message.create!(user: user, chat: chat_3, content: "Medical emergencies and aski
 Message.create!(user: nil, chat: chat_3, content: "Important phrases for emergencies:\n\n**Medical:**\n• 助けてください！(Tasukete kudasai!) - Help!\n• 病院はどこですか？(Byōin wa doko desu ka?) - Where is the hospital?\n• 救急車を呼んでください (Kyūkyūsha o yonde kudasai) - Please call an ambulance\n• 英語を話せる人はいますか？(Eigo o hanaseru hito wa imasu ka?) - Is there anyone who speaks English?\n\n**Getting Lost:**\n• 道に迷いました (Michi ni mayoimashita) - I'm lost\n• ここはどこですか？(Koko wa doko desu ka?) - Where am I?\n• [Place name]へ行きたいです ([Place] e ikitai desu) - I want to go to [place]\n\nWrite these down and practice them!", ai: true)
 Message.create!(user: user, chat: chat_3, content: "Perfect! What about basic courtesy phrases I should know?", ai: false)
 Message.create!(user: nil, chat: chat_3, content: "Essential courtesy phrases:\n\n• すみません (Sumimasen) - Excuse me/Sorry (most versatile!)\n• ありがとうございます (Arigatō gozaimasu) - Thank you\n• ごめんなさい (Gomen nasai) - I'm sorry\n• お願いします (Onegaishimasu) - Please/I ask of you\n• 分かりません (Wakarimasen) - I don't understand\n\nJapanese people appreciate effort! Don't worry about perfect pronunciation—they'll help you. 🇯🇵\n\nSee you at the workshop!", ai: true)
+
+# --- ADDITIONAL EVENTS (12 more events: 6 past, 6 future) ---
+
+# Marcus's additional past event
+event_9 = Event.create!(
+  title: "Cultural Exchange Dinner 🍽",
+  description: "Share dishes from your culture and practice language skills",
+  date_time: DateTime.new(2025, 11, 15, 18, 30),
+  end_time: DateTime.new(2025, 11, 15, 21, 30),
+  location: "Community Hall, Maple Avenue",
+  topic: german,
+  user: user2
+)
+
+event_9.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/cook.jpg")),
+  filename: "cook.jpg",
+  content_type: "image/jpeg"
+)
+
+# Sofia's events (3 past, 2 future)
+event_10 = Event.create!(
+  title: "Morning Yoga & Mandarin 🧘‍♀️",
+  description: "Start your day with yoga while learning basic Mandarin phrases",
+  date_time: DateTime.new(2025, 11, 16, 8, 0),
+  end_time: DateTime.new(2025, 11, 16, 9, 30),
+  location: "Wellness Studio, Beach Road",
+  topic: mandarin,
+  user: user3
+)
+
+event_10.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  filename: "workshop.jpg",
+  content_type: "image/jpeg"
+)
+
+event_11 = Event.create!(
+  title: "Book Club: Portuguese Literature 📚",
+  description: "Discuss short stories and practice reading comprehension",
+  date_time: DateTime.new(2025, 11, 18, 19, 0),
+  end_time: DateTime.new(2025, 11, 18, 21, 0),
+  location: "Independent Bookstore, Literary Lane",
+  topic: portuguese,
+  user: user3
+)
+
+event_11.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  filename: "study.jpg",
+  content_type: "image/jpeg"
+)
+
+event_12 = Event.create!(
+  title: "Arabic Calligraphy Workshop ✍️",
+  description: "Learn beautiful Arabic script while practicing vocabulary",
+  date_time: DateTime.new(2025, 11, 20, 14, 0),
+  end_time: DateTime.new(2025, 11, 20, 17, 0),
+  location: "Art Studio, Gallery Street",
+  topic: arabic,
+  user: user3
+)
+
+event_12.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  filename: "workshop.jpg",
+  content_type: "image/jpeg"
+)
+
+event_13 = Event.create!(
+  title: "Korean Drama Watch Party 📺",
+  description: "Watch popular K-dramas with subtitles and discuss in Korean",
+  date_time: DateTime.new(2025, 12, 22, 17, 0),
+  end_time: DateTime.new(2025, 12, 22, 20, 0),
+  location: "Community Center, Drama Room",
+  topic: korean,
+  user: user3
+)
+
+event_13.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/movie.jpg")),
+  filename: "movie.jpg",
+  content_type: "image/jpeg"
+)
+
+event_14 = Event.create!(
+  title: "Virtual Language Café ☕",
+  description: "Online meetup to practice conversation from home",
+  date_time: DateTime.new(2025, 12, 23, 16, 0),
+  end_time: DateTime.new(2025, 12, 23, 18, 0),
+  location: "Online - Link provided after registration",
+  topic: spanish,
+  user: user3
+)
+
+event_14.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/online.jpg")),
+  filename: "online.jpg",
+  content_type: "image/jpeg"
+)
+
+# James's events (2 past, 3 future)
+event_15 = Event.create!(
+  title: "Russian Literature Circle 📖",
+  description: "Read and discuss classic Russian short stories",
+  date_time: DateTime.new(2025, 11, 17, 15, 0),
+  end_time: DateTime.new(2025, 11, 17, 17, 30),
+  location: "University Library, Study Room B",
+  topic: russian,
+  user: user4
+)
+
+event_15.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  filename: "study.jpg",
+  content_type: "image/jpeg"
+)
+
+event_16 = Event.create!(
+  title: "Italian Wine & Words 🍷",
+  description: "Wine tasting paired with Italian conversation practice",
+  date_time: DateTime.new(2025, 11, 21, 19, 0),
+  end_time: DateTime.new(2025, 11, 21, 22, 0),
+  location: "Wine Bar, Vineyard Street",
+  topic: italian,
+  user: user4
+)
+
+event_16.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  filename: "cafe.jpg",
+  content_type: "image/jpeg"
+)
+
+event_17 = Event.create!(
+  title: "Travel Stories Exchange 🌍",
+  description: "Share travel experiences in your target language",
+  date_time: DateTime.new(2025, 12, 24, 14, 0),
+  end_time: DateTime.new(2025, 12, 24, 16, 30),
+  location: "Travel Café, Explorer's Plaza",
+  topic: english,
+  user: user4
+)
+
+event_17.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  filename: "cafe.jpg",
+  content_type: "image/jpeg"
+)
+
+event_18 = Event.create!(
+  title: "French Pronunciation Workshop 🗣",
+  description: "Master difficult French sounds and accent patterns",
+  date_time: DateTime.new(2025, 12, 26, 10, 0),
+  end_time: DateTime.new(2025, 12, 26, 12, 0),
+  location: "Language Academy, Pronunciation Lab",
+  topic: french,
+  user: user4
+)
+
+event_18.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  filename: "workshop.jpg",
+  content_type: "image/jpeg"
+)
+
+event_19 = Event.create!(
+  title: "Polish Conversation Circle 💬",
+  description: "Practice Polish in small groups with native speakers",
+  date_time: DateTime.new(2025, 12, 27, 18, 0),
+  end_time: DateTime.new(2025, 12, 27, 20, 0),
+  location: "Cultural Center, Room 3",
+  topic: polish,
+  user: user4
+)
+
+event_19.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  filename: "networking.jpg",
+  content_type: "image/jpeg"
+)
+
+# Marcus's additional future event
+event_20 = Event.create!(
+  title: "Language Games Tournament 🎮",
+  description: "Compete in language-based games and puzzles",
+  date_time: DateTime.new(2025, 12, 28, 15, 0),
+  end_time: DateTime.new(2025, 12, 28, 18, 0),
+  location: "Game Center, Tournament Hall",
+  topic: japanese,
+  user: user2
+)
+
+event_20.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
+  filename: "game.jpg",
+  content_type: "image/jpeg"
+)
+
+# --- ADDITIONAL FEEDBACKS (for events 9-16) ---
+puts "Creating additional feedbacks..."
+
+# Feedbacks for Event 9 (past event)
+Feedback.create!(
+  user: user,
+  event: event_9,
+  rating: 5,
+  comment: "The cultural exchange dinner was amazing! Learning German while trying authentic dishes from different cultures was a unique experience."
+)
+
+Feedback.create!(
+  user: user3,
+  event: event_9,
+  rating: 5,
+  comment: "Marcus created such a warm and welcoming atmosphere. The food was delicious and the conversations flowed naturally. Highly recommend!"
+)
+
+Feedback.create!(
+  user: user4,
+  event: event_9,
+  rating: 4,
+  comment: "Great event! The variety of dishes was impressive. Would have loved more structured conversation activities, but overall very enjoyable."
+)
+
+Feedback.create!(
+  user: user6,
+  event: event_9,
+  rating: 5,
+  comment: "Perfect blend of culture and language learning. Made some great connections and improved my German significantly!"
+)
+
+# Feedbacks for Event 10 (past event)
+Feedback.create!(
+  user: user,
+  event: event_10,
+  rating: 4,
+  comment: "Combining yoga with Mandarin learning was brilliant! The relaxed atmosphere made it easier to practice pronunciation."
+)
+
+Feedback.create!(
+  user: user2,
+  event: event_10,
+  rating: 5,
+  comment: "Sofia's yoga and language combination is genius! Started my day feeling energized and learned so much Mandarin vocabulary."
+)
+
+Feedback.create!(
+  user: user5,
+  event: event_10,
+  rating: 5,
+  comment: "Never thought I'd learn a language through yoga, but it really works! The mindfulness helped with tone pronunciation."
+)
+
+# Feedbacks for Event 11 (past event)
+Feedback.create!(
+  user: user,
+  event: event_11,
+  rating: 5,
+  comment: "The book selection was perfect for our level. Great discussions and improved my Portuguese reading comprehension significantly!"
+)
+
+Feedback.create!(
+  user: user2,
+  event: event_11,
+  rating: 4,
+  comment: "Really enjoyed analyzing the short stories. Sofia facilitated the discussion wonderfully. Looking forward to the next book club!"
+)
+
+Feedback.create!(
+  user: user4,
+  event: event_11,
+  rating: 5,
+  comment: "The best way to learn Portuguese literature! The cozy bookstore atmosphere and passionate discussions made this unforgettable."
+)
+
+Feedback.create!(
+  user: user6,
+  event: event_11,
+  rating: 5,
+  comment: "Sofia's expertise in Portuguese literature really showed. Learned so much about both language and culture. Highly recommend!"
+)
+
+# Feedbacks for Event 12 (past event)
+Feedback.create!(
+  user: user,
+  event: event_12,
+  rating: 5,
+  comment: "Learning Arabic through calligraphy was an incredible experience! The visual connection really helped with memorizing vocabulary."
+)
+
+Feedback.create!(
+  user: user2,
+  event: event_12,
+  rating: 5,
+  comment: "Sofia is an excellent teacher! The workshop was well-structured and I left with beautiful calligraphy pieces and new Arabic skills."
+)
+
+Feedback.create!(
+  user: user4,
+  event: event_12,
+  rating: 4,
+  comment: "Challenging but rewarding! The calligraphy aspect made learning Arabic script much more engaging than traditional methods."
+)
+
+# Feedbacks for Event 15 (past event)
+Feedback.create!(
+  user: user,
+  event: event_15,
+  rating: 5,
+  comment: "James's knowledge of Russian literature is impressive! The short stories were captivating and the discussions deepened my understanding."
+)
+
+Feedback.create!(
+  user: user2,
+  event: event_15,
+  rating: 5,
+  comment: "Loved every minute! Reading classic Russian literature in a group setting made it so much more enjoyable and easier to understand."
+)
+
+Feedback.create!(
+  user: user3,
+  event: event_15,
+  rating: 4,
+  comment: "Great selection of stories and excellent facilitation by James. My Russian reading skills improved noticeably after this session."
+)
+
+# Feedbacks for Event 16 (past event)
+Feedback.create!(
+  user: user,
+  event: event_16,
+  rating: 5,
+  comment: "Wine and Italian conversation - what could be better? James created a sophisticated yet fun atmosphere for learning."
+)
+
+Feedback.create!(
+  user: user2,
+  event: event_16,
+  rating: 4,
+  comment: "The wine selection paired perfectly with our Italian lessons! A creative and enjoyable way to practice the language."
+)
+
+Feedback.create!(
+  user: user3,
+  event: event_16,
+  rating: 5,
+  comment: "Absolutely loved this event! Learned Italian wine vocabulary and had engaging conversations. James is a fantastic organizer!"
+)
+
+Feedback.create!(
+  user: user6,
+  event: event_16,
+  rating: 5,
+  comment: "The perfect evening! Great wines, great company, and meaningful Italian practice. Can't wait for the next wine and words event!"
+)
+
+# --- ADDITIONAL CONFIRMATIONS (for events 6-20) ---
+puts "Creating additional confirmations..."
+
+# Event 6 attendees (future)
+Confirmation.create!(user: user2, event: event_6)
+Confirmation.create!(user: user3, event: event_6)
+Confirmation.create!(user: user4, event: event_6)
+Confirmation.create!(user: user5, event: event_6)
+
+# Event 7 attendees (future)
+Confirmation.create!(user: user2, event: event_7)
+Confirmation.create!(user: user3, event: event_7)
+Confirmation.create!(user: user4, event: event_7)
+Confirmation.create!(user: user6, event: event_7)
+Confirmation.create!(user: user5, event: event_7)
+
+# Event 8 attendees (future)
+Confirmation.create!(user: user, event: event_8)
+Confirmation.create!(user: user3, event: event_8)
+Confirmation.create!(user: user4, event: event_8)
+Confirmation.create!(user: user5, event: event_8)
+
+# Event 9 attendees (past)
+Confirmation.create!(user: user, event: event_9)
+Confirmation.create!(user: user3, event: event_9)
+Confirmation.create!(user: user4, event: event_9)
+Confirmation.create!(user: user5, event: event_9)
+Confirmation.create!(user: user6, event: event_9)
+
+# Event 10 attendees (past)
+Confirmation.create!(user: user, event: event_10)
+Confirmation.create!(user: user2, event: event_10)
+Confirmation.create!(user: user4, event: event_10)
+Confirmation.create!(user: user5, event: event_10)
+
+# Event 11 attendees (past)
+Confirmation.create!(user: user, event: event_11)
+Confirmation.create!(user: user2, event: event_11)
+Confirmation.create!(user: user4, event: event_11)
+Confirmation.create!(user: user5, event: event_11)
+Confirmation.create!(user: user6, event: event_11)
+
+# Event 12 attendees (past)
+Confirmation.create!(user: user, event: event_12)
+Confirmation.create!(user: user2, event: event_12)
+Confirmation.create!(user: user4, event: event_12)
+Confirmation.create!(user: user5, event: event_12)
+
+# Event 13 attendees (future)
+Confirmation.create!(user: user, event: event_13)
+Confirmation.create!(user: user2, event: event_13)
+Confirmation.create!(user: user4, event: event_13)
+Confirmation.create!(user: user5, event: event_13)
+
+# Event 14 attendees (future)
+Confirmation.create!(user: user, event: event_14)
+Confirmation.create!(user: user2, event: event_14)
+Confirmation.create!(user: user4, event: event_14)
+Confirmation.create!(user: user6, event: event_14)
+Confirmation.create!(user: user5, event: event_14)
+
+# Event 15 attendees (past)
+Confirmation.create!(user: user, event: event_15)
+Confirmation.create!(user: user2, event: event_15)
+Confirmation.create!(user: user3, event: event_15)
+Confirmation.create!(user: user5, event: event_15)
+
+# Event 16 attendees (past)
+Confirmation.create!(user: user, event: event_16)
+Confirmation.create!(user: user2, event: event_16)
+Confirmation.create!(user: user3, event: event_16)
+Confirmation.create!(user: user5, event: event_16)
+Confirmation.create!(user: user6, event: event_16)
+
+# Event 17 attendees (future)
+Confirmation.create!(user: user, event: event_17)
+Confirmation.create!(user: user2, event: event_17)
+Confirmation.create!(user: user3, event: event_17)
+Confirmation.create!(user: user5, event: event_17)
+
+# Event 18 attendees (future)
+Confirmation.create!(user: user, event: event_18)
+Confirmation.create!(user: user2, event: event_18)
+Confirmation.create!(user: user3, event: event_18)
+Confirmation.create!(user: user5, event: event_18)
+Confirmation.create!(user: user6, event: event_18)
+
+# Event 19 attendees (future)
+Confirmation.create!(user: user, event: event_19)
+Confirmation.create!(user: user2, event: event_19)
+Confirmation.create!(user: user3, event: event_19)
+Confirmation.create!(user: user5, event: event_19)
+
+# Event 20 attendees (future)
+Confirmation.create!(user: user, event: event_20)
+Confirmation.create!(user: user3, event: event_20)
+Confirmation.create!(user: user5, event: event_20)
+Confirmation.create!(user: user6, event: event_20)
+
+puts "✅ Database seeded successfully!"
+puts "Created #{User.count} users"
+puts "Created #{Topic.count} topics"
+puts "Created #{Event.count} events"
+puts "Created #{Confirmation.count} confirmations"
+puts "Created #{Feedback.count} feedbacks"
