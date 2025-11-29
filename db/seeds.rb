@@ -1,9 +1,21 @@
+puts "Cleaning database..."
+
+# CHILD TABLES FIRST
 Message.destroy_all
-Chat.destroy_all
-Topic.destroy_all
-Event.destroy_all
-AiChat.destroy_all
 AiMessage.destroy_all
+Confirmation.destroy_all
+Feedback.destroy_all
+
+# TABLES THAT DEPEND ON EVENTS
+Chat.destroy_all
+
+# AI TABLES
+AiChat.destroy_all
+
+# EVENT TABLE
+Event.destroy_all
+
+# USERS LAST
 User.destroy_all
 
 # --- USERS ---
