@@ -23,7 +23,7 @@
           </label>
           <% if @topics.size == 1 %>
             <%= form.select :topic_id,
-                options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
+                options_from_collection_for_select(@topics, :id, :topic_name, @topics.first.id),
                 {},
                 {
                   class: "form-control form-select",
@@ -31,7 +31,7 @@
                   disabled: true,
                   data: { validate: "topic" }
                 } %>
-            <%= form.hidden_field :topic_id, value: @event.topic_id %>
+            <%= form.hidden_field :topic_id, value: @topics.first.id %>
             <div class="invalid-feedback" id="topic-error"></div>
             <div class="form-text">
               <span class="badge bg-primary">
