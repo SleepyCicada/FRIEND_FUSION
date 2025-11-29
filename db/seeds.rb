@@ -77,9 +77,10 @@ topics = [english, french, spanish, japanese, italian, polish, german, portugues
 event_1 = Event.create!(
   title: "Coffee & Conversation ☕️",
   description: "Practice speaking in a relaxed café atmosphere",
-  date_time: DateTime.new(2025, 12, 13),
+  date_time: DateTime.new(2025, 12, 13, 14, 30),
   topic: english,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_1.image.attach(
@@ -91,9 +92,10 @@ event_1.image.attach(
 event_2 = Event.create!(
   title: "Film & Discussion Club 🎬",
   description: "Watch a short film followed by a guided discussion",
-  date_time: DateTime.new(2025, 12, 14),
+  date_time: DateTime.new(2025, 12, 14, 20, 0),
   topic: french,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_2.image.attach(
@@ -105,9 +107,10 @@ event_2.image.attach(
 event_3 = Event.create!(
   title: "Board Game Night 🎲",
   description: "Play classic board games adapted for language learners",
-  date_time: DateTime.new(2025, 12, 19),
+  date_time: DateTime.new(2025, 12, 19, 19, 0),
   topic: spanish,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_3.image.attach(
@@ -119,9 +122,10 @@ event_3.image.attach(
 event_4 = Event.create!(
   title: "Cooking & Conversation Class 👨‍🍳",
   description: "Cook and practice conversations in a small group",
-  date_time: DateTime.new(2025, 12, 16),
+  date_time: DateTime.new(2025, 12, 16, 11, 0),
   topic: italian,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_4.image.attach(
@@ -133,9 +137,10 @@ event_4.image.attach(
 event_5 = Event.create!(
   title: "Survival Workshop 🗣",
   description: "Essential travel phrases and emergency conversation practice",
-  date_time: DateTime.new(2025, 12, 17),
+  date_time: DateTime.new(2025, 12, 17, 18,0),
   topic: japanese,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_5.image.attach(
@@ -147,9 +152,10 @@ event_5.image.attach(
 event_6 = Event.create!(
   title: "Speed Networking 🗣",
   description: "Short timed rounds to practice introductions & small talk",
-  date_time: DateTime.new(2025, 12, 19),
+  date_time: DateTime.new(2025, 12, 19, 18,0),
   topic: french,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_6.image.attach(
@@ -164,7 +170,7 @@ event_7 = Event.create!(
   description: "Mini debates & interactive prompts in a virtual setting",
   date_time: DateTime.new(2025, 12, 19),
   topic: english,
-  user: user
+  user: user,
 )
 
 event_7.image.attach(
@@ -178,7 +184,8 @@ event_8 = Event.create!(
   description: "Find a long-term partner for language progress",
   date_time: DateTime.new(2025, 12, 19),
   topic: polish,
-  user: user
+  user: user,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_8.image.attach(

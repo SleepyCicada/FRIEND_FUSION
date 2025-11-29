@@ -1,12 +1,3 @@
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
 
 <div class="event-details-page">
   <div class="container py-5">
@@ -90,9 +81,13 @@
               </svg>
               Event Location
             </h3>
-            <div id="event-map" data-location="<%= @event.location %>"></div>
+
+            <div class="map-container">
+              <div id="event-map" data-location="<%= @event.location %>"></div>
+            </div>
           </div>
         <% end %>
+
 
         <!-- Action Buttons -->
         <div class="action-buttons-section mb-5">
@@ -379,14 +374,21 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   }
 
-  #event-map {
-    height: 450px;
-    min-height: 450px;
+  .map-container {
     width: 100%;
+    /* Maintain 16:9 aspect ratio */
+    position: relative;
+    padding-bottom: 56.25%;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    background: #f5f7fa;
+  }
+  #event-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
   }
 
   .attendees-section {
@@ -481,53 +483,39 @@
 </style>
 
 <script>
- document.addEventListener("turbo:before-fetch-request", (e) => {
-   const target = e.target;
+  function initMap() {
+    const mapElement = document.getElementById("event-map");
+    if (!mapElement) return;
 
+    const address = mapElement.dataset.location;
+    const geocoder = new google.maps.Geocoder();
 
-   // Only for conversation starter button
-   if (target.id === "starter-button") {
-     document.getElementById("starter-loading").style.display = "block";
-   }
- });
+    geocoder.geocode({ address: address }, function(results, status) {
+      if (status === "OK") {
+        const map = new google.maps.Map(mapElement, {
+          zoom: 14,
+          center: results[0].geometry.location
+        });
 
-
- // Initialize map on page load and Turbo navigation
- function initMap() {
-   const mapElement = document.getElementById("map");
-   if (!mapElement || typeof google === 'undefined') return;
-
-
-   const eventLocation = { lat: 48.8566, lng: 2.3522 }; // Replace with actual event coords
-
-
-   const map = new google.maps.Map(mapElement, {
-     zoom: 12,
-     center: eventLocation,
-   });
-
-
-   new google.maps.Marker({
-     position: eventLocation,
-     map: map,
-     title: "<%= @event.title %>"
+        new google.maps.Marker({
+          position: results[0].geometry.location,
+          map: map
+        });
+      } else {
+        console.error("Geocode failed: " + status);
+        mapElement.innerHTML = "Map cannot be loaded for this location.";
+      }
     });
- }
+  }
 
+  // Initialize map on first load & Turbo page visits
+  document.addEventListener("turbo:load", function() {
+    if (typeof google !== "undefined" && google.maps) {
+      initMap();
+    }
+  });
+</script>
 
- document.addEventListener('turbo:load', ()=> {console.log("I'm here");initMap();})
-
-
- // Handle both initial page load and Turbo navigation
- if (document.readyState === 'loading') {
-   document.addEventListener('DOMContentLoaded', initMap);
- } else {
-   initMap();
- }
-
-
- // Re-initialize on Turbo navigation
- document.addEventListener('turbo:load', initMap);
-
-
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMap">
 </script>
