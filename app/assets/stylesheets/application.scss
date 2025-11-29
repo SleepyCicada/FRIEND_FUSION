@@ -17,16 +17,23 @@
 
 // Conversation Starter Card Styling
 .starter-card {
-  background: #f8f9fa;
-  border: 1px solid #e4e4e4;
+  background: #FFFFFF;
+  border: 1px solid #BBDEFB;
   padding: 12px;
   border-radius: 10px;
   margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.starter-card:hover {
+  border-color: #1E88E5;
+  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.15);
 }
 
 .starter-text {
   font-size: 15px;
   line-height: 1.5;
+  color: #424242;
 }
 
 .conversation-starter-container {
@@ -45,28 +52,18 @@
 }
 
 .ai-message {
-  background: #eef6ff;
-  border-left: 4px solid #007bff;
+  background: #E3F2FD;
+  border-left: 4px solid #1E88E5;
 }
 
 .user-message {
-  background: #ffffff;
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
 }
 
 .conversation-starters-container {
   display: flex;
   flex-direction: column;
-}
-
-.starter-card {
-  background: #ffffff;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-}
-
-.starter-text {
-  font-size: 15px;
-  line-height: 1.5;
 }
 
 @media (max-width: 600px) {

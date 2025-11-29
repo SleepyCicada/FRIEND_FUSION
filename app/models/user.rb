@@ -10,4 +10,6 @@ class User < ApplicationRecord
   has_many :ai_messages
   has_many :events, through: :confirmations
   # has_many :feedbacks
+
+  validates :name, presence: true
 end

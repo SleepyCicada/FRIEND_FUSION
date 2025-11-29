@@ -54,6 +54,7 @@ gem "cloudinary", "~> 2.0"
 gem "activestorage-cloudinary-service"
 gem "faker"
 gem "ruby_llm"
+gem "pundit"
 gem 'geocoder'
 
 

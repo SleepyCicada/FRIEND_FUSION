@@ -2,11 +2,24 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
 
   def index
-    if params[:date].present?
-      @events = Event.where(date_time: params[:date].to_date.all_day)
-    else
-      @events = Event.all
+    @events = Event.all
+
+    # Filter by topic if topic_id is present in params
+    if params[:topic_id].present?
+      @topic = Topic.find(params[:topic_id])
+      @events = @events.where(topic_id: params[:topic_id])
     end
+
+    # Filter by date if present
+    if params[:date].present?
+      @events = @events.where(date_time: params[:date].to_date.all_day)
+    end
+
+    @events = @events.order(date_time: :asc)
+  end
+
+  def my_events
+    @events = current_user.events.order(date_time: :asc)
   end
 
   def show
@@ -18,8 +31,18 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @topics = Topic.all
   end
 
+  def create
+    @event = Event.new(event_params)
+    @event.user = current_user
+    if @event.save
+      redirect_to event_path(@event)
+    else
+      @topics = Topic.all
+      render :new, status: :unprocessable_entity
+    end
 def create
   combined_datetime = combine_date_time(event_params[:date], event_params[:time])
   @event = Event.new(event_params.except(:date, :time))
@@ -39,13 +62,13 @@ end
 
   def edit
     @event = Event.find(params[:id])
-    return unless @event.update(event_params)
-
-    redirect_to event_path(@event)
+    authorize @event
+    @topics = Topic.all
   end
 
   def update
     @event = Event.find(params[:id])
+    authorize @event
     if @event.update(event_params)
       redirect_to events_path
     else
@@ -55,8 +78,9 @@ end
 
   def destroy
     @event = Event.find(params[:id])
+    authorize @event
     @event.destroy
-    redirect_to events_path, status: :see_other
+    redirect_to events_path, status: :see_other, notice: "Event deleted successfully."
   end
 
   def conversation_starters

@@ -15,4 +15,20 @@ class ChatsController < ApplicationController
       format.json { render json: { summary: @summary } }
     end
   end
+
+  def ask_ai
+    @chat = Chat.find(params[:id])
+    question = params[:question]
+
+    @response = AiChatService.generate_kai_response(
+      question: question,
+      event: @chat.event,
+      chat: @chat
+    )
+
+    respond_to do |format|
+      format.turbo_stream
+      format.json { render json: { response: @response } }
+    end
+  end
 end

@@ -1,9 +1,28 @@
 <%= turbo_stream.update "chat-summary" do %>
-  <div class="p-3 rounded border bg-white">
-    <%= @summary %>
+  <div class="summary-content">
+    <%= simple_format(@summary) %>
   </div>
 <% end %>
 
 <%= turbo_stream.update "summary-loading" do %>
   ""
 <% end %>
+
+<style>
+  .summary-content {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    color: #2d3748;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .summary-content p {
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-content p:last-child {
+    margin-bottom: 0;
+  }
+</style>
