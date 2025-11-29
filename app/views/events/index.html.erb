@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <div class="container my-5">
 
@@ -67,9 +68,470 @@
             <% end %>
             <%= link_to "View Event", event_path(event),
                   class: "btn btn-custom mt-auto rounded-pill px-3 py-2" %>
+=======
+<div class="events-page">
+  <!-- Hero Section -->
+  <div class="events-hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <% if @topic.present? %>
+            <div class="mb-3">
+              <%= link_to events_path, class: "text-white text-decoration-none d-inline-flex align-items-center" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                All Events
+              <% end %>
+            </div>
+            <h1 class="hero-title">
+              <span class="gradient-text"><%= @topic.topic_name %></span> Events
+            </h1>
+            <p class="hero-subtitle">
+              <%= @topic.topic_description %>
+            </p>
+          <% else %>
+            <h1 class="hero-title">
+              <span class="gradient-text">Discover</span> Amazing Events
+            </h1>
+            <p class="hero-subtitle">
+              Connect with like-minded people and create unforgettable memories
+            </p>
+          <% end %>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <%= link_to new_event_path, class: "btn btn-create-event" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Create Event
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container events-container">
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="row align-items-center">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <div class="events-count">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
+              <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+            </svg>
+            <span><strong><%= @events.count %></strong> <%= @events.count == 1 ? 'Event' : 'Events' %> Available</span>
+>>>>>>> master
           </div>
         </div>
+        <div class="col-md-6">
+          <%= form_with url: events_path, method: :get, local: true, class: "filter-form" do %>
+            <div class="input-group">
+              <%= date_field_tag :date, params[:date],
+                  class: "form-control filter-input",
+                  placeholder: "Select a date" %>
+
+              <%= submit_tag "Filter", class: "btn btn-filter" %>
+
+              <% if params[:date].present? %>
+                <%= link_to "Clear", events_path, class: "btn btn-clear" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Grid -->
+    <% if @events.any? %>
+      <div class="events-grid">
+        <% @events.each do |event| %>
+          <div class="event-card-wrapper">
+            <%= link_to event_path(event), class: "event-card" do %>
+              <!-- Event Image -->
+              <div class="event-card-image">
+                <% if event.image.attached? %>
+                  <%= image_tag event.image, alt: event.title, class: "event-img" %>
+                <% else %>
+                  <div class="event-img-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+                      <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                    </svg>
+                  </div>
+                <% end %>
+
+                <!-- Attendees Badge -->
+                <% if event.confirmations.any? %>
+                  <div class="event-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                    </svg>
+                    <%= event.confirmations.count %>
+                  </div>
+                <% end %>
+              </div>
+
+              <!-- Event Content -->
+              <div class="event-card-content">
+                <h3 class="event-card-title"><%= event.title %></h3>
+
+                <p class="event-card-description">
+                  <%= truncate(event.description, length: 100) %>
+                </p>
+
+                <div class="event-card-footer">
+                  <!-- Date -->
+                  <div class="event-card-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                    <% if event.date_time.present? %>
+                      <%= event.date_time.strftime("%b %d, %Y") %>
+                    <% else %>
+                      Date TBD
+                    <% end %>
+                  </div>
+
+                  <!-- Location -->
+                  <% if event.location.present? %>
+                    <div class="event-card-location">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                      </svg>
+                      <%= truncate(event.location, length: 30) %>
+                    </div>
+                  <% end %>
+                </div>
+
+                <div class="event-card-action">
+                  <span class="view-details">
+                    View Details
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Empty State -->
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-calendar-x" viewBox="0 0 16 16">
+            <path d="M6.146 7.146a.5.5 0 0 1 .708 0L8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 0 1 0-.708z"/>
+            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+          </svg>
+        </div>
+        <h3>No Events Found</h3>
+        <p class="text-muted">
+          <% if params[:date].present? %>
+            No events scheduled for this date. Try a different date or clear the filter.
+          <% else %>
+            There are no upcoming events at the moment. Be the first to create one!
+          <% end %>
+        </p>
+        <%= link_to "Create an Event", new_event_path, class: "btn btn-create-event mt-3" %>
       </div>
     <% end %>
   </div>
 </div>
+
+<style>
+  /* Events Page Styling */
+  .events-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  }
+
+  /* Hero Section */
+  .events-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 4rem 0 3rem;
+    color: white;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    margin-bottom: 0;
+  }
+
+  .btn-create-event {
+    background: white;
+    color: #667eea;
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .btn-create-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    color: #667eea;
+  }
+
+  /* Container */
+  .events-container {
+    padding-bottom: 4rem;
+  }
+
+  /* Filter Section */
+  .filter-section {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2.5rem;
+  }
+
+  .events-count {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #495057;
+  }
+
+  .filter-form .input-group {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .filter-input {
+    border: 2px solid #e9ecef;
+    border-right: none;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .filter-input:focus {
+    box-shadow: none;
+    border-color: #667eea;
+  }
+
+  .btn-filter {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-filter:hover {
+    opacity: 0.9;
+  }
+
+  .btn-clear {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-clear:hover {
+    background: #5a6268;
+    color: white;
+  }
+
+  /* Events Grid */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  /* Event Card */
+  .event-card {
+    display: block;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+  }
+
+  .event-card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .event-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .event-card:hover .event-img {
+    transform: scale(1.05);
+  }
+
+  .event-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .event-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #667eea;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .event-card-content {
+    padding: 1.5rem;
+  }
+
+  .event-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #2d3748;
+    line-height: 1.4;
+  }
+
+  .event-card-description {
+    color: #718096;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .event-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .event-card-date,
+  .event-card-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+
+  .event-card-action {
+    padding-top: 1rem;
+  }
+
+  .view-details {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    transition: gap 0.3s ease;
+  }
+
+  .event-card:hover .view-details {
+    gap: 0.5rem;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .empty-icon {
+    color: #cbd5e0;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state h3 {
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .events-hero {
+      padding: 2rem 0 1.5rem;
+    }
+
+    .filter-section {
+      padding: 1rem;
+    }
+
+    .events-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .btn-create-event {
+      width: 100%;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+  }
+</style>

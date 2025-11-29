@@ -1,7 +1,7 @@
 // Specific CSS for your home-page
 
 body {
-  background: linear-gradient(to bottom right, #fdf5e6, #fdebd5);
+  background: linear-gradient(to bottom right, #E3F2FD, #FFFFFF);
   min-height: 100vh;
 }
 
@@ -11,7 +11,8 @@ body {
   flex-direction: column;
   border-radius: 1rem;
   overflow: hidden;
-  background-color: #fbf8f8; // fallback color
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.1);
 }
 
 .topic-content {
@@ -29,10 +30,10 @@ body {
 
 .topic-description {
   flex: 0 0 auto;
-  background: rgb(217, 217, 217); // optional for contrast
+  background: #F5F9FC;
   font-size: 0.95rem;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  color:rgb(7, 7, 7);
+  color: #424242;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -53,7 +54,25 @@ body {
   background-image: asset-url('italian.jpg');
 }
 .bg-topic-polski {
-  background-image: asset-url('polish.jpg');
+  background-image: asset-url('polish.jpeg');
+}
+.bg-topic-deutsch {
+  background-image: asset-url('german.jpg');
+}
+.bg-topic-português {
+  background-image: asset-url('portuguese.jpg');
+}
+.bg-topic-中文 {
+  background-image: asset-url('mandarin.jpg');
+}
+.bg-topic-한국어 {
+  background-image: asset-url('korean.jpg');
+}
+.bg-topic-العربية {
+  background-image: asset-url('arabic.jpg');
+}
+.bg-topic-русский {
+  background-image: asset-url('russian.jpg');
 }
 
 
@@ -63,6 +82,7 @@ body {
   padding: 0.3em 0.6em;
   border-radius: 0.5rem;
   font-family:Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
-  background-color: #c1c2c4;
-  color: white;
+  background-color: #FFD700;
+  color: #424242;
+  font-weight: 600;
 }

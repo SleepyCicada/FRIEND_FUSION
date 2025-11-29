@@ -12,7 +12,6 @@ class AiSummaryService
     PROMPT
 
     response = RubyLLM.chat.ask(prompt)
-    raw = response.content
-    raw.is_a?(String) ? raw : raw.text
+    response.is_a?(String) ? response : response.content.to_s
   end
 end
