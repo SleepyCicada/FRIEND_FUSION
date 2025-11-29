@@ -1,11 +1,12 @@
 class ChatsController < ApplicationController
+  before_action :set_chat
+  before_action :authorize_chat_access
+
   def show
-    @chat = Chat.find(params[:id])
     @messages = @chat.messages.order(:created_at)
   end
 
   def summary
-    @chat = Chat.find(params[:id])
     @messages = @chat.messages
 
     @summary = AiSummaryService.generate_chat_summary(@messages, @chat.event)
@@ -17,7 +18,6 @@ class ChatsController < ApplicationController
   end
 
   def ask_ai
-    @chat = Chat.find(params[:id])
     question = params[:question]
 
     @response = AiChatService.generate_kai_response(
@@ -29,6 +29,20 @@ class ChatsController < ApplicationController
     respond_to do |format|
       format.turbo_stream
       format.json { render json: { response: @response } }
+    end
+  end
+
+  private
+
+  def set_chat
+    @chat = Chat.find(params[:id])
+  end
+
+  def authorize_chat_access
+    event = @chat.event
+    # Allow access if user is the event organizer or has confirmed attendance
+    unless event.user == current_user || event.confirmations.exists?(user: current_user)
+      redirect_to root_path, alert: "You don't have access to this chat."
     end
   end
 end

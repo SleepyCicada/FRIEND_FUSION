@@ -50,16 +50,15 @@
   const chatWindow = document.getElementById("ai-chat-window");
   chatWindow.scrollTop = chatWindow.scrollHeight;
 
-  // Auto-clear message input after sending
-  document.addEventListener("ajax:success", (event) => {
-    const form = document.getElementById("ai-message-form");
-    form.reset();
-  });
-
-  // Scroll down after receiving new message
-  document.addEventListener("ajax:complete", () => {
-    setTimeout(() => {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }, 50);
+  // Auto-clear message input after sending (using Turbo events)
+  document.addEventListener("turbo:submit-end", (event) => {
+    const form = event.target;
+    if (form.id === "ai-message-form" && event.detail.success) {
+      form.reset();
+      // Scroll down after receiving new message
+      setTimeout(() => {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }, 50);
+    }
   });
 </script>

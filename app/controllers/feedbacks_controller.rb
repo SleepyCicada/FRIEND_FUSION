@@ -83,6 +83,7 @@ class FeedbacksController < ApplicationController
   def authorize_feedback_owner
     unless @feedback.user == current_user
       redirect_to @event, alert: "You can only edit your own feedback."
+      return
     end
   end
 

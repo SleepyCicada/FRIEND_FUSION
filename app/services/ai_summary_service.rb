@@ -11,7 +11,12 @@ class AiSummaryService
       #{text}
     PROMPT
 
-    response = RubyLLM.chat.ask(prompt)
-    response.is_a?(String) ? response : response.content.to_s
+    begin
+      response = RubyLLM.chat.ask(prompt)
+      response.is_a?(String) ? response : response.content.to_s
+    rescue StandardError => e
+      Rails.logger.error("AI chat summary error: #{e.message}")
+      "Unable to generate summary at this time. Please try again later."
+    end
   end
 end

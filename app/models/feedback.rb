@@ -4,7 +4,7 @@ class Feedback < ApplicationRecord
   has_many_attached :pictures
 
   validates :rating, presence: true, inclusion: { in: 1..5 }
-  validates :comment, presence: true
+  validates :comment, presence: true, length: { minimum: 10, maximum: 5000 }
   validate :acceptable_pictures
 
   private

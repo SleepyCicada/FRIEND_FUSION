@@ -1,7 +1,9 @@
 class OrganizersController < ApplicationController
   def show
     @organizer = User.find(params[:id])
-    @organized_events = Event.where(user: @organizer).order(date_time: :desc)
+    @organized_events = Event.where(user: @organizer)
+                             .includes(feedbacks: { pictures_attachments: :blob })
+                             .order(date_time: :desc)
     @recent_photos = []
 
     # Collect recent photos from feedbacks of organizer's events
@@ -20,6 +22,7 @@ class OrganizersController < ApplicationController
 
     # Get top reviews (highest rated feedbacks from organizer's events)
     @top_reviews = Feedback.joins(:event)
+                          .includes(:user, :event)
                           .where(events: { user_id: @organizer.id })
                           .where("rating >= ?", 4)
                           .order(rating: :desc, created_at: :desc)

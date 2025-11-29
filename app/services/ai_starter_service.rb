@@ -23,18 +23,23 @@ class AiStarterService
     PROMPT
 
     # Ask the AI
-    response = RubyLLM.chat.ask(prompt)
-    text = response.content.to_s
+    begin
+      response = RubyLLM.chat.ask(prompt)
+      text = response.content.to_s
 
-    # Split lines + strip whitespace
-    lines = text.split("\n").map(&:strip).reject(&:blank?)
+      # Split lines + strip whitespace
+      lines = text.split("\n").map(&:strip).reject(&:blank?)
 
-    # Extract ONLY numbered lines
-    starters = lines.select { |line| line.match?(/^\d+\./) }
+      # Extract ONLY numbered lines
+      starters = lines.select { |line| line.match?(/^\d+\./) }
 
-    # Remove the "1. " prefix
-    starters.map! { |line| line.sub(/^\d+\.\s*/, "") }
+      # Remove the "1. " prefix
+      starters.map! { |line| line.sub(/^\d+\.\s*/, "") }
 
-    return starters
+      return starters
+    rescue StandardError => e
+      Rails.logger.error("AI starter generation error: #{e.message}")
+      return [] # Return empty array as fallback
+    end
   end
 end
