@@ -21,7 +21,10 @@ class EventsController < ApplicationController
       end
     end
 
-    @events = @events.order(date_time: :asc)
+    # Separate upcoming and past events using database queries for better performance
+    current_time = Time.current
+    @upcoming_events = @events.where("end_time IS NULL OR end_time >= ?", current_time).order(date_time: :asc)
+    @past_events = @events.where("end_time < ?", current_time).order(date_time: :asc)
   end
 
   def my_events
