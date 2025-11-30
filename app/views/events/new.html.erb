@@ -12,6 +12,24 @@
           </p>
         </div>
 
+        <!-- Error Messages -->
+        <% if @event.errors.any? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>
+              Please fix the following <%= pluralize(@event.errors.count, "error") %>:
+            </h5>
+            <ul class="mb-0">
+              <% @event.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+
         <!-- Language/Topic Selection -->
         <div class="form-group mb-4">
           <label class="form-label">
@@ -80,19 +98,18 @@
               <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
               <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
             </svg>
-            Description
+            Description (Optional)
           </label>
           <%= form.text_area :description,
               class: "form-control",
               rows: 4,
-              placeholder: "Tell people what makes this event special...",
-              required: true,
+              placeholder: "Tell people what makes this event special... (Leave blank or enter at least 10 characters)",
               data: { validate: "description" },
-              maxlength: 500 %>
+              maxlength: 5000 %>
           <div class="invalid-feedback" id="description-error"></div>
           <div class="form-text d-flex justify-content-between">
-            <span>Share the details and what attendees can expect</span>
-            <span class="char-counter" id="description-counter">0/500</span>
+            <span>Optional: Share the details and what attendees can expect (min 10 characters if provided)</span>
+            <span class="char-counter" id="description-counter">0/5000</span>
           </div>
         </div>
 
@@ -329,11 +346,11 @@
     if (descriptionField && charCounter) {
       descriptionField.addEventListener('input', function() {
         const length = this.value.length;
-        charCounter.textContent = length + '/500';
+        charCounter.textContent = length + '/5000';
 
-        if (length > 450) {
+        if (length > 4500) {
           charCounter.style.color = '#dc3545';
-        } else if (length > 400) {
+        } else if (length > 4000) {
           charCounter.style.color = '#ffc107';
         } else {
           charCounter.style.color = '#495057';
@@ -341,7 +358,7 @@
       });
 
       // Initialize counter
-      charCounter.textContent = descriptionField.value.length + '/500';
+      charCounter.textContent = descriptionField.value.length + '/5000';
     }
 
     // Validation functions
@@ -367,11 +384,9 @@
       },
 
       description: function(value) {
-        if (!value || value.trim().length === 0) {
-          return 'Description is required';
-        }
-        if (value.trim().length < 10) {
-          return 'Description must be at least 10 characters';
+        // Description is optional, but if provided, must be at least 10 characters
+        if (value && value.trim().length > 0 && value.trim().length < 10) {
+          return 'Description must be at least 10 characters if provided';
         }
         return null;
       },
