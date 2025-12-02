@@ -44,8 +44,4 @@ class AiMessagesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render json: { error: "AI chat not found" }, status: 404
   end
-
-  def ai_message_params
-    params.permit(:content)
-  end
 end

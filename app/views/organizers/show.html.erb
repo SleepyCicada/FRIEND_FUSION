@@ -57,7 +57,7 @@
                       <td>
                         <%= link_to event.title, event_path(event), class: "event-link" %>
                       </td>
-                      <td><%= event.date_time.strftime("%b %d, %Y") %></td>
+                      <td><%= event.date_time&.strftime("%b %d, %Y") || "TBD" %></td>
                       <td>
                         <span class="badge badge-attendees">
                           <%= event.confirmations.count %> attendees

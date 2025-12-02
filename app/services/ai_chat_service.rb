@@ -12,16 +12,21 @@ class AiChatService
       - Starter 3
     PROMPT
 
-    response = RubyLLM.chat.ask(prompt).to_s
+    begin
+      response = RubyLLM.chat.ask(prompt).to_s
 
-    # Extract only bullet points
-    starters = response
-      .lines
-      .map(&:strip)
-      .select { |line| line.start_with?("-", "•", "*") }
-      .map { |line| line.sub(/^[-•*]\s*/, "") } # remove bullet symbol
+      # Extract only bullet points
+      starters = response
+        .lines
+        .map(&:strip)
+        .select { |line| line.start_with?("-", "•", "*") }
+        .map { |line| line.sub(/^[-•*]\s*/, "") } # remove bullet symbol
 
-    starters
+      starters
+    rescue StandardError => e
+      Rails.logger.error("AI conversation starters error: #{e.message}")
+      [] # Return empty array as fallback
+    end
   end
 
   def self.generate_reply(message:, user:, ai_chat:)

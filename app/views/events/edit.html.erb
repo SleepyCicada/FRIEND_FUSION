@@ -2,29 +2,14 @@
 
   <%= form_with model: @event, local: true, class: "card shadow-sm p-4 rounded-4", id: "event-form" do |form| %>
 
-    <!-- Header -->
-    <div class="form-header text-center mb-4">
-      <h2 class="form-title mb-2">
-        <%= @event.new_record? ? "Create Your Event" : "Edit Event" %>
-      </h2>
-      <p class="text-muted">
-        <%= @event.new_record? ? "Bring people together and create memorable experiences" : "Update your event details" %>
-      </p>
-    </div>
-
-    <!-- Language/Topic Selection -->
-    <div class="form-group mb-4">
-      <label class="form-label">Language/Topic *</label>
-
-      <% if @topics.size == 1 %>
-        <%= form.select :topic_id,
-          options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
-          {},
-          class: "form-select", disabled: true %>
-        <%= form.hidden_field :topic_id, value: @event.topic_id %>
-
-        <div class="form-text">
-          <span class="badge bg-primary">Topic locked to <%= @topics.first.topic_name %></span>
+        <!-- Header -->
+        <div class="form-header text-center mb-4">
+          <h2 class="form-title mb-2">
+            <%= @event.new_record? ? "Create Your Event" : "Edit Event" %>
+          </h2>
+          <p class="text-muted">
+            <%= @event.new_record? ? "Bring people together and create memorable experiences" : "Update your event details" %>
+          </p>
         </div>
 
         <!-- Error Messages -->
@@ -231,105 +216,10 @@
         <div class="form-actions text-center mt-5">
           <%= form.submit (@event.new_record? ? "Create Event" : "Update Event"),
               class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm",
-              data: { disable_with: "Creating..." } %>
+              data: { disable_with: "Updating..." } %>
         </div>
 
       <% end %>
-    </div>
-
-    <!-- Title -->
-    <div class="form-group mb-4">
-      <label class="form-label">Event Title *</label>
-      <%= form.text_field :title,
-          class: "form-control form-control-lg",
-          placeholder: "e.g., Summer BBQ & Networking",
-          required: true %>
-    </div>
-
-    <!-- Description -->
-    <div class="form-group mb-4">
-      <label class="form-label">Description *</label>
-      <%= form.text_area :description,
-          class: "form-control",
-          rows: 4,
-          placeholder: "Tell people what makes this event special...",
-          maxlength: 500,
-          required: true %>
-      <div class="form-text">Share the details and what attendees can expect</div>
-    </div>
-
-    <!-- Location -->
-    <div class="form-group mb-4">
-      <label class="form-label">Location *</label>
-      <%= form.text_field :location,
-          class: "form-control",
-          placeholder: "e.g., Central Park, 123 Main St, or Online",
-          required: true %>
-    </div>
-
-    <!-- Date & Time -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group mb-4">
-          <label class="form-label">Start Date & Time *</label>
-          <%= form.datetime_local_field :date_time,
-              class: "form-control",
-              required: true,
-              min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="form-group mb-4">
-          <label class="form-label">End Date & Time *</label>
-          <%= form.datetime_local_field :end_time,
-              class: "form-control",
-              required: true,
-              min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
-        </div>
-      </div>
-    </div>
-
-    <!-- Max Capacity -->
-    <div class="form-group mb-4">
-      <label class="form-label">Maximum Attendees</label>
-      <%= form.number_field :max_capacity,
-          class: "form-control",
-          min: 1,
-          max: 10000,
-          placeholder: "Leave empty for unlimited" %>
-      <div class="form-text">Optional: Set a limit on attendance</div>
-    </div>
-
-    <!-- Image Upload -->
-    <div class="form-group mb-4">
-      <label class="form-label">Event Cover Image</label>
-      <%= form.file_field :image,
-          class: "form-control",
-          accept: "image/*" %>
-
-      <% if @event.image.attached? %>
-        <div class="current-image mt-3">
-          <p class="text-muted small mb-2">Current Image:</p>
-          <%= image_tag @event.image,
-              class: "img-thumbnail rounded-3",
-              style: "max-width: 300px;" %>
-        </div>
-      <% end %>
-
-      <div class="form-text">Upload a JPG, PNG, or GIF image</div>
-    </div>
-
-    <!-- Submit -->
-    <div class="form-actions text-center mt-4">
-      <%= form.submit (@event.new_record? ? "Create Event" : "Update Event"),
-          class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm" %>
-    </div>
-
-  <% end %>
-
-</div>
-
 
 </div>
 

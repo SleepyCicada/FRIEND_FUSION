@@ -11,9 +11,20 @@ class EventsController < ApplicationController
     end
 
     # Filter by date if present
-    @events = @events.where(date_time: params[:date].to_date.all_day) if params[:date].present?
+    if params[:date].present?
+      begin
+        date = Date.parse(params[:date])
+        @events = @events.where(date_time: date.all_day)
+      rescue ArgumentError, TypeError
+        # Ignore invalid date format - just don't filter by date
+        Rails.logger.warn("Invalid date format: #{params[:date]}")
+      end
+    end
 
-    @events = @events.order(date_time: :asc)
+    # Separate upcoming and past events using database queries for better performance
+    current_time = Time.current
+    @upcoming_events = @events.where("end_time IS NULL OR end_time >= ?", current_time).order(date_time: :asc)
+    @past_events = @events.where("end_time < ?", current_time).order(date_time: :asc)
   end
 
   def my_events
@@ -40,9 +51,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    combined_datetime = combine_date_time(event_params[:date], event_params[:time])
-    @event = Event.new(event_params.except(:date, :time))
-    @event.date_time = combined_datetime
+    @event = Event.new(event_params)
     @event.user = current_user
 
     if @event.save
@@ -98,12 +107,30 @@ class EventsController < ApplicationController
   def send_starter
     @event = Event.find(params[:id])
 
+    # Authorization: Only event organizer or confirmed attendees can send starters
+    unless @event.user == current_user || @event.confirmations.exists?(user: current_user)
+      redirect_to root_path, alert: "You don't have access to this event's chat."
+      return
+    end
+
+    # Validate starter content
+    starter_content = params[:starter]&.strip
+    if starter_content.blank?
+      redirect_to event_path(@event), alert: "Starter message cannot be empty."
+      return
+    end
+
+    if starter_content.length > 500
+      redirect_to event_path(@event), alert: "Starter message is too long (max 500 characters)."
+      return
+    end
+
     chat = @event.chat || @event.create_chat!
 
     Message.create!(
       chat: chat,
       user: nil,
-      content: params[:starter].strip,
+      content: starter_content,
       ai: true
     )
 

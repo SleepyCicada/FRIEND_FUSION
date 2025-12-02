@@ -1,9 +1,9 @@
 <h1>Event Reminder</h1>
-<p>Hello <%= @event.user.name %>,</p>
+<p>Hello <%= @event.user&.name || 'Event Organizer' %>,</p>
 <p>This is a reminder that your event "<%= @event.title %>" starts tomorrow!</p>
 <p>
-  :date: Date: <%= @event.date_time.strftime("%B %d, %Y %H:%M") %><br>
-  :round_pushpin: Location: <%= @event.location %>
+  📅 Date: <%= @event.date_time.strftime("%B %d, %Y %H:%M") %><br>
+  📍 Location: <%= @event.location %>
 </p>
 <p>We look forward to seeing you there!</p>
 <p>Thanks for using Friend Fusion!</p>

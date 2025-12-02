@@ -1,7 +1,8 @@
 class MessagesController < ApplicationController
-  def create
-    @chat = Chat.find(params[:chat_id])
+  before_action :set_chat
+  before_action :authorize_chat_access
 
+  def create
     # Create user message
     @message = @chat.messages.create!(
       user: current_user,
@@ -34,7 +35,6 @@ class MessagesController < ApplicationController
   end
 
   def smart_replies
-    @chat = Chat.find(params[:chat_id])
     @recent_messages = @chat.messages.order(created_at: :desc).limit(5)
 
     @smart_replies = AiChatService.generate_smart_replies(
@@ -43,5 +43,19 @@ class MessagesController < ApplicationController
     )
 
     render json: { replies: @smart_replies }
+  end
+
+  private
+
+  def set_chat
+    @chat = Chat.find(params[:chat_id])
+  end
+
+  def authorize_chat_access
+    event = @chat.event
+    # Allow access if user is the event organizer or has confirmed attendance
+    unless event.user == current_user || event.confirmations.exists?(user: current_user)
+      redirect_to root_path, alert: "You don't have access to this chat."
+    end
   end
 end
