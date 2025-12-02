@@ -1,0 +1,526 @@
+<div class="container mt-4">
+
+  <%= form_with model: @event, local: true, class: "card shadow-sm p-4 rounded-4", id: "event-form" do |form| %>
+
+        <!-- Header -->
+        <div class="form-header text-center mb-4">
+          <h2 class="form-title mb-2">
+            <%= @event.new_record? ? "Create Your Event" : "Edit Event" %>
+          </h2>
+          <p class="text-muted">
+            <%= @event.new_record? ? "Bring people together and create memorable experiences" : "Update your event details" %>
+          </p>
+        </div>
+
+        <!-- Error Messages -->
+        <% if @event.errors.any? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>
+              Please fix the following <%= pluralize(@event.errors.count, "error") %>:
+            </h5>
+            <ul class="mb-0">
+              <% @event.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+
+        <!-- Language/Topic Selection -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-translate me-2" viewBox="0 0 16 16">
+              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+            </svg>
+            Language/Topic *
+          </label>
+          <% if @topics.size == 1 %>
+            <%= form.select :topic_id,
+                options_from_collection_for_select(@topics, :id, :topic_name, @topics.first.id),
+                {},
+                {
+                  class: "form-control form-select",
+                  required: true,
+                  disabled: true,
+                  data: { validate: "topic" }
+                } %>
+            <%= form.hidden_field :topic_id, value: @topics.first.id %>
+            <div class="invalid-feedback" id="topic-error"></div>
+            <div class="form-text">
+              <span class="badge bg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 16 16">
+                  <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                Topic locked to <%= @topics.first.topic_name %>
+              </span>
+            </div>
+          <% else %>
+            <%= form.select :topic_id,
+                options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
+                { prompt: "Select a language..." },
+                {
+                  class: "form-control form-select",
+                  required: true,
+                  data: { validate: "topic" }
+                } %>
+            <div class="invalid-feedback" id="topic-error"></div>
+            <div class="form-text">Choose the language community for this event</div>
+          <% end %>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+            Event Title *
+          </label>
+          <%= form.text_field :title,
+              class: "form-control form-control-lg",
+              placeholder: "e.g., Summer BBQ & Networking",
+              required: true,
+              data: { validate: "title" } %>
+          <div class="invalid-feedback" id="title-error"></div>
+          <div class="form-text">Choose a catchy and descriptive title</div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-card-text me-2" viewBox="0 0 16 16">
+              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+            Description (Optional)
+          </label>
+          <%= form.text_area :description,
+              class: "form-control",
+              rows: 4,
+              placeholder: "Tell people what makes this event special... (Leave blank or enter at least 10 characters)",
+              data: { validate: "description" },
+              maxlength: 5000 %>
+          <div class="invalid-feedback" id="description-error"></div>
+          <div class="form-text d-flex justify-content-between">
+            <span>Optional: Share the details and what attendees can expect (min 10 characters if provided)</span>
+            <span class="char-counter" id="description-counter">0/5000</span>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
+              <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+              <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg>
+            Location
+          </label>
+          <%= form.text_field :location,
+              class: "form-control",
+              placeholder: "e.g., Central Park, 123 Main St, or Online",
+              required: true,
+              data: { validate: "location" } %>
+          <div class="invalid-feedback" id="location-error"></div>
+          <div class="form-text">Where will this event take place?</div>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
+                  <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                Start Date & Time *
+              </label>
+              <%= form.datetime_local_field :date_time,
+                  class: "form-control",
+                  required: true,
+                  data: { validate: "date_time" },
+                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              <div class="invalid-feedback" id="date_time-error"></div>
+              <div class="form-text">When should attendees arrive?</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-check me-2" viewBox="0 0 16 16">
+                  <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                End Date & Time *
+              </label>
+              <%= form.datetime_local_field :end_time,
+                  class: "form-control",
+                  required: true,
+                  data: { validate: "end_time" },
+                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              <div class="invalid-feedback" id="end_time-error"></div>
+              <div class="form-text">When will the event end?</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Max Capacity -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-people me-2" viewBox="0 0 16 16">
+              <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+            </svg>
+            Maximum Attendees
+          </label>
+          <%= form.number_field :max_capacity,
+              class: "form-control",
+              min: 1,
+              max: 10000,
+              placeholder: "Leave empty for unlimited" %>
+          <div class="form-text">Optional: Set a limit on how many people can join</div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group mb-4">
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-image me-2" viewBox="0 0 16 16">
+              <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+              <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+            </svg>
+            Event Cover Image
+          </label>
+          <div class="image-upload-container">
+            <%= form.file_field :image,
+                class: "form-control",
+                accept: "image/*",
+                data: { preview: "image" } %>
+
+            <% if @event.image.attached? %>
+              <div class="current-image mt-3">
+                <p class="text-muted small mb-2">Current Image:</p>
+                <%= image_tag @event.image, class: "img-thumbnail rounded-3", style: "max-width: 300px; height: auto;" %>
+              </div>
+            <% end %>
+          </div>
+          <div class="form-text">Upload an eye-catching image (JPG, PNG, GIF)</div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="form-actions text-center mt-5">
+          <%= form.submit (@event.new_record? ? "Create Event" : "Update Event"),
+              class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm",
+              data: { disable_with: "Updating..." } %>
+        </div>
+
+      <% end %>
+
+</div>
+
+<style>
+  .event-form-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .form-header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+  }
+
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+
+  .form-control.is-valid {
+    border-color: #28a745;
+  }
+
+  .form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+  }
+
+  .char-counter {
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .invalid-feedback {
+    display: none;
+    font-size: 0.875rem;
+    color: #dc3545;
+    margin-top: 0.5rem;
+  }
+
+  .form-control.is-invalid ~ .invalid-feedback {
+    display: block;
+  }
+
+  .image-upload-container {
+    position: relative;
+  }
+
+  .current-image img {
+    border: 3px solid #e9ecef;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  .form-group {
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .event-form-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .form-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('event-form');
+
+    // Character counter for description
+    const descriptionField = document.querySelector('[data-validate="description"]');
+    const charCounter = document.getElementById('description-counter');
+
+    if (descriptionField && charCounter) {
+      descriptionField.addEventListener('input', function() {
+        const length = this.value.length;
+        charCounter.textContent = length + '/5000';
+
+        if (length > 4500) {
+          charCounter.style.color = '#dc3545';
+        } else if (length > 4000) {
+          charCounter.style.color = '#ffc107';
+        } else {
+          charCounter.style.color = '#495057';
+        }
+      });
+
+      // Initialize counter
+      charCounter.textContent = descriptionField.value.length + '/5000';
+    }
+
+    // Validation functions
+    const validators = {
+      topic: function(value) {
+        if (!value || value === '') {
+          return 'Please select a language/topic';
+        }
+        return null;
+      },
+
+      title: function(value) {
+        if (!value || value.trim().length === 0) {
+          return 'Event title is required';
+        }
+        if (value.trim().length < 3) {
+          return 'Title must be at least 3 characters';
+        }
+        if (value.trim().length > 100) {
+          return 'Title must be less than 100 characters';
+        }
+        return null;
+      },
+
+      description: function(value) {
+        // Description is optional, but if provided, must be at least 10 characters
+        if (value && value.trim().length > 0 && value.trim().length < 10) {
+          return 'Description must be at least 10 characters if provided';
+        }
+        return null;
+      },
+
+      location: function(value) {
+        if (!value || value.trim().length === 0) {
+          return 'Location is required';
+        }
+        if (value.trim().length < 3) {
+          return 'Location must be at least 3 characters';
+        }
+        return null;
+      },
+
+      date_time: function(value) {
+        if (!value) {
+          return 'Start date and time are required';
+        }
+        const selectedDate = new Date(value);
+        const now = new Date();
+        if (selectedDate <= now) {
+          return 'Event must be scheduled in the future';
+        }
+        return null;
+      },
+
+      end_time: function(value) {
+        if (!value) {
+          return 'End date and time are required';
+        }
+        const startDateField = document.querySelector('[data-validate="date_time"]');
+        if (startDateField && startDateField.value) {
+          const startDate = new Date(startDateField.value);
+          const endDate = new Date(value);
+          if (endDate <= startDate) {
+            return 'End time must be after start time';
+          }
+        }
+        return null;
+      }
+    };
+
+    // Validate field
+    function validateField(field) {
+      const fieldName = field.dataset.validate;
+      const value = field.value;
+      const errorDiv = document.getElementById(fieldName + '-error');
+
+      if (!validators[fieldName]) return true;
+
+      const error = validators[fieldName](value);
+
+      if (error) {
+        field.classList.add('is-invalid');
+        field.classList.remove('is-valid');
+        if (errorDiv) errorDiv.textContent = error;
+        return false;
+      } else {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+        if (errorDiv) errorDiv.textContent = '';
+        return true;
+      }
+    }
+
+    // Add real-time validation
+    const fieldsToValidate = form.querySelectorAll('[data-validate]');
+    fieldsToValidate.forEach(field => {
+      // Validate on blur
+      field.addEventListener('blur', function() {
+        validateField(this);
+      });
+
+      // Validate on input (with debounce for better performance)
+      let timeout;
+      field.addEventListener('input', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          if (this.classList.contains('is-invalid') || this.classList.contains('is-valid')) {
+            validateField(this);
+          }
+        }, 300);
+      });
+    });
+
+    // Validate all fields on form submit
+    form.addEventListener('submit', function(e) {
+      let isValid = true;
+
+      fieldsToValidate.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        e.preventDefault();
+
+        // Scroll to first error
+        const firstError = form.querySelector('.is-invalid');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+
+        // Show alert
+        alert('Please fix the errors in the form before submitting.');
+      }
+    });
+
+    // Image preview
+    const imageInput = form.querySelector('[data-preview="image"]');
+    if (imageInput) {
+      imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const existingPreview = document.querySelector('.image-preview-new');
+            if (existingPreview) {
+              existingPreview.remove();
+            }
+
+            const preview = document.createElement('div');
+            preview.className = 'current-image mt-3 image-preview-new';
+            preview.innerHTML = `
+              <p class="text-muted small mb-2">Preview:</p>
+              <img src="${e.target.result}" class="img-thumbnail rounded-3" style="max-width: 300px; height: auto;">
+            `;
+            imageInput.closest('.image-upload-container').appendChild(preview);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+</script>
