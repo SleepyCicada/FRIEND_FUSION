@@ -38,29 +38,29 @@
         <% end %>
 
         <!-- Event Hero Section -->
-        <div class="event-hero mb-5">
-          <% if @event.image.attached? %>
-            <div class="event-hero-image mb-4">
-              <%= image_tag @event.image, alt: @event.title %>
-            </div>
-          <% end %>
-
-          <div class="event-hero-content">
-            <% if @event.topic %>
-              <span class="topic-badge mb-3">
-                <%= @event.topic.topic_name %>
-              </span>
-            <% end %>
-
-            <h1 class="event-title"><%= @event.title %></h1>
-
-            <% if @event.description.present? %>
-              <p class="event-description">
-                <%= @event.description %>
-              </p>
-            <% end %>
-          </div>
+    <div class="event-hero mb-4 text-center">
+      <% if @event.image.attached? %>
+        <div class="event-hero-image mb-1">
+          <%= image_tag @event.image, alt: @event.title, class: "img-fluid rounded" %>
         </div>
+      <% end %>
+
+      <div class="event-hero-content">
+        <% if @event.topic %>
+          <span class="topic-badge mb-2 d-inline-block">
+            <%= @event.topic.topic_name %>
+          </span>
+        <% end %>
+
+        <h1 class="event-title mb-2"><%= @event.title %></h1>
+
+        <% if @event.description.present? %>
+          <p class="event-description mb-0">
+            <%= @event.description %>
+          </p>
+        <% end %>
+      </div>
+    </div>
 
   <!-- Event Details Section -->
     <div class="event-details-section">
