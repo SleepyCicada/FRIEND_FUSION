@@ -188,7 +188,7 @@ event_7 = Event.create!(
   description: "Mini debates & interactive prompts in a virtual setting",
   date_time: DateTime.new(2025, 12, 20, 10, 0),
   end_time: DateTime.new(2025, 12, 20, 12, 0),
-  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
+  location: "Online",
   topic: english,
   user: user,
 )
