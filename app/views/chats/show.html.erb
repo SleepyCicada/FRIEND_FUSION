@@ -156,7 +156,9 @@
 </script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  // Use turbo:load instead of DOMContentLoaded to work with Turbo navigation
+  document.addEventListener('turbo:load', function() {
+    console.log('Chat page loaded (turbo:load event)');
     const chatMessages = document.getElementById('chat-messages');
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
@@ -175,20 +177,26 @@
 
     // Handle form submission
     if (messageForm) {
+      console.log('Attaching submit event listener to message form');
       messageForm.addEventListener('submit', function(e) {
         const messageText = messageInput.value.trim();
+        console.log('Form submit handler called, message:', messageText);
 
         if (!messageText) {
           e.preventDefault();
           return;
         }
 
-        // Clear input
+        // Clear input immediately on submit, before Turbo processes it
         setTimeout(() => {
-          messageInput.value = '';
-          messageInput.focus();
-        }, 10);
+          if (messageInput) {
+            console.log('Clearing input immediately on submit');
+            messageInput.value = '';
+          }
+        }, 50);
       });
+    } else {
+      console.error('Message form not found!');
     }
 
     // Fetch and display smart reply suggestions
@@ -235,7 +243,10 @@
 
     // Turbo Stream handling
     document.addEventListener('turbo:submit-end', function(e) {
+      console.log('turbo:submit-end fired, target:', e.target.id);
       if (e.target.id === 'message-form') {
+        console.log('Processing after form submit');
+
         // Hide typing indicator after AI responds
         setTimeout(() => {
           if (typingIndicator) {
@@ -248,6 +259,11 @@
 
         // Fetch smart replies occasionally
         setTimeout(fetchSmartReplies, 1500);
+
+        // Focus the input
+        if (messageInput) {
+          messageInput.focus();
+        }
       }
     });
 

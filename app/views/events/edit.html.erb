@@ -50,6 +50,7 @@
                   data: { validate: "topic" }
                 } %>
             <%= form.hidden_field :topic_id, value: @topics.first.id %>
+            <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
             <div class="invalid-feedback" id="topic-error"></div>
             <div class="form-text">
               <span class="badge bg-primary">
@@ -69,6 +70,7 @@
                   data: { validate: "topic" }
                 } %>
             <div class="invalid-feedback" id="topic-error"></div>
+            <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
             <div class="form-text">Choose the language community for this event</div>
           <% end %>
         </div>
@@ -145,8 +147,7 @@
               <%= form.datetime_local_field :date_time,
                   class: "form-control",
                   required: true,
-                  data: { validate: "date_time" },
-                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+                  data: { validate: "date_time" } %>
               <div class="invalid-feedback" id="date_time-error"></div>
               <div class="form-text">When should attendees arrive?</div>
             </div>
@@ -163,8 +164,7 @@
               <%= form.datetime_local_field :end_time,
                   class: "form-control",
                   required: true,
-                  data: { validate: "end_time" },
-                  min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+                  data: { validate: "end_time" } %>
               <div class="invalid-feedback" id="end_time-error"></div>
               <div class="form-text">When will the event end?</div>
             </div>
@@ -336,8 +336,44 @@
 </style>
 
 <script>
+  // Set timezone IMMEDIATELY when script loads (before DOMContentLoaded)
+  (function() {
+    const offset = new Date().getTimezoneOffset();
+    console.log('Timezone offset detected:', offset);
+    // Store in window for later use
+    window.userTimezoneOffset = offset;
+
+    // Try to set the field immediately if it exists
+    const trySetField = () => {
+      const tzField = document.getElementById('timezone-offset-field');
+      if (tzField) {
+        tzField.value = offset;
+        console.log('Set timezone offset field IMMEDIATELY to:', offset);
+        return true;
+      }
+      return false;
+    };
+
+    // Try now
+    if (!trySetField()) {
+      // If not found, wait a bit and try again
+      setTimeout(trySetField, 100);
+    }
+  })();
+
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded fired');
     const form = document.getElementById('event-form');
+
+    // Set timezone offset field value
+    const tzField = document.getElementById('timezone-offset-field');
+    console.log('Looking for timezone field, found:', tzField);
+    if (tzField && window.userTimezoneOffset !== undefined) {
+      tzField.value = window.userTimezoneOffset;
+      console.log('Set timezone offset field to:', window.userTimezoneOffset);
+    } else {
+      console.error('Failed to set timezone field:', {tzField, offset: window.userTimezoneOffset});
+    }
 
     // Character counter for description
     const descriptionField = document.querySelector('[data-validate="description"]');
@@ -407,8 +443,10 @@
         }
         const selectedDate = new Date(value);
         const now = new Date();
-        if (selectedDate <= now) {
-          return 'Event must be scheduled in the future';
+        // Allow events that start within the next minute or later (buffer for form fill time)
+        const oneMinuteAgo = new Date(now.getTime() - 60000);
+        if (selectedDate < oneMinuteAgo) {
+          return 'Event must be scheduled from now onwards';
         }
         return null;
       },
@@ -494,6 +532,17 @@
 
         // Show alert
         alert('Please fix the errors in the form before submitting.');
+        return;
+      }
+
+      // Ensure timezone offset is set before submit
+      const tzField = document.getElementById('timezone-offset-field');
+      if (tzField) {
+        const offset = window.userTimezoneOffset || new Date().getTimezoneOffset();
+        tzField.value = offset;
+        console.log('Final timezone offset before submit:', offset, 'Field value:', tzField.value);
+      } else {
+        console.error('Timezone field not found before submit!');
       }
     });
 
