@@ -10,17 +10,23 @@
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}", "data-turbo-track": "reload" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body>
+    <%= render "shared/navbar" %>
+    <%= render "shared/flashes" %>
 
     <%= yield %>
+
+    <!-- Back to Top Button -->
+    <a href="#"
+      id="back-to-top"
+      data-controller="back-to-top"
+      data-action="click->back-to-top#scrollUp"
+      class="btn rounded-circle d-flex align-items-center justify-content-center"
+      role="button"
+      style="position: fixed; bottom: 5rem; right: 1rem; z-index: 1030; width: 3rem; height: 3rem; background-color: rgba(13, 110, 253, 0.7); border: none;">
+      <i class="bi bi-arrow-up"></i>
+    </a>
   </body>
 </html>
-
-<!-- Back to Top Button -->
-<a href="#" id="back-to-top" class="btn btn-primary btn-lg back-to-top" role="button">
-  <i class="bi bi-arrow-up"></i>
-</a>
