@@ -9,7 +9,6 @@
           <% end %>
         </div>
         <div class="card-body">
-          <h5 class="card-title"><%= @notification.title %></h5>
           <p class="card-text"><%= @notification.message %></p>
           <p class="text-muted small">
             Received <%= time_ago_in_words(@notification.created_at) %> ago

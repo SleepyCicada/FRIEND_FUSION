@@ -4,10 +4,11 @@
     <!-- Title row -->
     <div class="d-flex align-items-center mb-1">
       <!-- Back button -->
-      <button class="btn btn-light btn-sm me-2 p-1 go-back-chat" onclick="goBackChat()">
+      <button class="btn btn-outline-secondary btn-sm me-2 rounded-pill go-back-chat" onclick="goBackChat()" style="padding: 0.4rem 1rem; display: inline-flex; align-items: center; gap: 0.3rem;">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
         </svg>
+        <span>Back</span>
       </button>
       <h3 class="mb-0 d-flex align-items-center flex-wrap">
         <%# <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots me-2" viewBox="0 0 16 16">
@@ -19,14 +20,12 @@
     </div>
 
     <!-- Event Details Button -->
-    <div class="mb-1 d-flex justify-content-center">
-      <%= link_to "Event Details", event_path(@chat.event), class: "btn btn-sm btn-outline-primary w-md-auto" %>
+    <div class="mb-1 d-flex justify-content-end">
+      <%= link_to "Event Details", event_path(@chat.event), class: "btn btn-sm btn-outline-primary rounded-pill" %>
     </div>
 
-    <!-- Messages and Attendees Info -->
+    <!-- Attendees Info -->
     <p class="text-muted mb-0 small">
-      <%= @chat.messages.count %> messages
-      <span class="mx-2">•</span>
       <span id="online-count"><%= @chat.event.confirmations.count %></span> attendees
     </p>
   </div>
