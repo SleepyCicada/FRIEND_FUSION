@@ -9,8 +9,3 @@
     <%= render partial: 'messages/message', locals: { message: @ai_message } %>
   <% end %>
 <% end %>
-
-<%# Clear the input field %>
-<%= turbo_stream.update "message-input" do %>
-  <input type="text" name="message_text" placeholder="Type your message..." class="form-control chat-input" required="required" id="message-input" autocomplete="off">
-<% end %>
