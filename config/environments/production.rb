@@ -1,22 +1,28 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # config.action_mailer.default_url_options = { host: "http://TODO_PUT_YOUR_DOMAIN_HERE" }
-  # Settings specified here will take precedence over those in config/application.rb.
+  # ActionMailer setup for production
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'yourdomain.com', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'friendfusion.online', protocol: 'https' }
 
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
     domain:               'gmail.com',
-    user_name:            ENV['GMAIL_USER'],       # your Gmail address
-    password:             ENV['GMAIL_APP_PASSWORD'], # app password, not your normal Gmail password
+    user_name:            ENV['GMAIL_USER'],
+    password:             ENV['GMAIL_APP_PASSWORD'],
     authentication:       'plain',
     enable_starttls_auto: true
   }
+
+  # Production defaults
+  config.eager_load = true
+  config.consider_all_requests_local = false
+  config.cache_classes = true
+  config.assets.compile = false
+  config.assets.digest = true
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
