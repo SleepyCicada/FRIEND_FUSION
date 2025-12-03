@@ -1,9 +1,27 @@
 
 <div class="event-details-page">
-  <div class="container py-5">
+  <div class="container pt-3 pb-5">
     <div class="row">
       <div class="col-lg-10 mx-auto">
+        <!-- Go Back Button -->
+        <div class="go-back-container">
+          <button class="go-back-button" onclick="goBack()">
+            <!-- Optional: back arrow icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+            </svg>
+          </button>
+        </div>
 
+        <script>
+        function goBack() {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = "/"; // fallback URL
+          }
+        }
+        </script>
         <!-- Event Completed Notice -->
         <% if @event.event_ended? %>
           <div class="event-completed-notice">
@@ -44,54 +62,72 @@
           </div>
         </div>
 
-      <!-- Event Details Card -->
-      <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Event Details</h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <strong>📅 Date:</strong><br>
-              <%= @event.date_time ? @event.date_time.strftime("%B %d, %Y") : "TBD" %>
+  <!-- Event Details Section -->
+    <div class="event-details-section">
+      <h3 class="section-title">
+        <!-- Calendar Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2
+                  2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1
+                  5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5H1z"/>
+        </svg>
+        Event Details
+      </h3>
 
-              <div class="mt-2"></div>
+      <!-- Grid -->
+      <div class="details-grid">
 
-              <strong>⏰ Time:</strong>
-              <%= @event.time ? @event.time.strftime("%I:%M %p") : "TBD" %>
-            </div>
-          </div>
-
-          <div class="info-card">
-            <div class="info-icon">📍</div>
-            <div class="info-content">
-              <div class="info-label">Location</div>
-              <div class="info-value"><%= @event.location || "To be announced" %></div>
-            </div>
-          </div>
-
-          <div class="info-card">
-            <div class="info-icon">👥</div>
-            <div class="info-content">
-              <div class="info-label">Attendees</div>
-              <div class="info-value"><%= @event.confirmations.count %><% if @event.max_capacity %> / <%= @event.max_capacity %><% end %></div>
-            </div>
-          </div>
-
-          <div class="info-card">
-            <div class="info-icon">👤</div>
-            <div class="info-content">
-              <div class="info-label">Organizer</div>
-              <div class="info-value">
-                <% if @event.user.present? %>
-                  <%= link_to @event.user.name, organizer_path(@event.user), class: "organizer-link" %>
-                <% else %>
-                  Friend Fusion
-                <% end %>
-              </div>
+        <!-- Date -->
+        <div class="detail-item">
+          <div class="detail-icon">📅</div>
+          <div>
+            <div class="detail-label">Date and Time</div>
+            <div class="detail-value">
+              <%= @event.date_time ? @event.date_time.strftime("%b %d, %Y at %I:%M %p") : "TBD" %>
             </div>
           </div>
         </div>
+
+        <!-- Location -->
+        <div class="detail-item">
+          <div class="detail-icon">📍</div>
+          <div>
+            <div class="detail-label">Location</div>
+            <div class="detail-value"><%= @event.location || "To be announced" %></div>
+          </div>
+        </div>
+
+        <!-- Attendees -->
+        <div class="detail-item">
+          <div class="detail-icon">👥</div>
+          <div>
+            <div class="detail-label">Attendees</div>
+            <div class="detail-value">
+              <%= @event.confirmations.count %>
+              <% if @event.max_capacity %>
+                / <%= @event.max_capacity %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Organizer -->
+        <div class="detail-item">
+          <div class="detail-icon">👤</div>
+          <div>
+            <div class="detail-label">Organizer</div>
+            <div class="detail-value">
+              <% if @event.user.present? %>
+                <%= link_to @event.user.name, organizer_path(@event.user), class: "organizer-link" %>
+              <% else %>
+                Friend Fusion
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end main card -->
 
         <!-- Map Section -->
         <% if @event.location.present? %>
@@ -190,6 +226,13 @@
 
         <!-- Confirmed Attendees -->
         <% if @event.confirmations.any? %>
+
+          <% mobile_limit  = 2 %>
+          <% desktop_limit = 3 %>
+          <% total_attendees = @event.users.count %>
+
+          <% use_carousel = total_attendees > desktop_limit %>
+
           <div class="attendees-section">
             <h3 class="section-title">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -200,16 +243,57 @@
               Confirmed Attendees
               <span class="count-badge"><%= @event.confirmations.count %></span>
             </h3>
-            <div class="attendees-grid">
-              <% @event.users.each do |user| %>
-                <div class="attendee-badge">
-                  <div class="attendee-avatar">
-                    <%= user.name&.first&.upcase || '?' %>
-                  </div>
-                  <span class="attendee-name"><%= user.name %></span>
+
+            <% if use_carousel %>
+              <div id="attendeesCarousel" class="carousel slide" data-bs-touch="true" data-bs-ride="false">
+                <div class="carousel-inner">
+
+                  <% @event.users.each_slice(3).each_with_index do |group, index| %>
+                    <div class="carousel-item <%= 'active' if index == 0 %>">
+                      <div class="row justify-content-center py-3">
+
+                        <% group.each do |user| %>
+                          <div class="col-4 col-md-2 mb-3">
+                            <div class="attendee-wrapper text-center">
+                              <div class="attendee-avatar mb-2">
+                                <%= user.name&.first&.upcase || '?' %>
+                              </div>
+                              <div class="attendee-name">
+                                <%= user.name %>
+                              </div>
+                            </div>
+                          </div>
+                        <% end %>
+
+                      </div>
+                    </div>
+                  <% end %>
+
                 </div>
-              <% end %>
-            </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#attendeesCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#attendeesCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
+
+            <% else %>
+              <div class="attendees-grid">
+                <% @event.users.each do |user| %>
+                  <div class="attendee-block">
+                    <div class="attendee-avatar mb-2">
+                      <%= user.name&.first&.upcase || '?' %>
+                    </div>
+                    <span class="attendee-name"><%= user.name %></span>
+                  </div>
+                <% end %>
+              </div>
+
+            <% end %>
+
           </div>
         <% end %>
 
