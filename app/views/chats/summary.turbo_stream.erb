@@ -1,6 +1,6 @@
 <%= turbo_stream.update "chat-summary" do %>
   <div class="summary-content">
-    <%= simple_format(@summary) %>
+    <%= simple_format(@summary.to_s.strip.gsub(/^["']|["']$/, '')) %>
   </div>
 <% end %>
 
@@ -19,7 +19,12 @@
   }
 
   .summary-content p {
+    margin-top: 0;
     margin-bottom: 0.75rem;
+  }
+
+  .summary-content p:first-child {
+    margin-top: 0;
   }
 
   .summary-content p:last-child {

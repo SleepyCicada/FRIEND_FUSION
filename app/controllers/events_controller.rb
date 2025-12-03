@@ -28,7 +28,12 @@ class EventsController < ApplicationController
   end
 
   def my_events
-    @events = current_user.events.order(date_time: :asc)
+    events = current_user.events
+    current_time = Time.current
+
+    # Separate upcoming and past events
+    @upcoming_events = events.where("end_time IS NULL OR end_time >= ?", current_time).order(date_time: :asc)
+    @past_events = events.where("end_time < ?", current_time).order(date_time: :desc)
   end
 
   def show

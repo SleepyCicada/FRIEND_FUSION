@@ -5,6 +5,7 @@ Message.destroy_all
 AiMessage.destroy_all
 Confirmation.destroy_all
 Feedback.destroy_all
+Notification.destroy_all
 
 # TABLES THAT DEPEND ON EVENTS
 Chat.destroy_all
@@ -31,35 +32,40 @@ user = User.create!(
 )
 
 user2 = User.create!(
-  name: "Marcus",
-  email: "marcus@example.com",
+  name: "Middwin",
+  email: "middwin@example.com",
   password: "password"
 )
 
 user3 = User.create!(
-  name: "Sofia",
-  email: "sofia@example.com",
+  name: "Flo",
+  email: "Flo@example.com",
   password: "password"
 )
 
 user4 = User.create!(
-  name: "James",
-  email: "james@example.com",
+  name: "Pavel",
+  email: "pavel@example.com",
   password: "password"
 )
 
 user5 = User.create!(
-  name: "Priya",
-  email: "priya@example.com",
+  name: "Frank",
+  email: "frank@example.com",
   password: "password"
 )
 
 user6 = User.create!(
-  name: "Chen",
-  email: "chen@example.com",
+  name: "Wanji",
+  email: "wanji@example.com",
   password: "password"
 )
 
+user7 = User.create!(
+  name: "Sherliene",
+  email: "sherliene@example.com",
+  password: "password"
+)
 # --- TOPICS ---
 english    = Topic.create!(topic_description: "Global lingua franca with words borrowed from every corner of the world", topic_name: "English")
 french     = Topic.create!(topic_description: "The language of diplomacy, romance, and culinary excellence", topic_name: "Français")
@@ -313,6 +319,203 @@ Feedback.create!(
   comment: "Best language event I've attended! The competitive element of the games made learning Spanish so much more engaging. Marcus was an excellent host!"
 )
 
+# --- NOTIFICATIONS ---
+puts "Creating notifications..."
+
+# Event registration confirmations
+Notification.create!(
+  user: user2,
+  message: "You're registered for Coffee & Conversation ☕️ on Nov 13 at 10:00 AM",
+  read: true,
+  created_at: 5.days.ago
+)
+
+Notification.create!(
+  user: user3,
+  message: "You're registered for Coffee & Conversation ☕️ on Nov 13 at 10:00 AM",
+  read: true,
+  created_at: 5.days.ago
+)
+
+# New attendee notifications for event organizers
+Notification.create!(
+  user: user,
+  message: "Marcus has joined your event: Coffee & Conversation ☕️",
+  read: true,
+  created_at: 4.days.ago
+)
+
+Notification.create!(
+  user: user,
+  message: "Sofia has joined your event: Coffee & Conversation ☕️",
+  read: true,
+  created_at: 4.days.ago
+)
+
+Notification.create!(
+  user: user2,
+  message: "Anna has joined your event: Board Game Night 🎲",
+  read: false,
+  created_at: 3.days.ago
+)
+
+# Event reminders for upcoming events
+Notification.create!(
+  user: user,
+  message: "Reminder: Cooking & Conversation Class 👨‍🍳 is tomorrow at 3:00 PM",
+  read: false,
+  created_at: 1.day.ago
+)
+
+Notification.create!(
+  user: user2,
+  message: "Reminder: Cooking & Conversation Class 👨‍🍳 starts in 24 hours",
+  read: false,
+  created_at: 1.day.ago
+)
+
+Notification.create!(
+  user: user3,
+  message: "Reminder: Survival Workshop 🗣 is coming up on Dec 17",
+  read: false,
+  created_at: 2.days.ago
+)
+
+# Feedback requests for past events
+Notification.create!(
+  user: user2,
+  message: "How was Coffee & Conversation ☕️? Share your feedback to help others!",
+  read: true,
+  created_at: 3.days.ago
+)
+
+Notification.create!(
+  user: user3,
+  message: "Please rate your experience at Film & Discussion Club 🎬",
+  read: false,
+  created_at: 2.days.ago
+)
+
+# New messages in event chat
+Notification.create!(
+  user: user,
+  message: "New messages in Coffee & Conversation ☕️ chat",
+  read: false,
+  created_at: 6.hours.ago
+)
+
+Notification.create!(
+  user: user2,
+  message: "James sent a message in Coffee & Conversation ☕️ chat",
+  read: false,
+  created_at: 3.hours.ago
+)
+
+# Event updates and changes
+Notification.create!(
+  user: user4,
+  message: "Important: Location updated for Coffee & Conversation ☕️",
+  read: true,
+  created_at: 5.days.ago
+)
+
+Notification.create!(
+  user: user5,
+  message: "The organizer posted an update for Speed Networking 🗣",
+  read: false,
+  created_at: 12.hours.ago
+)
+
+# AI chat interactions
+Notification.create!(
+  user: user,
+  message: "Kai has generated conversation starters for Cooking & Conversation Class 👨‍🍳",
+  read: false,
+  created_at: 8.hours.ago
+)
+
+Notification.create!(
+  user: user3,
+  message: "Chat summary is ready for Film & Discussion Club 🎬",
+  read: true,
+  created_at: 2.days.ago
+)
+
+# Event capacity updates
+Notification.create!(
+  user: user,
+  message: "Your event Coffee & Conversation ☕️ is almost full! (4/5 spots taken)",
+  read: true,
+  created_at: 4.days.ago
+)
+
+Notification.create!(
+  user: user2,
+  message: "Board Game Night 🎲 is now full! 5 people registered",
+  read: false,
+  created_at: 1.day.ago
+)
+
+# General notifications
+Notification.create!(
+  user: user,
+  message: "Welcome to FriendFusion! 🎉 Start by creating your first event or joining one",
+  read: true,
+  created_at: 7.days.ago
+)
+
+Notification.create!(
+  user: user5,
+  message: "You have 3 upcoming events this week. Check your calendar!",
+  read: false,
+  created_at: 10.hours.ago
+)
+
+Notification.create!(
+  user: user6,
+  message: "New events in your favorite topic: Français 🇫🇷",
+  read: false,
+  created_at: 5.hours.ago
+)
+
+# Cancellation/Changes
+Notification.create!(
+  user: user4,
+  message: "Time changed: Film & Discussion Club 🎬 now starts at 6:00 PM",
+  read: true,
+  created_at: 6.days.ago
+)
+
+# Social notifications
+Notification.create!(
+  user: user,
+  message: "Marcus left a review on your event Coffee & Conversation ☕️: ⭐⭐⭐⭐⭐",
+  read: false,
+  created_at: 2.days.ago
+)
+
+Notification.create!(
+  user: user2,
+  message: "Anna left a 5-star review on Board Game Night 🎲!",
+  read: false,
+  created_at: 1.day.ago
+)
+
+# More attendee notifications
+Notification.create!(
+  user: user,
+  message: "Chen has joined Speed Networking 🗣",
+  read: false,
+  created_at: 4.hours.ago
+)
+
+Notification.create!(
+  user: user3,
+  message: "Priya confirmed attendance for Korean Drama Watch Party 📺",
+  read: false,
+  created_at: 2.hours.ago
+)
+
 # --- CHAT DEMOS WITH MULTI-USER CONVERSATIONS ---
 
 # Chat 1: Coffee & Conversation (English) - Group Discussion
@@ -552,6 +755,22 @@ event_20 = Event.create!(
 event_20.image.attach(
   io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
   filename: "game.jpg",
+  content_type: "image/jpeg"
+)
+
+event_21 = Event.create!(
+  title: "Le Wagon Demo Day",
+  description: "Join us for Le Wagon's Demo Day showcase! Watch our students present their final projects and celebrate their coding journey. Network with developers, entrepreneurs, and tech enthusiasts. Capacity: 150 attendees.",
+  date_time: DateTime.new(2025, 12, 12, 17, 0),
+  end_time: DateTime.new(2025, 12, 12, 20, 0),
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
+  topic: english,
+  user: user2
+)
+
+event_21.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  filename: "networking.jpg",
   content_type: "image/jpeg"
 )
 
@@ -816,3 +1035,4 @@ puts "Created #{Topic.count} topics"
 puts "Created #{Event.count} events"
 puts "Created #{Confirmation.count} confirmations"
 puts "Created #{Feedback.count} feedbacks"
+puts "Created #{Notification.count} notifications"
