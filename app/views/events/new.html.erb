@@ -12,324 +12,214 @@
       </p>
     </div>
 
+    <!-- Error Messages -->
+    <% if @event.errors.any? %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h5 class="alert-heading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          Please fix the following <%= pluralize(@event.errors.count, "error") %>:
+        </h5>
+        <ul class="mb-0">
+          <% @event.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+
     <!-- Language/Topic Selection -->
     <div class="form-group mb-4">
-      <label class="form-label">Language/Topic *</label>
-
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-translate me-2" viewBox="0 0 16 16">
+          <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+          <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+        </svg>
+        Language/Topic *
+      </label>
       <% if @topics.size == 1 %>
         <%= form.select :topic_id,
-          options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
-          {},
-          class: "form-select", disabled: true %>
-        <%= form.hidden_field :topic_id, value: @event.topic_id %>
-
+            options_from_collection_for_select(@topics, :id, :topic_name, @topics.first.id),
+            {},
+            {
+              class: "form-control form-select",
+              required: true,
+              disabled: true,
+              data: { validate: "topic" }
+            } %>
+        <%= form.hidden_field :topic_id, value: @topics.first.id %>
+        <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
+        <div class="invalid-feedback" id="topic-error"></div>
         <div class="form-text">
-          <span class="badge bg-primary">Topic locked to <%= @topics.first.topic_name %></span>
-        </div>
-
-        <!-- Error Messages -->
-        <% if @event.errors.any? %>
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <h5 class="alert-heading">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle-fill me-2" viewBox="0 0 16 16">
-                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-              </svg>
-              Please fix the following <%= pluralize(@event.errors.count, "error") %>:
-            </h5>
-            <ul class="mb-0">
-              <% @event.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% end %>
-
-        <!-- Language/Topic Selection -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-translate me-2" viewBox="0 0 16 16">
-              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
-              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+          <span class="badge bg-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 16 16">
+              <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
             </svg>
-            Language/Topic *
-          </label>
-          <% if @topics.size == 1 %>
-            <%= form.select :topic_id,
-                options_from_collection_for_select(@topics, :id, :topic_name, @topics.first.id),
-                {},
-                {
-                  class: "form-control form-select",
-                  required: true,
-                  disabled: true,
-                  data: { validate: "topic" }
-                } %>
-            <%= form.hidden_field :topic_id, value: @topics.first.id %>
-            <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
-            <div class="invalid-feedback" id="topic-error"></div>
-            <div class="form-text">
-              <span class="badge bg-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-lock-fill me-1" viewBox="0 0 16 16">
-                  <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-                </svg>
-                Topic locked to <%= @topics.first.topic_name %>
-              </span>
-            </div>
-          <% else %>
-            <%= form.select :topic_id,
-                options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
-                { prompt: "Select a language..." },
-                {
-                  class: "form-control form-select",
-                  required: true,
-                  data: { validate: "topic" }
-                } %>
-            <div class="invalid-feedback" id="topic-error"></div>
-            <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
-            <div class="form-text">Choose the language community for this event</div>
-          <% end %>
+            Topic locked to <%= @topics.first.topic_name %>
+          </span>
         </div>
-
-        <!-- Title -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
-              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-            Event Title *
-          </label>
-          <%= form.text_field :title,
-              class: "form-control form-control-lg",
-              placeholder: "e.g., Summer BBQ & Networking",
+      <% else %>
+        <%= form.select :topic_id,
+            options_from_collection_for_select(@topics, :id, :topic_name, @event.topic_id),
+            { prompt: "Select a language..." },
+            {
+              class: "form-control form-select",
               required: true,
-              data: { validate: "title" } %>
-          <div class="invalid-feedback" id="title-error"></div>
-          <div class="form-text">Choose a catchy and descriptive title</div>
-        </div>
-
-        <!-- Description -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-card-text me-2" viewBox="0 0 16 16">
-              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-              <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-            </svg>
-            Description (Optional)
-          </label>
-          <%= form.text_area :description,
-              class: "form-control",
-              rows: 4,
-              placeholder: "Tell people what makes this event special... (Leave blank or enter at least 10 characters)",
-              data: { validate: "description" },
-              maxlength: 5000 %>
-          <div class="invalid-feedback" id="description-error"></div>
-          <div class="form-text d-flex justify-content-between">
-            <span>Optional: Share the details and what attendees can expect (min 10 characters if provided)</span>
-            <span class="char-counter" id="description-counter">0/5000</span>
-          </div>
-        </div>
-
-        <!-- Location -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
-              <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
-              <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-            </svg>
-            Location
-          </label>
-          <%= form.text_field :location,
-              class: "form-control",
-              placeholder: "e.g., Central Park, 123 Main St, or Online",
-              required: true,
-              data: { validate: "location" } %>
-          <div class="invalid-feedback" id="location-error"></div>
-          <div class="form-text">Where will this event take place?</div>
-        </div>
-
-        <!-- Date & Time -->
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group mb-4">
-              <label class="form-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
-                  <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-                Start Date & Time *
-              </label>
-              <%= form.datetime_local_field :date_time,
-                  class: "form-control",
-                  required: true,
-                  data: { validate: "date_time" } %>
-              <div class="invalid-feedback" id="date_time-error"></div>
-              <div class="form-text">When should attendees arrive?</div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group mb-4">
-              <label class="form-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-check me-2" viewBox="0 0 16 16">
-                  <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                </svg>
-                End Date & Time *
-              </label>
-              <%= form.datetime_local_field :end_time,
-                  class: "form-control",
-                  required: true,
-                  data: { validate: "end_time" } %>
-              <div class="invalid-feedback" id="end_time-error"></div>
-              <div class="form-text">When will the event end?</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Max Capacity -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-people me-2" viewBox="0 0 16 16">
-              <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
-            </svg>
-            Maximum Attendees
-          </label>
-          <%= form.number_field :max_capacity,
-              class: "form-control",
-              min: 1,
-              max: 10000,
-              placeholder: "Leave empty for unlimited" %>
-          <div class="form-text">Optional: Set a limit on how many people can join</div>
-        </div>
-
-        <!-- Image Upload -->
-        <div class="form-group mb-4">
-          <label class="form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-image me-2" viewBox="0 0 16 16">
-              <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-              <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
-            </svg>
-            Event Cover Image
-          </label>
-          <div class="image-upload-container">
-            <%= form.file_field :image,
-                class: "form-control",
-                accept: "image/*",
-                data: { preview: "image" } %>
-
-            <% if @event.image.attached? %>
-              <div class="current-image mt-3">
-                <p class="text-muted small mb-2">Current Image:</p>
-                <%= image_tag @event.image, class: "img-thumbnail rounded-3", style: "max-width: 300px; height: auto;" %>
-              </div>
-            <% end %>
-          </div>
-          <div class="form-text">Upload an eye-catching image (JPG, PNG, GIF)</div>
-        </div>
-
-        <!-- Submit button -->
-        <div class="form-actions text-center mt-5">
-          <%= form.submit (@event.new_record? ? "Create Event" : "Update Event"),
-              class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm",
-              data: { disable_with: "Creating..." } %>
-        </div>
-
+              data: { validate: "topic" }
+            } %>
+        <div class="invalid-feedback" id="topic-error"></div>
+        <input type="hidden" name="timezone_offset" id="timezone-offset-field" value="">
+        <div class="form-text">Choose the language community for this event</div>
       <% end %>
     </div>
 
     <!-- Title -->
     <div class="form-group mb-4">
-      <label class="form-label">Event Title *</label>
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+        </svg>
+        Event Title *
+      </label>
       <%= form.text_field :title,
           class: "form-control form-control-lg",
           placeholder: "e.g., Summer BBQ & Networking",
-          required: true %>
+          required: true,
+          data: { validate: "title" } %>
+      <div class="invalid-feedback" id="title-error"></div>
+      <div class="form-text">Choose a catchy and descriptive title</div>
     </div>
 
     <!-- Description -->
     <div class="form-group mb-4">
-      <label class="form-label">Description *</label>
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-card-text me-2" viewBox="0 0 16 16">
+          <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+          <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+        Description (Optional)
+      </label>
       <%= form.text_area :description,
           class: "form-control",
           rows: 4,
-          placeholder: "Tell people what makes this event special...",
-          maxlength: 500,
-          required: true %>
-      <div class="form-text">Share the details and what attendees can expect</div>
+          placeholder: "Tell people what makes this event special... (Leave blank or enter at least 10 characters)",
+          data: { validate: "description" },
+          maxlength: 5000 %>
+      <div class="invalid-feedback" id="description-error"></div>
+      <div class="form-text d-flex justify-content-between">
+        <span>Optional: Share the details and what attendees can expect (min 10 characters if provided)</span>
+        <span class="char-counter" id="description-counter">0/5000</span>
+      </div>
     </div>
 
     <!-- Location -->
     <div class="form-group mb-4">
-      <label class="form-label">Location *</label>
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
+          <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+          <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+        </svg>
+        Location
+      </label>
       <%= form.text_field :location,
           class: "form-control",
           placeholder: "e.g., Central Park, 123 Main St, or Online",
-          required: true %>
+          required: true,
+          data: { validate: "location" } %>
+      <div class="invalid-feedback" id="location-error"></div>
+      <div class="form-text">Where will this event take place?</div>
     </div>
 
     <!-- Date & Time -->
     <div class="row">
       <div class="col-md-6">
         <div class="form-group mb-4">
-          <label class="form-label">Start Date & Time *</label>
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-event me-2" viewBox="0 0 16 16">
+              <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+            </svg>
+            Start Date & Time *
+          </label>
           <%= form.datetime_local_field :date_time,
               class: "form-control",
               required: true,
-              min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              data: { validate: "date_time" } %>
+          <div class="invalid-feedback" id="date_time-error"></div>
+          <div class="form-text">When should attendees arrive?</div>
         </div>
       </div>
-
       <div class="col-md-6">
         <div class="form-group mb-4">
-          <label class="form-label">End Date & Time *</label>
+          <label class="form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-check me-2" viewBox="0 0 16 16">
+              <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+            </svg>
+            End Date & Time *
+          </label>
           <%= form.datetime_local_field :end_time,
               class: "form-control",
               required: true,
-              min: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+              data: { validate: "end_time" } %>
+          <div class="invalid-feedback" id="end_time-error"></div>
+          <div class="form-text">When will the event end?</div>
         </div>
       </div>
     </div>
 
     <!-- Max Capacity -->
     <div class="form-group mb-4">
-      <label class="form-label">Maximum Attendees</label>
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-people me-2" viewBox="0 0 16 16">
+          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+        </svg>
+        Maximum Attendees
+      </label>
       <%= form.number_field :max_capacity,
           class: "form-control",
           min: 1,
           max: 10000,
           placeholder: "Leave empty for unlimited" %>
-      <div class="form-text">Optional: Set a limit on attendance</div>
+      <div class="form-text">Optional: Set a limit on how many people can join</div>
     </div>
 
     <!-- Image Upload -->
     <div class="form-group mb-4">
-      <label class="form-label">Event Cover Image</label>
-      <%= form.file_field :image,
-          class: "form-control",
-          accept: "image/*" %>
+      <label class="form-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-image me-2" viewBox="0 0 16 16">
+          <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+        </svg>
+        Event Cover Image
+      </label>
+      <div class="image-upload-container">
+        <%= form.file_field :image,
+            class: "form-control",
+            accept: "image/*",
+            data: { preview: "image" } %>
 
-      <% if @event.image.attached? %>
-        <div class="current-image mt-3">
-          <p class="text-muted small mb-2">Current Image:</p>
-          <%= image_tag @event.image,
-              class: "img-thumbnail rounded-3",
-              style: "max-width: 300px;" %>
-        </div>
-      <% end %>
-
-      <div class="form-text">Upload a JPG, PNG, or GIF image</div>
+        <% if @event.image.attached? %>
+          <div class="current-image mt-3">
+            <p class="text-muted small mb-2">Current Image:</p>
+            <%= image_tag @event.image, class: "img-thumbnail rounded-3", style: "max-width: 300px; height: auto;" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="form-text">Upload an eye-catching image (JPG, PNG, GIF)</div>
     </div>
 
-    <!-- Submit -->
-    <div class="form-actions text-center mt-4">
+    <!-- Submit button -->
+    <div class="form-actions text-center mt-5">
       <%= form.submit (@event.new_record? ? "Create Event" : "Update Event"),
-          class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm" %>
+          class: "btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm",
+          data: { disable_with: "Creating..." } %>
     </div>
 
   <% end %>
-
-</div>
-
 
 </div>
 

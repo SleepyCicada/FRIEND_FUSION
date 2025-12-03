@@ -22,15 +22,14 @@
             <%= link_to notification_path(notification),
                   class: "list-group-item list-group-item-action #{'list-group-item-light' unless notification.read?}" do %>
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">
-                  <%= notification.title %>
+                <div>
+                  <p class="mb-1"><%= notification.message %></p>
                   <% unless notification.read? %>
                     <span class="badge bg-primary">New</span>
                   <% end %>
-                </h5>
+                </div>
                 <small class="text-muted"><%= time_ago_in_words(notification.created_at) %> ago</small>
               </div>
-              <p class="mb-1"><%= notification.message %></p>
             <% end %>
           <% end %>
         </div>
