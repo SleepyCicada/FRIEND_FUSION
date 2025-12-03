@@ -32,35 +32,40 @@ user = User.create!(
 )
 
 user2 = User.create!(
-  name: "Marcus",
-  email: "marcus@example.com",
+  name: "Middwin",
+  email: "middwin@example.com",
   password: "password"
 )
 
 user3 = User.create!(
-  name: "Sofia",
-  email: "sofia@example.com",
+  name: "Flo",
+  email: "Flo@example.com",
   password: "password"
 )
 
 user4 = User.create!(
-  name: "James",
-  email: "james@example.com",
+  name: "Pavel",
+  email: "pavel@example.com",
   password: "password"
 )
 
 user5 = User.create!(
-  name: "Priya",
-  email: "priya@example.com",
+  name: "Frank",
+  email: "frank@example.com",
   password: "password"
 )
 
 user6 = User.create!(
-  name: "Chen",
-  email: "chen@example.com",
+  name: "Wanji",
+  email: "wanji@example.com",
   password: "password"
 )
 
+user7 = User.create!(
+  name: "Sherliene",
+  email: "sherliene@example.com",
+  password: "password"
+)
 # --- TOPICS ---
 english    = Topic.create!(topic_description: "Global lingua franca with words borrowed from every corner of the world", topic_name: "English")
 french     = Topic.create!(topic_description: "The language of diplomacy, romance, and culinary excellence", topic_name: "Français")
@@ -750,6 +755,22 @@ event_20 = Event.create!(
 event_20.image.attach(
   io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
   filename: "game.jpg",
+  content_type: "image/jpeg"
+)
+
+event_21 = Event.create!(
+  title: "Le Wagon Demo Day",
+  description: "Join us for Le Wagon's Demo Day showcase! Watch our students present their final projects and celebrate their coding journey. Network with developers, entrepreneurs, and tech enthusiasts. Capacity: 150 attendees.",
+  date_time: DateTime.new(2025, 12, 12, 17, 0),
+  end_time: DateTime.new(2025, 12, 12, 20, 0),
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
+  topic: english,
+  user: user2
+)
+
+event_21.image.attach(
+  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  filename: "networking.jpg",
   content_type: "image/jpeg"
 )
 
