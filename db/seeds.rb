@@ -117,9 +117,9 @@ event_3 = Event.create!(
   description: "Play classic board games adapted for language learners",
   date_time: DateTime.new(2025, 11, 19, 19, 0),
   end_time: DateTime.new(2025, 11, 19, 22, 0),
-  location: "Game Hub, Park Street",
   topic: spanish,
-  user: user2
+  user: user2,
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9"
 )
 
 event_3.image.attach(
@@ -150,7 +150,7 @@ event_5 = Event.create!(
   description: "Essential travel phrases and emergency conversation practice",
   date_time: DateTime.new(2025, 12, 17, 14, 0),
   end_time: DateTime.new(2025, 12, 17, 16, 0),
-  location: "Language Center, University Road",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: japanese,
   user: user2
 )
@@ -182,7 +182,7 @@ event_7 = Event.create!(
   description: "Mini debates & interactive prompts in a virtual setting",
   date_time: DateTime.new(2025, 12, 20, 10, 0),
   end_time: DateTime.new(2025, 12, 20, 12, 0),
-  location: "Online - Zoom Link will be shared",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: english,
   user: user,
 )
@@ -198,7 +198,7 @@ event_8 = Event.create!(
   description: "Find a long-term partner for language progress",
   date_time: DateTime.new(2025, 12, 21, 13, 0),
   end_time: DateTime.new(2025, 12, 21, 15, 0),
-  location: "City Library, Reading Room",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: polish,
   user: user2
 )
@@ -365,7 +365,7 @@ event_9 = Event.create!(
   description: "Share dishes from your culture and practice language skills",
   date_time: DateTime.new(2025, 11, 15, 18, 30),
   end_time: DateTime.new(2025, 11, 15, 21, 30),
-  location: "Community Hall, Maple Avenue",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: german,
   user: user2
 )
@@ -382,7 +382,7 @@ event_10 = Event.create!(
   description: "Start your day with yoga while learning basic Mandarin phrases",
   date_time: DateTime.new(2025, 11, 16, 8, 0),
   end_time: DateTime.new(2025, 11, 16, 9, 30),
-  location: "Wellness Studio, Beach Road",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: mandarin,
   user: user3
 )
@@ -398,7 +398,7 @@ event_11 = Event.create!(
   description: "Discuss short stories and practice reading comprehension",
   date_time: DateTime.new(2025, 11, 18, 19, 0),
   end_time: DateTime.new(2025, 11, 18, 21, 0),
-  location: "Independent Bookstore, Literary Lane",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: portuguese,
   user: user3
 )
@@ -414,7 +414,7 @@ event_12 = Event.create!(
   description: "Learn beautiful Arabic script while practicing vocabulary",
   date_time: DateTime.new(2025, 11, 20, 14, 0),
   end_time: DateTime.new(2025, 11, 20, 17, 0),
-  location: "Art Studio, Gallery Street",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: arabic,
   user: user3
 )
@@ -430,7 +430,7 @@ event_13 = Event.create!(
   description: "Watch popular K-dramas with subtitles and discuss in Korean",
   date_time: DateTime.new(2025, 12, 22, 17, 0),
   end_time: DateTime.new(2025, 12, 22, 20, 0),
-  location: "Community Center, Drama Room",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: korean,
   user: user3
 )
@@ -463,7 +463,7 @@ event_15 = Event.create!(
   description: "Read and discuss classic Russian short stories",
   date_time: DateTime.new(2025, 11, 17, 15, 0),
   end_time: DateTime.new(2025, 11, 17, 17, 30),
-  location: "University Library, Study Room B",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: russian,
   user: user4
 )
@@ -479,7 +479,7 @@ event_16 = Event.create!(
   description: "Wine tasting paired with Italian conversation practice",
   date_time: DateTime.new(2025, 11, 21, 19, 0),
   end_time: DateTime.new(2025, 11, 21, 22, 0),
-  location: "Wine Bar, Vineyard Street",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: italian,
   user: user4
 )
@@ -495,7 +495,7 @@ event_17 = Event.create!(
   description: "Share travel experiences in your target language",
   date_time: DateTime.new(2025, 12, 24, 14, 0),
   end_time: DateTime.new(2025, 12, 24, 16, 30),
-  location: "Travel Café, Explorer's Plaza",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: english,
   user: user4
 )
@@ -511,7 +511,7 @@ event_18 = Event.create!(
   description: "Master difficult French sounds and accent patterns",
   date_time: DateTime.new(2025, 12, 26, 10, 0),
   end_time: DateTime.new(2025, 12, 26, 12, 0),
-  location: "Language Academy, Pronunciation Lab",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: french,
   user: user4
 )
@@ -527,7 +527,7 @@ event_19 = Event.create!(
   description: "Practice Polish in small groups with native speakers",
   date_time: DateTime.new(2025, 12, 27, 18, 0),
   end_time: DateTime.new(2025, 12, 27, 20, 0),
-  location: "Cultural Center, Room 3",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: polish,
   user: user4
 )
@@ -544,7 +544,7 @@ event_20 = Event.create!(
   description: "Compete in language-based games and puzzles",
   date_time: DateTime.new(2025, 12, 28, 15, 0),
   end_time: DateTime.new(2025, 12, 28, 18, 0),
-  location: "Game Center, Tournament Hall",
+  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: japanese,
   user: user2
 )

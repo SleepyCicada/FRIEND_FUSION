@@ -16,6 +16,7 @@
   gap: 1.5rem;
   box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
   animation: slideDown 0.5s ease-out;
+  border: 1px solid #dcdcdc;
 }
 
 @keyframes slideDown {
@@ -31,8 +32,10 @@
 
 .completed-icon {
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+  // width: 60px;
+  // height: 60px;
+  min-width: 40px;
+  min-height: 40px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
@@ -45,8 +48,10 @@
 }
 
 .completed-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  // font-size: 1.5rem;
+  // font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
   color: white;
 }
@@ -476,5 +481,197 @@
   .feedback-header {
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+.event-details-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 576px) {
+  .details-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.detail-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.detail-icon {
+  font-size: 1.7rem;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.attendees-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.attendee-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attendee-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  width: 100%;
+}
+
+.attendees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 16px;
+  justify-items: center;
+}
+
+.attendee-block {
+  text-align: center;
+}
+
+.attendee-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers avatar + name horizontally */
+  justify-content: center;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background: none; /* remove default circle */
+  width: 24px;
+  height: 24px;
+}
+
+/* Draw black arrows using borders */
+.carousel-control-prev-icon::after,
+.carousel-control-next-icon::after {
+  content: '';
+  display: inline-block;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  padding: 6px;
+}
+
+/* Rotate arrows */
+.carousel-control-prev-icon::after { transform: rotate(135deg); }
+.carousel-control-next-icon::after { transform: rotate(-45deg); }
+
+/* Align carousel arrows with avatars */
+#attendeesCarousel .carousel-control-prev,
+#attendeesCarousel .carousel-control-next {
+  top: 50%; /* center vertically */
+  transform: translateY(-50%); /* exact vertical center */
+  width: 2rem;  /* adjust arrow size */
+  height: 2rem;
+  background-size: 1.5rem 1.5rem; /* make icon smaller */
+}
+
+#attendeesCarousel .carousel-control-prev {
+  left: -1.5rem; /* move left, outside the avatars */
+}
+
+#attendeesCarousel .carousel-control-next {
+  right: -1.5rem; /* move right, outside the avatars */
+}
+
+/* Optional: make arrows semi-transparent for better UX */
+#attendeesCarousel .carousel-control-prev-icon,
+#attendeesCarousel .carousel-control-next-icon {
+  filter: brightness(1.2);
+}
+
+@media (max-width: 576px) {
+  #attendeesCarousel .carousel-control-prev {
+    left: -1rem;
+  }
+  #attendeesCarousel .carousel-control-next {
+    right: -1rem;
+  }
+}
+
+.go-back-container {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 0;
+  margin-bottom: 0.5rem;
+}
+
+.go-back-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.go-back-button:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+
+/* Make sure it’s responsive on mobile */
+@media (max-width: 600px) {
+  .go-back-button {
+    width: 45px;
+    height: 45px;
   }
 }
