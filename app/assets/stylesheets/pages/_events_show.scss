@@ -92,7 +92,9 @@
 
 .event-hero-content {
   padding: 2.5rem;
-  background: none;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 .topic-badge {
@@ -111,8 +113,6 @@
 }
 
 .event-title {
-  // font-size: 3rem;
-  // font-weight: 800;
   font-size: 1rem;
   font-weight: 600;
   color: #1a202c;
@@ -125,7 +125,10 @@
   color: #4a5568;
   line-height: 1.4;
   margin: 0;
-  background: none;
+  background: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5rem 0;
 }
 
 /* Spacing tweaks for mobile */
@@ -209,13 +212,21 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  flex-direction: row;
 }
 
-.btn-action {
+.action-buttons-section form {
   display: inline-flex;
+  margin: 0;
+}
+
+.action-buttons-section .btn-action {
+  display: inline-flex !important;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
@@ -224,6 +235,27 @@
   transition: all 0.3s ease;
   text-decoration: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: auto !important;
+}
+
+.action-buttons-section .btn-action svg {
+  flex-shrink: 0;
+}
+
+.btn-action {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: auto !important;
 }
 
 .btn-primary-action {
@@ -266,8 +298,13 @@
 .btn-join-event {
   background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
   color: white;
-  padding: 1.25rem 3rem;
-  font-size: 1.25rem;
+  padding: 0.75rem 2rem; /* smaller padding */
+  font-size: 1rem;        /* smaller font */
+  display: block;         /* allows centering with margin auto */
+  margin: 0.25rem auto;      /* center horizontally and add some spacing */
+  border: none;
+  border-radius: 50px;     /* optional: rounded corners */
+  text-align: center;
 }
 
 .btn-join-event:hover {
@@ -460,7 +497,7 @@
 .feedbacks-section {
   background: white;
   border-radius: 20px;
-  padding: 2.5rem;
+  padding: 1.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
@@ -482,7 +519,7 @@
 .feedback-card {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 15px;
-  padding: 1.75rem;
+  padding: 1rem;
   transition: all 0.3s ease;
 }
 
@@ -600,8 +637,8 @@
   }
 
   .btn-action {
-    // width: 20%;
     justify-content: center;
+    flex-direction: row;
   }
 
   .attendees-grid {
