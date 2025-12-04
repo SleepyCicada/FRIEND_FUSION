@@ -213,7 +213,7 @@
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
   flex-direction: row;
 }
 
@@ -238,9 +238,7 @@
   width: auto !important;
 }
 
-.action-buttons-section .btn-action svg {
-  flex-shrink: 0;
-}
+
 
 .btn-action {
   display: inline-flex !important;
