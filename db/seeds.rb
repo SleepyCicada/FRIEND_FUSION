@@ -1,3 +1,5 @@
+require "open-uri"
+
 puts "Cleaning database..."
 
 # CHILD TABLES FIRST
