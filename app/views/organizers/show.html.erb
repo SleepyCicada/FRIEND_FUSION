@@ -1,7 +1,27 @@
 <div class="organizer-profile-page">
-  <div class="container py-5">
+  <div class="container" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
     <div class="row">
       <div class="col-lg-10 mx-auto">
+
+        <!-- Go Back Button -->
+        <div class="go-back-container">
+          <button class="go-back-button" onclick="goBack()">
+            <!-- Optional: back arrow icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+            </svg>
+          </button>
+        </div>
+
+        <script>
+        function goBack() {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = "/"; // fallback URL
+          }
+        }
+        </script>
 
         <!-- Organizer Hero Section -->
         <div class="organizer-hero mb-5">
@@ -147,6 +167,8 @@
   .organizer-profile-page {
     background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
     min-height: 100vh;
+    padding-top: 1,5rem;
+    padding-bottom: 2,5rem;
   }
 
   .organizer-hero {
@@ -416,5 +438,10 @@
       flex-direction: column;
       gap: 1rem;
     }
+
+    .go-back-container {
+    margin-top: 0rem;
+    margin-bottom: 1rem;
   }
+}
 </style>
