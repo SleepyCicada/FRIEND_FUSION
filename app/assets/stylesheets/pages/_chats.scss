@@ -461,10 +461,17 @@
 }
 
 // Chat Input
+// .chat-input-container {
+//   padding: 1.5rem 2rem;
+//   background: white;
+//   border-top: 2px solid #e9ecef;
+// }
+
 .chat-input-container {
-  padding: 1.5rem 2rem;
+  position: sticky;
+  bottom: 0;
   background: white;
-  border-top: 2px solid #e9ecef;
+  padding: 10px;
 }
 
 .chat-input-form .input-group {

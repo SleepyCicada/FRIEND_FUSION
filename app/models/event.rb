@@ -20,16 +20,22 @@ class Event < ApplicationRecord
 
   def event_ended?
     return false unless end_time.present?
+
     end_time < Time.current
   end
 
   def average_rating
     return 0 if feedbacks.empty?
-    (feedbacks.average(:rating).to_f).round(1)
+
+    feedbacks.average(:rating).to_f.round(1)
   end
 
   def feedback_count
     feedbacks.count
+  end
+
+  def online?
+    location.to_s.downcase.include?("online")
   end
 
   private
@@ -42,9 +48,9 @@ class Event < ApplicationRecord
   def end_time_after_start_time
     return if end_time.blank? || date_time.blank?
 
-    if end_time <= date_time
-      errors.add(:end_time, "must be after start time")
-    end
+    return unless end_time <= date_time
+
+    errors.add(:end_time, "must be after start time")
   end
 
   def schedule_reminder
