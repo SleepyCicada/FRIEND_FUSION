@@ -1,3 +1,5 @@
+require 'open-uri'
+
 puts "Cleaning database..."
 
 # CHILD TABLES FIRST
@@ -97,7 +99,7 @@ event_1 = Event.create!(
 )
 
 event_1.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896125/cafe_hm5tsq.jpg"),
   filename: "cafe.jpg",
   content_type: "image/jpeg"
 )
@@ -113,7 +115,7 @@ event_2 = Event.create!(
 )
 
 event_2.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/movie.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896160/movie_krp9k0.jpg"),
   filename: "movie.jpg",
   content_type: "image/jpeg"
 )
@@ -129,7 +131,7 @@ event_3 = Event.create!(
 )
 
 event_3.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896169/game_buxwsz.jpg"),
   filename: "game.jpg",
   content_type: "image/jpeg"
 )
@@ -146,7 +148,7 @@ event_4 = Event.create!(
 )
 
 event_4.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/cook.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
   filename: "cook.jpg",
   content_type: "image/jpeg"
 )
@@ -162,7 +164,7 @@ event_5 = Event.create!(
 )
 
 event_5.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -178,7 +180,7 @@ event_6 = Event.create!(
 )
 
 event_6.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
@@ -188,13 +190,13 @@ event_7 = Event.create!(
   description: "Mini debates & interactive prompts in a virtual setting",
   date_time: DateTime.new(2025, 12, 20, 10, 0),
   end_time: DateTime.new(2025, 12, 20, 12, 0),
-  location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
+  location: "Online",
   topic: english,
   user: user,
 )
 
 event_7.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/online.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896191/online_usxema.jpg"),
   filename: "online.jpg",
   content_type: "image/jpeg"
 )
@@ -210,7 +212,7 @@ event_8 = Event.create!(
 )
 
 event_8.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896184/study_cmfuvk.jpg"),
   filename: "study.jpg",
   content_type: "image/jpeg"
 )
@@ -574,7 +576,7 @@ event_9 = Event.create!(
 )
 
 event_9.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/cook.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
   filename: "cook.jpg",
   content_type: "image/jpeg"
 )
@@ -591,7 +593,7 @@ event_10 = Event.create!(
 )
 
 event_10.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -607,7 +609,7 @@ event_11 = Event.create!(
 )
 
 event_11.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "study.jpg",
   content_type: "image/jpeg"
 )
@@ -623,7 +625,7 @@ event_12 = Event.create!(
 )
 
 event_12.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896184/study_cmfuvk.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -639,7 +641,7 @@ event_13 = Event.create!(
 )
 
 event_13.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/movie.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
   filename: "movie.jpg",
   content_type: "image/jpeg"
 )
@@ -655,7 +657,7 @@ event_14 = Event.create!(
 )
 
 event_14.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/online.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "online.jpg",
   content_type: "image/jpeg"
 )
@@ -672,7 +674,7 @@ event_15 = Event.create!(
 )
 
 event_15.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/study.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
   filename: "study.jpg",
   content_type: "image/jpeg"
 )
@@ -688,7 +690,7 @@ event_16 = Event.create!(
 )
 
 event_16.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "cafe.jpg",
   content_type: "image/jpeg"
 )
@@ -704,7 +706,7 @@ event_17 = Event.create!(
 )
 
 event_17.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/cafe.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896184/study_cmfuvk.jpg"),
   filename: "cafe.jpg",
   content_type: "image/jpeg"
 )
@@ -720,7 +722,7 @@ event_18 = Event.create!(
 )
 
 event_18.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/workshop.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -736,7 +738,7 @@ event_19 = Event.create!(
 )
 
 event_19.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
@@ -753,7 +755,7 @@ event_20 = Event.create!(
 )
 
 event_20.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/game.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
   filename: "game.jpg",
   content_type: "image/jpeg"
 )
@@ -769,7 +771,7 @@ event_21 = Event.create!(
 )
 
 event_21.image.attach(
-  io: File.open(Rails.root.join("db/seeds/images/networking.jpg")),
+  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
