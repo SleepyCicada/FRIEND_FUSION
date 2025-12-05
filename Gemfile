@@ -56,7 +56,7 @@ gem "faker"
 gem "ruby_llm"
 gem "pundit"
 gem 'geocoder'
-
+gem "image_processing"
 
 group :development, :test do
   gem "dotenv-rails"
