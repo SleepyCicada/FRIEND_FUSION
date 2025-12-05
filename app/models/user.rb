@@ -15,6 +15,8 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
+  has_one_attached :avatar
+
   # Organizer statistics
   def average_organizer_rating
     feedbacks_for_events = Feedback.joins(:event).where(events: { user_id: id })

@@ -29,16 +29,38 @@
               <% end %>
             <% end %>
           </li>
+
+          <!-- Avatar dropdown -->
           <li class="nav-item dropdown">
             <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
+              <% if current_user.avatar.attached? %>
+                <%= image_tag current_user.avatar.variant(resize_to_limit: [40, 40]),
+                              class: "avatar rounded-circle",
+                              alt: "User avatar" %>
+              <% else %>
+                <%= image_tag "def_avatar.png",
+                              class: "avatar rounded-circle",
+                              alt: "Default avatar" %>
+              <% end %>
             </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
+              <!-- Larger avatar preview -->
+              <div class="mb-2">
+                <% if current_user.avatar.attached? %>
+                  <%= image_tag current_user.avatar.variant(resize_to_limit: [80, 80]),
+                                class: "rounded-circle mb-2",
+                                alt: "User avatar large" %>
+                <% else %>
+                  <%= image_tag "def_avatar.png",
+                                class: "rounded-circle mb-2",
+                                alt: "Default avatar large" %>
+                <% end %>
+              </div>
               <div class="dropdown-header"><%= current_user.name || current_user.email %></div>
               <%= link_to "My Events", events_path, class: "dropdown-item" %>
               <%= link_to "Notifications", notifications_path, class: "dropdown-item" %>
               <div class="dropdown-divider"></div>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
             </div>
           </li>
         <% else %>
