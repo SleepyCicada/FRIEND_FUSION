@@ -413,6 +413,7 @@
   font-weight: 700;
   font-size: 1.125rem;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .attendee-name {
@@ -489,6 +490,7 @@
     justify-content: center;
     font-weight: 700;
     font-size: 1rem;
+    overflow: hidden;
 }
 
   .count-badge {
@@ -576,6 +578,7 @@
   font-weight: 700;
   font-size: 1.25rem;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .feedback-user-name {
@@ -690,6 +693,7 @@
     width: 42px;
     height: 42px;
     font-size: 1.1rem;
+    overflow: hidden;
   }
 
   .average-rating-badge {
@@ -842,6 +846,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .attendee-name {

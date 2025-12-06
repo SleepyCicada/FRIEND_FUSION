@@ -28,8 +28,8 @@ puts "Creating test data..."
 
 # --- USERS ---
 user = User.create!(
-  name: "Anna",
-  email: "anna@example.com",
+  name: "Ceci",
+  email: "ceci@example.com",
   password: "password"
 )
 
@@ -180,7 +180,7 @@ event_6 = Event.create!(
 )
 
 event_6.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039192/Speed_Networking_uj8wwp.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
@@ -212,13 +212,37 @@ event_8 = Event.create!(
 )
 
 event_8.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896184/study_cmfuvk.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1764896154/vitaly-gariev-eQlU4-7PGHw-unsplash_l7u3qk.jpg"),
   filename: "study.jpg",
   content_type: "image/jpeg"
 )
 
 # --- CONFIRMATIONS ---
 puts "Creating confirmations..."
+
+# ========================================
+# ATTENDEE PHOTOS - CLOUDINARY LINKS
+# ========================================
+# To add attendee photos, insert cloudinary URLs here for each user
+# Then attach photos to user avatars or confirmation records
+# #
+# # Example:
+# # user2.photo.attach(io: URI.open("YOUR_CLOUDINARY_LINK_HERE"), filename: "avatar.jpg", content_type: "image/jpeg")
+# #
+# # Cloudinary links for attendees:
+# # user (Ceci): [INSERT_CLOUDINARY_LINK_HERE]
+# # # user2 (Middwin): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041670/Middwin_xydzch.png]
+# # user3 (Flo): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041676/Flo_ljuinv.png]
+# # # user4 (Pavel): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041674/Pavel_bgv7ve.png]
+# # # user5 (Frank): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041673/Frank_k2xxpl.png]
+# # # user6 (Wanji): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041670/Wanji_nje50u.png]
+# # # user7 (Sherliene): [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041671/Sherliene_ipctq8.png]
+# # # rachel: [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041676/Rachel_b9f1em.png]
+# # # antoine: [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041671/Antoine_nstc0g.png]
+# # # mg: [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041675/MG_lzyudo.png]
+# # nadia: [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041677/Nadia_woujaq.png]
+# # # enrique: [https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041672/Enrique_gfucma.png]
+# # # ========================================
 
 # Event 1 attendees
 Confirmation.create!(user: user2, event: event_1)
@@ -274,7 +298,7 @@ Feedback.create!(
   user: user4,
   event: event_1,
   rating: 5,
-  comment: "This was my first language meetup and it exceeded all expectations! Anna did a fantastic job organizing everything. The coffee was great too!"
+  comment: "This was my first language meetup and it exceeded all expectations! Ceci did a fantastic job organizing everything. The coffee was great too!"
 )
 
 # Feedbacks for Event 2 (past event)
@@ -356,7 +380,7 @@ Notification.create!(
 
 Notification.create!(
   user: user2,
-  message: "Anna has joined your event: Board Game Night 🎲",
+  message: "Ceci has joined your event: Board Game Night 🎲",
   read: false,
   created_at: 3.days.ago
 )
@@ -498,7 +522,7 @@ Notification.create!(
 
 Notification.create!(
   user: user2,
-  message: "Anna left a 5-star review on Board Game Night 🎲!",
+  message: "Ceci left a 5-star review on Board Game Night 🎲!",
   read: false,
   created_at: 1.day.ago
 )
@@ -520,47 +544,16 @@ Notification.create!(
 
 # --- CHAT DEMOS WITH MULTI-USER CONVERSATIONS ---
 
-# Chat 1: Coffee & Conversation (English) - Group Discussion
-chat_1 = event_1.chat
+# Only keeping chats for Le Wagon Demo Day and Study Buddy Matchup
 
-# Early messages - before Anna joins (important info she'll miss)
-Message.create!(user: user2, chat: chat_1, content: "Hey everyone! Super excited for this Coffee & Conversation event on Dec 13th!", ai: false)
-Message.create!(user: user3, chat: chat_1, content: "Hi Marcus! Me too! Has anyone been to this cafe before? I heard they have great pastries.", ai: false)
-Message.create!(user: user4, chat: chat_1, content: "Yes! I've been there twice. Quick heads up - the cafe location changed! It's now at 142 Main Street, not the old address on the website.", ai: false)
-Message.create!(user: user2, chat: chat_1, content: "Oh thanks for letting us know James! That's really important. Should we update the event organizer?", ai: false)
-Message.create!(user: user5, chat: chat_1, content: "Hey everyone! First time at one of these events. A bit nervous but excited! Also, James, thanks for the address update!", ai: false)
-Message.create!(user: user3, chat: chat_1, content: "Welcome Priya! Don't worry, everyone's super friendly. I've been to 3 of these and they're always great!", ai: false)
-Message.create!(user: user6, chat: chat_1, content: "Hi all! I'm coming from the north side. If anyone wants to carpool, I have room for 2 people. DM me!", ai: false)
-Message.create!(user: user4, chat: chat_1, content: "That's nice of you Chen! I might take you up on that. Also, FYI the cafe gets busy around 10am, so I suggest we aim to arrive at 9:45am to grab good seats.", ai: false)
-Message.create!(user: user2, chat: chat_1, content: "Good thinking! I'll plan to be there at 9:45. Should we have a specific table or meeting spot inside?", ai: false)
-Message.create!(user: user5, chat: chat_1, content: "The cafe has a back room with big communal tables. That's probably where we should meet. I'll bring some conversation starter cards I made!", ai: false)
-Message.create!(user: user3, chat: chat_1, content: "Oh that's a great idea Priya! I have some English idiom flashcards too. We could use those for practice.", ai: false)
-Message.create!(user: user6, chat: chat_1, content: "Perfect! So just to recap: 142 Main Street, arrive by 9:45am, meet in the back room. Priya and Sofia are bringing materials. Anything else?", ai: false)
-Message.create!(user: user4, chat: chat_1, content: "I think that covers it! Oh, and I heard they don't take cash, so bring cards only. See you all there!", ai: false)
-Message.create!(user: user2, chat: chat_1, content: "No cash, got it. This is going to be fun! Can't wait to practice my conversation skills with you all.", ai: false)
-Message.create!(user: user5, chat: chat_1, content: "Same here! I've been working on my pronunciation and could really use the practice. See everyone Friday!", ai: false)
-Message.create!(user: user6, chat: chat_1, content: "Looking forward to meeting everyone! I'll create a shared notes doc so we can all add topics we want to discuss.", ai: false)
-
-# Anna joins late and missed all the important info
-Message.create!(user: user, chat: chat_1, content: "Hi everyone! Sorry I'm late joining the chat. Looking forward to this event!", ai: false)
-
-# Chat 2: Cooking & Conversation Class (Italian)
-chat_2 = event_4.chat
-Message.create!(user: user, chat: chat_2, content: "Ciao! Excited for this cooking class!", ai: false)
-Message.create!(user: nil, chat: chat_2, content: "Ciao! Benvenuto! 🇮🇹 I can help you prepare Italian cooking vocabulary. What would you like to learn?", ai: true)
-Message.create!(user: user, chat: chat_2, content: "I want to make pasta from scratch but don't know the Italian terms. Can you help?", ai: false)
-Message.create!(user: nil, chat: chat_2, content: "Perfetto! Here are essential pasta-making terms:\n\n**Ingredients:**\n• farina (flour)\n• uova (eggs)\n• sale (salt)\n• acqua (water)\n\n**Actions:**\n• impastare (to knead)\n• stendere (to roll out)\n• tagliare (to cut)\n• cuocere (to cook)\n\n**Pasta types:**\n• tagliatelle, fettuccine, pappardelle\n\nWould you like a simple recipe in Italian?", ai: true)
-Message.create!(user: user, chat: chat_2, content: "Yes please! A simple one for beginners.", ai: false)
-Message.create!(user: nil, chat: chat_2, content: "Ecco una ricetta semplice! (Here's a simple recipe!)\n\n**Pasta Fresca Semplice:**\n1. Mescola 200g di farina con 2 uova (Mix 200g flour with 2 eggs)\n2. Impasta per 10 minuti (Knead for 10 minutes)\n3. Lascia riposare 30 minuti (Let rest 30 minutes)\n4. Stendi e taglia (Roll out and cut)\n5. Cuoci in acqua bollente per 3 minuti (Cook in boiling water for 3 minutes)\n\nBuon appetito! 👨‍🍳", ai: true)
-
-# Chat 3: Survival Workshop (Japanese)
-chat_3 = event_5.chat
-Message.create!(user: user, chat: chat_3, content: "Hello! I'm traveling to Japan next month and need emergency phrases.", ai: false)
-Message.create!(user: nil, chat: chat_3, content: "こんにちは! I'll help you with essential emergency phrases for Japan. What situations concern you most?", ai: true)
-Message.create!(user: user, chat: chat_3, content: "Medical emergencies and asking for help. Also getting lost!", ai: false)
-Message.create!(user: nil, chat: chat_3, content: "Important phrases for emergencies:\n\n**Medical:**\n• 助けてください！(Tasukete kudasai!) - Help!\n• 病院はどこですか？(Byōin wa doko desu ka?) - Where is the hospital?\n• 救急車を呼んでください (Kyūkyūsha o yonde kudasai) - Please call an ambulance\n• 英語を話せる人はいますか？(Eigo o hanaseru hito wa imasu ka?) - Is there anyone who speaks English?\n\n**Getting Lost:**\n• 道に迷いました (Michi ni mayoimashita) - I'm lost\n• ここはどこですか？(Koko wa doko desu ka?) - Where am I?\n• [Place name]へ行きたいです ([Place] e ikitai desu) - I want to go to [place]\n\nWrite these down and practice them!", ai: true)
-Message.create!(user: user, chat: chat_3, content: "Perfect! What about basic courtesy phrases I should know?", ai: false)
-Message.create!(user: nil, chat: chat_3, content: "Essential courtesy phrases:\n\n• すみません (Sumimasen) - Excuse me/Sorry (most versatile!)\n• ありがとうございます (Arigatō gozaimasu) - Thank you\n• ごめんなさい (Gomen nasai) - I'm sorry\n• お願いします (Onegaishimasu) - Please/I ask of you\n• 分かりません (Wakarimasen) - I don't understand\n\nJapanese people appreciate effort! Don't worry about perfect pronunciation—they'll help you. 🇯🇵\n\nSee you at the workshop!", ai: true)
+# Chat: Study Buddy Matchup (Polish)
+chat_study = event_8.chat
+Message.create!(user: user, chat: chat_study, content: "Hi everyone! Looking forward to finding a study partner for Polish. Anyone else learning from scratch?", ai: false)
+Message.create!(user: user3, chat: chat_study, content: "Hey! I've been learning Polish for about 3 months now. Would love to find someone to practice with regularly!", ai: false)
+Message.create!(user: user4, chat: chat_study, content: "This is perfect timing! I've been struggling with Polish pronunciation and could really use a study buddy.", ai: false)
+Message.create!(user: user5, chat: chat_study, content: "Count me in! I'm at beginner level but super committed. Looking for someone who wants to practice 2-3 times a week.", ai: false)
+Message.create!(user: user3, chat: chat_study, content: "Priya, that sounds great! I'm also looking for regular practice sessions. Should we exchange schedules at the event?", ai: false)
+Message.create!(user: user, chat: chat_study, content: "This is exactly why I love these meetups! Already seeing great connections forming. See you all on Saturday!", ai: false)
 
 # --- ADDITIONAL EVENTS (12 more events: 6 past, 6 future) ---
 
@@ -593,7 +586,7 @@ event_10 = Event.create!(
 )
 
 event_10.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039829/Yoga_tl4qw0.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -641,7 +634,7 @@ event_13 = Event.create!(
 )
 
 event_13.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039190/Korean_Drama_ebxmyu.png"),
   filename: "movie.jpg",
   content_type: "image/jpeg"
 )
@@ -657,7 +650,7 @@ event_14 = Event.create!(
 )
 
 event_14.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039193/Virtual_Language_Cafe_nstiqk.jpg"),
   filename: "online.jpg",
   content_type: "image/jpeg"
 )
@@ -706,7 +699,7 @@ event_17 = Event.create!(
 )
 
 event_17.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896184/study_cmfuvk.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039200/Travel_Stories_Exchange_j86tis.jpg"),
   filename: "cafe.jpg",
   content_type: "image/jpeg"
 )
@@ -722,7 +715,7 @@ event_18 = Event.create!(
 )
 
 event_18.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896177/cook_jkviyy.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039175/French_Pronunciation_Workshop_fqwu3e.jpg"),
   filename: "workshop.jpg",
   content_type: "image/jpeg"
 )
@@ -738,7 +731,7 @@ event_19 = Event.create!(
 )
 
 event_19.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039190/Polish_Conversation_Circle_wctods.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
@@ -755,7 +748,7 @@ event_20 = Event.create!(
 )
 
 event_20.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896181/networking_pc6wmq.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039191/Language_Games_hx3bna.jpg"),
   filename: "game.jpg",
   content_type: "image/jpeg"
 )
@@ -771,7 +764,7 @@ event_21 = Event.create!(
 )
 
 event_21.image.attach(
-  io: URI.open("https://res.cloudinary.com/dvlacvo0z/image/upload/v1764896188/trivia_of7lho.jpg"),
+  io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765039192/Le_Wagon_Demo_Day_ryypfz.jpg"),
   filename: "networking.jpg",
   content_type: "image/jpeg"
 )
@@ -1134,6 +1127,19 @@ Confirmation.create!(user: antoine, event: event_21)
 Confirmation.create!(user: mg, event: event_21)
 Confirmation.create!(user: nadia, event: event_21)
 Confirmation.create!(user: enrique, event: event_21)
+
+user.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041673/Ceci_ixrwxv.png"), filename: "ceci.jpg", content_type: "image/jpeg")
+user2.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041670/Middwin_xydzch.png"), filename: "middwin.jpg", content_type: "image/jpeg")
+user3.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041676/Flo_ljuinv.png"), filename: "flo.jpg", content_type: "image/jpeg")
+user4.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041674/Pavel_bgv7ve.png"), filename: "pavel.jpg", content_type: "image/jpeg")
+user5.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041673/Frank_k2xxpl.png"), filename: "frank.jpg", content_type: "image/jpeg")
+user6.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041670/Wanji_nje50u.png"), filename: "wanji.jpg", content_type: "image/jpeg")
+user7.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041671/Sherliene_ipctq8.png"), filename: "sherliene.jpg", content_type: "image/jpeg")
+rachel.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041676/Rachel_b9f1em.png"), filename: "rachel.jpg", content_type: "image/jpeg")
+antoine.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041671/Antoine_nstc0g.png"), filename: "antoine.jpg", content_type: "image/jpeg")
+mg.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041675/MG_lzyudo.png"), filename: "mg.jpg", content_type: "image/jpeg")
+nadia.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041677/Nadia_woujaq.png"), filename: "nadia.jpg", content_type: "image/jpeg")
+enrique.avatar.attach(io: URI.open("https://res.cloudinary.com/dj2zl0gib/image/upload/v1765041672/Enrique_gfucma.png"), filename: "enrique.jpg", content_type: "image/jpeg")
 
 puts "✅ Database seeded successfully!"
 puts "Created #{User.count} users"
