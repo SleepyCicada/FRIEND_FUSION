@@ -24,6 +24,12 @@ class Event < ApplicationRecord
     end_time < Time.current
   end
 
+  def event_started?
+    return false unless date_time.present?
+
+    date_time <= Time.current
+  end
+
   def average_rating
     return 0 if feedbacks.empty?
 
