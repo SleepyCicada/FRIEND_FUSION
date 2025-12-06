@@ -1,3 +1,6 @@
+<% content_for :meta_title, "#{@offer.name} is on #{DEFAULT_META["meta_product_name"]}" %>
+<% content_for :meta_description, @offer.description %>
+<% content_for :meta_image, cl_image_path(@offer.photo.path) %>
 
 <div class="event-details-page">
   <div class="container pt-3 pb-5">
@@ -171,11 +174,18 @@
             </h3>
 
             <div class="map-container">
-              <div id="event-map" data-location="<%= @event.location %>"></div>
+              <div id="event-map" data-location="<%= @event.location %>" style="height: 300px;"></div>
             </div>
           </div>
-        <% end %>
 
+          <% if ENV['GOOGLE_API_SERVER_KEY'].present? %>
+            <script async defer loading="lazy"
+                    src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMaps">
+            </script>
+          <% else %>
+            <p style="color: red;">Google Maps API key is missing.</p>
+          <% end %>
+        <% end %>
 
         <!-- Action Buttons -->
         <div class="action-buttons-section">
@@ -404,6 +414,6 @@
   }
 </script>
 
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMap">
+<script async defer loading="lazy"
+        src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMaps">
 </script>
