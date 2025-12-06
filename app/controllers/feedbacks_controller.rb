@@ -12,9 +12,9 @@ class FeedbacksController < ApplicationController
   end
 
   def new
-    # Check if event has ended
-    unless @event.event_ended?
-      redirect_to @event, alert: "You can only submit feedback after the event has ended."
+    # Check if user has joined the event
+    unless @event.confirmations.exists?(user: current_user)
+      redirect_to @event, alert: "You must join the event before submitting feedback."
       return
     end
 
@@ -28,9 +28,9 @@ class FeedbacksController < ApplicationController
   end
 
   def create
-    # Check if event has ended
-    unless @event.event_ended?
-      redirect_to @event, alert: "You can only submit feedback after the event has ended."
+    # Check if user has joined the event
+    unless @event.confirmations.exists?(user: current_user)
+      redirect_to @event, alert: "You must join the event before submitting feedback."
       return
     end
 

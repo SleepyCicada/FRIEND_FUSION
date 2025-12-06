@@ -3,7 +3,11 @@
     <% unless message.ai? %>
       <div class="message-avatar">
         <div class="avatar-circle">
-          <%= message.user&.name&.first&.upcase || '?' %>
+          <% if message.user&.avatar&.attached? %>
+            <%= cl_image_tag message.user.avatar.key, width: 40, height: 40, crop: :fill, gravity: :face, alt: message.user.name, style: "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" %>
+          <% else %>
+            <%= message.user&.name&.first&.upcase || '?' %>
+          <% end %>
         </div>
       </div>
     <% end %>
