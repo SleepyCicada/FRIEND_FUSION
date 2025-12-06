@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get "/events", to: "events#index", as: :events
   get "/my_events", to: "events#my_events", as: :my_events
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
 
 
   resources :events do
