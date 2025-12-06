@@ -165,7 +165,8 @@
               <%= form.datetime_local_field :date_time,
                   class: "form-control",
                   required: true,
-                  data: { validate: "date_time" } %>
+                  step: 900,
+                  data: { validate: "date_time", round_time: "15" } %>
               <div class="invalid-feedback" id="date_time-error"></div>
               <div class="form-text">When should attendees arrive?</div>
             </div>
@@ -182,7 +183,8 @@
               <%= form.datetime_local_field :end_time,
                   class: "form-control",
                   required: true,
-                  data: { validate: "end_time" } %>
+                  step: 900,
+                  data: { validate: "end_time", round_time: "15" } %>
               <div class="invalid-feedback" id="end_time-error"></div>
               <div class="form-text">When will the event end?</div>
             </div>
@@ -530,6 +532,15 @@
 
     // Validate all fields on form submit
     form.addEventListener('submit', function(e) {
+      // FIRST: Round datetime values before validation
+      if (dateTimeField && dateTimeField.value) {
+        dateTimeField.value = roundToNearest15Minutes(dateTimeField.value);
+      }
+      if (endTimeField && endTimeField.value) {
+        endTimeField.value = roundToNearest15Minutes(endTimeField.value);
+      }
+
+      // THEN: Validate all fields
       let isValid = true;
 
       fieldsToValidate.forEach(field => {
@@ -587,6 +598,85 @@
           };
           reader.readAsDataURL(file);
         }
+      });
+    }
+
+    // Round time to nearest 15 minutes for datetime fields
+    function roundToNearest15Minutes(dateTimeString) {
+      if (!dateTimeString) return dateTimeString;
+
+      const date = new Date(dateTimeString);
+      const minutes = date.getMinutes();
+      const roundedMinutes = Math.round(minutes / 15) * 15;
+      date.setMinutes(roundedMinutes);
+      date.setSeconds(0);
+      date.setMilliseconds(0);
+
+      // Handle minute overflow (e.g., 60 minutes)
+      if (date.getMinutes() === 60) {
+        date.setHours(date.getHours() + 1);
+        date.setMinutes(0);
+      }
+
+      // Format back to datetime-local format: YYYY-MM-DDTHH:mm
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const mins = String(date.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day}T${hours}:${mins}`;
+    }
+
+    // Apply rounding to datetime fields
+    const dateTimeField = form.querySelector('[data-validate="date_time"]');
+    const endTimeField = form.querySelector('[data-validate="end_time"]');
+
+    if (dateTimeField) {
+      // Round immediately on any change - this ensures the picker value is always valid
+      const roundDateTime = function() {
+        const originalValue = this.value;
+        const roundedValue = roundToNearest15Minutes(this.value);
+        if (originalValue !== roundedValue) {
+          this.value = roundedValue;
+        }
+      };
+
+      // Round on change (when user selects from picker)
+      dateTimeField.addEventListener('change', roundDateTime);
+      // Round on blur (when field loses focus)
+      dateTimeField.addEventListener('blur', roundDateTime);
+      // Round on input (while typing/selecting) - with a small delay
+      let dateTimeTimeout;
+      dateTimeField.addEventListener('input', function() {
+        clearTimeout(dateTimeTimeout);
+        dateTimeTimeout = setTimeout(() => {
+          if (this.value && this.value.match(/T\d{2}:\d{2}/)) {
+            roundDateTime.call(this);
+          }
+        }, 500);
+      });
+    }
+
+    if (endTimeField) {
+      const roundEndTime = function() {
+        const originalValue = this.value;
+        const roundedValue = roundToNearest15Minutes(this.value);
+        if (originalValue !== roundedValue) {
+          this.value = roundedValue;
+        }
+      };
+
+      endTimeField.addEventListener('change', roundEndTime);
+      endTimeField.addEventListener('blur', roundEndTime);
+      let endTimeTimeout;
+      endTimeField.addEventListener('input', function() {
+        clearTimeout(endTimeTimeout);
+        endTimeTimeout = setTimeout(() => {
+          if (this.value && this.value.match(/T\d{2}:\d{2}/)) {
+            roundEndTime.call(this);
+          }
+        }, 500);
       });
     }
   });

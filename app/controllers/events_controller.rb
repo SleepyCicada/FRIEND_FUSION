@@ -63,6 +63,9 @@ class EventsController < ApplicationController
     @event.user = current_user
 
     if @event.save
+      # Automatically join the event creator
+      @event.confirmations.create!(user: current_user)
+
       # 👇 Trigger the mailer here
       EventMailer.event_created(@event, current_user).deliver_now
 
@@ -174,18 +177,30 @@ class EventsController < ApplicationController
     # Convert params to a mutable hash to modify it
     event_params_hash = params[:event].to_unsafe_h
 
+    # Get the user's timezone based on the offset
+    # offset_minutes is positive for timezones west of UTC (e.g., +300 for EST)
+    # ActiveSupport::TimeZone needs negative offset for west (e.g., -18000 seconds for EST)
+    user_timezone = ActiveSupport::TimeZone[-offset_minutes.minutes]
+    Rails.logger.info("User timezone: #{user_timezone&.name || 'Unknown'}")
+
     # Adjust date_time if present
     if event_params_hash[:date_time].present?
       begin
-        # Parse the datetime-local string (format: "2025-12-02T14:00")
-        local_time = Time.parse(event_params_hash[:date_time])
-        # Convert from local time to UTC by adding the offset
-        # Example: User in EST (UTC-5) selects 2PM (14:00), offset is +300
-        # 14:00 + 300 minutes = 14:00 + 5 hours = 19:00 UTC ✓
-        utc_time = local_time + offset_minutes.minutes
-        # Update the param with ISO8601 format that Rails will parse correctly
-        event_params_hash[:date_time] = utc_time.iso8601
-        Rails.logger.info("Adjusted date_time: #{event_params_hash[:date_time]}")
+        # Parse the datetime-local string in the user's timezone
+        # datetime-local sends "2025-12-05T07:30" which is 7:30am in user's local time
+        local_time_string = event_params_hash[:date_time]
+
+        # Parse it in the user's timezone
+        if user_timezone
+          local_time = user_timezone.parse(local_time_string)
+        else
+          # Fallback: parse as UTC
+          local_time = Time.zone.parse(local_time_string)
+        end
+
+        # Store as ISO8601 (will be in UTC)
+        event_params_hash[:date_time] = local_time.utc.iso8601
+        Rails.logger.info("Adjusted date_time: #{event_params_hash[:date_time]} (#{local_time.utc})")
       rescue ArgumentError => e
         Rails.logger.error("Failed to parse date_time: #{e.message}")
       end
@@ -194,10 +209,16 @@ class EventsController < ApplicationController
     # Adjust end_time if present
     if event_params_hash[:end_time].present?
       begin
-        local_time = Time.parse(event_params_hash[:end_time])
-        utc_time = local_time + offset_minutes.minutes
-        event_params_hash[:end_time] = utc_time.iso8601
-        Rails.logger.info("Adjusted end_time: #{event_params_hash[:end_time]}")
+        local_time_string = event_params_hash[:end_time]
+
+        if user_timezone
+          local_time = user_timezone.parse(local_time_string)
+        else
+          local_time = Time.zone.parse(local_time_string)
+        end
+
+        event_params_hash[:end_time] = local_time.utc.iso8601
+        Rails.logger.info("Adjusted end_time: #{event_params_hash[:end_time]} (#{local_time.utc})")
       rescue ArgumentError => e
         Rails.logger.error("Failed to parse end_time: #{e.message}")
       end

@@ -184,15 +184,22 @@ function goBackChat() {
     const typingIndicator = document.getElementById('typing-indicator');
     const chatId = <%= @chat.id %>;
 
-    // Auto-scroll to bottom
-    function scrollToBottom() {
+    // Auto-scroll to bottom with smooth behavior
+    function scrollToBottom(smooth = true) {
       if (chatMessages) {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (smooth) {
+          chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: 'smooth'
+          });
+        } else {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
       }
     }
 
-    // Initial scroll
-    scrollToBottom();
+    // Initial scroll (instant, not smooth)
+    setTimeout(() => scrollToBottom(false), 100);
 
     // Handle form submission
     if (messageForm) {
@@ -206,6 +213,9 @@ function goBackChat() {
           return;
         }
 
+        // Scroll to bottom immediately when submitting
+        setTimeout(() => scrollToBottom(true), 50);
+
         // Clear input immediately on submit, before Turbo processes it
         setTimeout(() => {
           if (messageInput) {
@@ -216,6 +226,23 @@ function goBackChat() {
       });
     } else {
       console.error('Message form not found!');
+    }
+
+    // Observe new messages being added to the chat
+    if (chatMessages) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length > 0) {
+            // New message added, scroll to bottom
+            setTimeout(() => scrollToBottom(true), 100);
+          }
+        });
+      });
+
+      observer.observe(chatMessages, {
+        childList: true,
+        subtree: true
+      });
     }
 
     // Fetch and display smart reply suggestions
@@ -273,8 +300,10 @@ function goBackChat() {
           }
         }, 1500);
 
-        // Scroll to bottom after new message
-        setTimeout(scrollToBottom, 100);
+        // Scroll to bottom after new message - multiple times to ensure it works
+        setTimeout(() => scrollToBottom(true), 100);
+        setTimeout(() => scrollToBottom(true), 500);
+        setTimeout(() => scrollToBottom(true), 1000);
 
         // Fetch smart replies occasionally
         setTimeout(fetchSmartReplies, 1500);

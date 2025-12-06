@@ -1,53 +1,258 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Sign Up</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<div class="auth-page">
+  <div class="container">
+    <div class="row min-vh-100 align-items-center justify-content-center py-5">
+      <div class="col-lg-10">
+        <div class="auth-card">
+          <div class="row g-0">
 
-  <div class="container d-flex justify-content-center mt-5">
-    <div class="text-center p-4 bg-white shadow rounded" style="max-width: 500px; width: 100%;">
-      <h2>Sign up</h2>
+            <!-- Left side - Branding -->
+            <div class="col-lg-6 auth-brand-side d-none d-lg-flex">
+              <div class="auth-brand-content">
+                <h1 class="auth-brand-title">Join Friend Fusion!</h1>
+                <p class="auth-brand-subtitle">Start your journey to discover amazing events and connect with incredible people.</p>
+                <div class="auth-features">
+                  <div class="auth-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg>
+                    <span>Free to join and use</span>
+                  </div>
+                  <div class="auth-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg>
+                    <span>Create unlimited events</span>
+                  </div>
+                  <div class="auth-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg>
+                    <span>Connect with your community</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
-        <%= f.error_notification %>
+            <!-- Right side - Form -->
+            <div class="col-lg-6">
+              <div class="auth-form-container">
+                <div class="text-center mb-4">
+                  <h2 class="auth-form-title">Create Account</h2>
+                  <p class="auth-form-subtitle">Fill in your details to get started</p>
+                </div>
 
-        <div class="form-inputs">
-          <%= f.input :name,
-                      required: true,
-                      autofocus: true,
-                      input_html: { autocomplete: "name" },
-                      placeholder: "Your name" %>
+                <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
+                  <%= f.error_notification %>
 
-          <%= f.input :email,
-                      required: true,
-                      input_html: { autocomplete: "email" } %>
+                  <div class="form-inputs">
+                    <%= f.input :name,
+                                required: true,
+                                autofocus: true,
+                                input_html: { autocomplete: "name", class: "form-control auth-input" },
+                                label_html: { class: "auth-label" },
+                                placeholder: "Your name" %>
 
-          <%= f.input :password,
-                      required: true,
-                      hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                      input_html: { autocomplete: "new-password" } %>
+                    <%= f.input :email,
+                                required: true,
+                                input_html: { autocomplete: "email", class: "form-control auth-input" },
+                                label_html: { class: "auth-label" } %>
 
-          <%= f.input :password_confirmation,
-                      required: true,
-                      input_html: { autocomplete: "new-password" } %>
+                    <%= f.input :password,
+                                required: true,
+                                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
+                                input_html: { autocomplete: "new-password", class: "form-control auth-input" },
+                                label_html: { class: "auth-label" } %>
 
-          <!-- Avatar upload field -->
-          <%= f.input :avatar,
-                      as: :file,
-                      label: "Upload Avatar",
-                      input_html: { accept: "image/*", class: "form-control" } %>
+                    <%= f.input :password_confirmation,
+                                required: true,
+                                input_html: { autocomplete: "new-password", class: "form-control auth-input" },
+                                label_html: { class: "auth-label" } %>
+
+                    <%= f.input :avatar,
+                                as: :file,
+                                label: "Upload Avatar (Optional)",
+                                input_html: { accept: "image/*", class: "form-control auth-input" },
+                                label_html: { class: "auth-label" },
+                                hint: "Choose a profile picture to personalize your account" %>
+                  </div>
+
+                  <div class="form-actions mt-4">
+                    <%= f.button :submit, "Create Account", class: "btn auth-submit-btn w-100" %>
+                  </div>
+                <% end %>
+
+                <div class="auth-links mt-4">
+                  <%= render "devise/shared/links" %>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-
-        <div class="form-actions mt-3">
-          <%= f.button :submit, "Sign up", class: "btn btn-primary w-100" %>
-        </div>
-      <% end %>
-
-      <%= render "devise/shared/links" %>
+      </div>
     </div>
   </div>
-</body>
-</html>
+</div>
+
+<style>
+.auth-page {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-brand-side {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4rem;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-brand-content {
+  max-width: 400px;
+}
+
+.auth-brand-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.auth-brand-subtitle {
+  font-size: 1.125rem;
+  margin-bottom: 3rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.auth-feature svg {
+  flex-shrink: 0;
+}
+
+.auth-form-container {
+  padding: 3rem 3rem;
+}
+
+.auth-form-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.auth-form-subtitle {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.auth-label {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.auth-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.auth-submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 0.875rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 12px;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.auth-links {
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.auth-links a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+  .auth-form-container {
+    padding: 3rem 2rem;
+  }
+
+  .auth-form-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .auth-form-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-form-title {
+    font-size: 1.5rem;
+  }
+}
+</style>

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-require "open-uri"
-=======
 require 'open-uri'
->>>>>>> master
 
 puts "Cleaning database..."
 
@@ -767,8 +763,8 @@ event_20.image.attach(
 event_21 = Event.create!(
   title: "Le Wagon Demo Day",
   description: "Join us for Le Wagon's Demo Day showcase! Watch our students present their final projects and celebrate their coding journey. Network with developers, entrepreneurs, and tech enthusiasts. Capacity: 150 attendees.",
-  date_time: DateTime.new(2025, 12, 12, 17, 0),
-  end_time: DateTime.new(2025, 12, 12, 20, 0),
+  date_time: Time.zone.local(2025, 12, 12, 17, 0),
+  end_time: Time.zone.local(2025, 12, 12, 20, 0),
   location: "5570 Av. Casgrain #101, Montréal, QC H2T 1X9",
   topic: english,
   user: user2
@@ -1034,6 +1030,38 @@ Confirmation.create!(user: user, event: event_20)
 Confirmation.create!(user: user3, event: event_20)
 Confirmation.create!(user: user5, event: event_20)
 Confirmation.create!(user: user6, event: event_20)
+
+# Event 21 attendees (Le Wagon Demo Day - future)
+Confirmation.create!(user: user, event: event_21)
+Confirmation.create!(user: user3, event: event_21)
+Confirmation.create!(user: user4, event: event_21)
+Confirmation.create!(user: user5, event: event_21)
+Confirmation.create!(user: user6, event: event_21)
+Confirmation.create!(user: user7, event: event_21)
+
+# Chat 4: Le Wagon Demo Day (English)
+chat_4 = event_21.chat
+Message.create!(user: user3, chat: chat_4, content: "Hey everyone! So excited for Demo Day! Has anyone seen the project lineup yet?", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "Yes! I heard there are at least 3 AI-powered apps being presented. Should be really interesting!", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "Anyone know what time we should actually arrive? It says 5pm but I don't want to miss anything", ai: false)
+Message.create!(user: user6, chat: chat_4, content: "I'd get there around 4:45pm to get good seats. Last demo day filled up fast!", ai: false)
+Message.create!(user: user7, chat: chat_4, content: "First time attending one of these... I'm honestly a bit nervous 😅 What should I expect?", ai: false)
+Message.create!(user: user3, chat: chat_4, content: "Don't worry! It's super chill and everyone's really welcoming. The projects are always impressive though!", ai: false)
+Message.create!(user: user2, chat: chat_4, content: "Sherliene, you'll love it! The students are so passionate about their projects. Plus there's usually food and drinks 🍕", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "Speaking of which... should we coordinate on snacks? I can grab some coffee from the place next door", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "Ooh yes! I'll bring some pastries if you handle coffee. We can meet outside at 4:40?", ai: false)
+Message.create!(user: user7, chat: chat_4, content: "You guys are the best! I feel so much better now. I'll help set up if you need an extra pair of hands", ai: false)
+Message.create!(user: user6, chat: chat_4, content: "That's the spirit! Has anyone figured out which batch this is? I think it's batch #1024 or something?", ai: false)
+Message.create!(user: user3, chat: chat_4, content: "It's batch #1028! I've been following some of them on LinkedIn. The quality of projects this time looks insane", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "I know right? I saw a preview of the AI travel planner app. The UI is gorgeous!", ai: false)
+Message.create!(user: user2, chat: chat_4, content: "Wait, there's an AI travel planner? That's exactly what I've been looking for! Anyone know if they're planning to launch it?", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "Not sure, but I heard you can talk to the teams after presentations. Great networking opportunity!", ai: false)
+Message.create!(user: user6, chat: chat_4, content: "Pro tip: bring business cards if you have them. I got a freelance gig from the last demo day 💼", ai: false)
+Message.create!(user: user7, chat: chat_4, content: "Wow really? That's amazing! I should probably prepare some questions then", ai: false)
+Message.create!(user: user3, chat: chat_4, content: "Just be yourself! The students love genuine interest in their work. They're usually happy to explain everything", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "So final plan: meet at 4:40 outside, Priya brings pastries, I bring coffee, get good seats by 4:50. Sound good?", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "Perfect! I'm so pumped for this. See you all Thursday! 🚀", ai: false)
+Message.create!(user: user2, chat: chat_4, content: "Can't wait! This is going to be epic. Thanks everyone for organizing!", ai: false)
 
 puts "✅ Database seeded successfully!"
 puts "Created #{User.count} users"
