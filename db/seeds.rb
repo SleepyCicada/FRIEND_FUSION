@@ -1063,6 +1063,78 @@ Message.create!(user: user4, chat: chat_4, content: "So final plan: meet at 4:40
 Message.create!(user: user5, chat: chat_4, content: "Perfect! I'm so pumped for this. See you all Thursday! 🚀", ai: false)
 Message.create!(user: user2, chat: chat_4, content: "Can't wait! This is going to be epic. Thanks everyone for organizing!", ai: false)
 
+# Additional personas for Le Wagon Demo Day
+# Creating users for Le Wagon staff and team members
+rachel = User.create!(
+  name: "Rachel",
+  email: "rachel@lewagon.com",
+  password: "password"
+)
+
+antoine = User.create!(
+  name: "Antoine",
+  email: "antoine@lewagon.com",
+  password: "password"
+)
+
+mg = User.create!(
+  name: "MG",
+  email: "mg@lewagon.com",
+  password: "password"
+)
+
+nadia = User.create!(
+  name: "Nadia",
+  email: "nadia@lewagon.com",
+  password: "password"
+)
+
+enrique = User.create!(
+  name: "Enrique",
+  email: "enrique@lewagon.com",
+  password: "password"
+)
+
+# Le Wagon Demo Day chat continues with staff and team interactions
+Message.create!(user: rachel, chat: chat_4, content: "Hi everyone! Rachel here, I'll be your MC for tonight's Demo Day! 🎤 So thrilled to see this amazing turnout. We have two incredible teams presenting tonight!", ai: false)
+Message.create!(user: antoine, chat: chat_4, content: "Welcome everyone! I'm Antoine, founder of Le Wagon. Tonight we celebrate the culmination of 9 intensive weeks of coding. These teams have poured their hearts into their projects. Prepare to be amazed! 🚀", ai: false)
+Message.create!(user: mg, chat: chat_4, content: "Bonjour! MG here from Le Wagon Montreal. I couldn't be prouder of our Montreal batch. The quality of work this cohort has produced is truly world-class! 🇨🇦", ai: false)
+Message.create!(user: nadia, chat: chat_4, content: "Hey everyone! Nadia, one of your tutors. I've watched these students grow from coding beginners to building full-stack applications. The dedication has been incredible! Can't wait to see the demos! 💪", ai: false)
+Message.create!(user: enrique, chat: chat_4, content: "Enrique here! As a tutor, I've seen the late nights, the debugging sessions, the breakthroughs... these teams have earned this moment. So proud! Let's give them the energy they deserve! 🎉", ai: false)
+
+# Team 1 (FriendFusion) - Flo, Middwin, Pavel
+Message.create!(user: user3, chat: chat_4, content: "Hi everyone! Flo from Team 1 here. We're presenting FriendFusion - an app that brings people together through language learning events. Super nervous but excited! 😊", ai: false)
+Message.create!(user: user2, chat: chat_4, content: "Middwin here, also Team 1! We've built something really special. FriendFusion uses AI to help people connect and practice languages in real-world settings. Can't wait to show you all!", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "Pavel from Team 1 checking in! We've integrated AI chat features that personalize the language learning experience. The tech stack has been challenging but so rewarding! 💻", ai: false)
+Message.create!(user: rachel, chat: chat_4, content: "Love the energy Team 1! FriendFusion sounds like exactly what the language learning community needs. Looking forward to your demo!", ai: false)
+
+# Team 2 (ChairHop) - Wanji, Frank, Sherliene
+Message.create!(user: user6, chat: chat_4, content: "Wanji here from Team 2! We're presenting ChairHop - making workspace booking seamless for hybrid teams. The past 9 weeks have been a wild ride! 🪑", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "Frank, Team 2! ChairHop solves the problem of finding the perfect workspace when you need it. We've integrated real-time availability and smart recommendations! 📍", ai: false)
+Message.create!(user: user7, chat: chat_4, content: "Sherliene from Team 2 here! Our design focuses on making the booking experience intuitive and delightful. So excited (and nervous!) to present our work! ✨", ai: false)
+Message.create!(user: nadia, chat: chat_4, content: "Team 2, ChairHop is such a relevant solution for today's work environment! The real-time features you've built are technically impressive. Well done! 👏", ai: false)
+
+# Pre-presentation conversations
+Message.create!(user: antoine, chat: chat_4, content: "Both teams have identified real problems and built elegant solutions. This is what Le Wagon is all about - empowering people to bring their ideas to life through code! 💡", ai: false)
+Message.create!(user: enrique, chat: chat_4, content: "Quick reminder teams - take a deep breath, trust your preparation, and enjoy this moment. You've all earned it! The technical depth you've achieved in 9 weeks is remarkable! 🌟", ai: false)
+Message.create!(user: user3, chat: chat_4, content: "Thanks Enrique! Team 1 is ready. We've practiced our demo about 20 times 😅 Flo, Middwin, Pavel - let's do this!", ai: false)
+Message.create!(user: user2, chat: chat_4, content: "Let's show them what FriendFusion can do! Our AI chat feature is going to blow their minds. Ready team? 🔥", ai: false)
+Message.create!(user: user4, chat: chat_4, content: "Ready! Our live demo environment is stable, database is seeded with great data. Let's crush this presentation! 💪", ai: false)
+Message.create!(user: user6, chat: chat_4, content: "Team 2 is pumped! ChairHop is ready to shine. Wanji, Frank, Sherliene - we got this! Let's show them how we're revolutionizing workspace booking! 🚀", ai: false)
+Message.create!(user: user5, chat: chat_4, content: "All systems go on our end! The booking flow is smooth, the map integration works perfectly. Time to make Le Wagon proud! 🎯", ai: false)
+Message.create!(user: user7, chat: chat_4, content: "The UI looks gorgeous on the big screen. Our user journey is crystal clear. I'm ready! Let's do this Team 2! ✨", ai: false)
+Message.create!(user: rachel, chat: chat_4, content: "Alright everyone! We're about to start in 5 minutes. Teams, please make your way to the staging area. Audience, grab your seats! This is going to be an unforgettable evening! 🎭", ai: false)
+Message.create!(user: mg, chat: chat_4, content: "To all our guests - you're about to witness the transformation that happens at Le Wagon. These weren't developers 9 weeks ago. Now they're launching startups. This is the magic of our bootcamp! ✨", ai: false)
+Message.create!(user: nadia, chat: chat_4, content: "Good luck to both teams! Remember - you know your projects inside and out. Just share your passion and the rest will follow naturally! 🍀", ai: false)
+Message.create!(user: antoine, chat: chat_4, content: "Let's give a warm welcome to our presenters! These brave individuals took the leap to change their careers through code. Tonight, they graduate not just as developers, but as entrepreneurs! 👏", ai: false)
+
+# Confirmation for Le Wagon staff
+Confirmation.create!(user: rachel, event: event_21)
+Confirmation.create!(user: antoine, event: event_21)
+Confirmation.create!(user: mg, event: event_21)
+Confirmation.create!(user: nadia, event: event_21)
+Confirmation.create!(user: enrique, event: event_21)
+
 puts "✅ Database seeded successfully!"
 puts "Created #{User.count} users"
 puts "Created #{Topic.count} topics"
