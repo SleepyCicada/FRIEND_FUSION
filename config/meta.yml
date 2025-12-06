@@ -2,4 +2,4 @@ meta_product_name: "FriendFusion"
 meta_title: "FriendFusion - Move anywhere,belong everywhere"
 meta_description: "Meet new people and learn languages through real-life conversations and cultural exchange. Perfect for newcomers and locals looking for meaningful connections."
 meta_image: "speech.png" # should exist in `app/assets/images/`
-#  twitter_account: "@product_twitter_account" # required for Twitter Cards
+# twitter_account: "@product_twitter_account" # required for Twitter Cards
