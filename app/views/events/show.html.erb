@@ -137,7 +137,12 @@
           <div>
             <div class="detail-label">Attendees</div>
             <div class="detail-value">
-              <%= @event.confirmations.count %>
+              <%
+                # Count confirmations + organizer if they don't have a confirmation
+                total_count = @event.confirmations.count
+                total_count += 1 if @event.user.present? && !@event.users.include?(@event.user)
+              %>
+              <%= total_count %>
               <% if @event.max_capacity %>
                 / <%= @event.max_capacity %>
               <% end %>
@@ -245,13 +250,18 @@
         </div>
 
         <!-- Confirmed Attendees -->
-        <% if @event.confirmations.any? %>
+        <% if @event.confirmations.any? || @event.user.present? %>
 
-          <% mobile_limit  = 2 %>
-          <% desktop_limit = 3 %>
-          <% total_attendees = @event.users.count %>
+          <%
+            # Get all attendees and include the organizer
+            all_attendees = @event.users.to_a
+            all_attendees.unshift(@event.user) if @event.user.present? && !all_attendees.include?(@event.user)
 
-          <% use_carousel = total_attendees > desktop_limit %>
+            mobile_limit  = 2
+            desktop_limit = 3
+            total_attendees = all_attendees.count
+            use_carousel = total_attendees > desktop_limit
+          %>
 
           <div class="attendees-section mt-0">
             <h3 class="section-title">
@@ -261,29 +271,47 @@
                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
               </svg>
               Confirmed Attendees
-              <span class="count-badge"><%= @event.confirmations.count %></span>
+              <span class="count-badge"><%= all_attendees.count %></span>
             </h3>
 
             <% if use_carousel %>
               <div class="attendees-scroll">
-                <% @event.users.each do |user| %>
+                <% all_attendees.each do |user| %>
                   <div class="attendee-badge">
                     <div class="attendee-avatar">
-                      <%= user.name&.first&.upcase || '?' %>
+                      <% if user.avatar.attached? %>
+                        <%= cl_image_tag user.avatar.key, width: 45, height: 45, crop: :fill, gravity: :face, alt: user.name, style: "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" %>
+                      <% else %>
+                        <%= user.name&.first&.upcase || '?' %>
+                      <% end %>
                     </div>
-                    <div class="attendee-name"><%= user.name %></div>
+                    <div class="attendee-name">
+                      <%= user.name %>
+                      <% if user == @event.user %>
+                        <span style="font-size: 0.75rem; color: #667eea; font-weight: 700;">👑 HOST</span>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
               </div>
             <% else %>
 
               <div class="attendees-grid">
-                <% @event.users.each do |user| %>
+                <% all_attendees.each do |user| %>
                   <div class="attendee-badge">
                     <div class="attendee-avatar">
-                      <%= user.name&.first&.upcase || '?' %>
+                      <% if user.avatar.attached? %>
+                        <%= cl_image_tag user.avatar.key, width: 45, height: 45, crop: :fill, gravity: :face, alt: user.name, style: "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" %>
+                      <% else %>
+                        <%= user.name&.first&.upcase || '?' %>
+                      <% end %>
                     </div>
-                    <div class="attendee-name"><%= user.name %></div>
+                    <div class="attendee-name">
+                      <%= user.name %>
+                      <% if user == @event.user %>
+                        <span style="font-size: 0.75rem; color: #667eea; font-weight: 700;">👑 HOST</span>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
               </div>
@@ -310,7 +338,11 @@
                   <div class="feedback-header">
                     <div class="feedback-user">
                       <div class="feedback-avatar">
-                        <%= feedback.user.name&.first&.upcase || '?' %>
+                        <% if feedback.user.avatar.attached? %>
+                          <%= cl_image_tag feedback.user.avatar.key, width: 50, height: 50, crop: :fill, gravity: :face, alt: feedback.user.name, style: "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" %>
+                        <% else %>
+                          <%= feedback.user.name&.first&.upcase || '?' %>
+                        <% end %>
                       </div>
                       <div>
                         <div class="feedback-user-name"><%= feedback.user.name %></div>

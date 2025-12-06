@@ -2,10 +2,10 @@
   <div class="container-fluid">
     <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
       <div class="brand-logo">
-        <!-- SVG logo -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Z ..."/>
-        </svg>
+        <%= image_tag "https://res.cloudinary.com/dykvpql2j/image/upload/v1765040660/logo_gkhqhh.png",
+                      width: 40,
+                      height: 40,
+                      alt: "Friend Fusion Logo" %>
       </div>
       <span class="brand-name">Friend Fusion</span>
     <% end %>
