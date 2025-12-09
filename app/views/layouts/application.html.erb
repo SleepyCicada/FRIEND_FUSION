@@ -28,6 +28,7 @@
     <%= render "shared/navbar" %>
     <%= render "shared/flashes" %>
 
+
     <%= yield %>
 
     <!-- Back to Top Button -->
@@ -40,5 +41,13 @@
       style="position: fixed; bottom: 5rem; right: 1rem; z-index: 1030; width: 3rem; height: 3rem; background-color: rgba(13, 110, 253, 0.7); border: none;">
       <i class="bi bi-arrow-up"></i>
     </a>
+    <%# <%= render "shared/footer" %>
+    <footer>
+      <% if content_for?(:custom_footer) %>
+        <%= yield :custom_footer %>
+      <% else %>
+        <%= render "shared/footer" %>
+      <% end %>
+    </footer>
   </body>
 </html>
