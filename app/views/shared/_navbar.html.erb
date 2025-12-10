@@ -1,24 +1,30 @@
 <nav class="navbar navbar-expand-sm navbar-light navbar-lewagon sticky-top">
   <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
-      <div class="brand-logo">
-        <%= image_tag "https://res.cloudinary.com/dykvpql2j/image/upload/v1765040660/logo_gkhqhh.png",
-                      width: 40,
-                      height: 40,
-                      alt: "Friend Fusion Logo" %>
-      </div>
+    <!-- Brand logo (routes to home) -->
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center gap-2" do %>
+      <%= image_tag "https://res.cloudinary.com/dykvpql2j/image/upload/v1765040660/logo_gkhqhh.png",
+                    width: 40,
+                    height: 40,
+                    alt: "Friend Fusion Logo",
+                    class: "logo-img" %>
       <span class="brand-name">Friend Fusion</span>
     <% end %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+    <!-- Mobile toggle -->
+   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon">
+        <div></div>
+        <div></div>
+        <div></div>
+      </span>
     </button>
 
+
+    <!-- Nav links + avatar -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav mx-auto">
         <% if user_signed_in? %>
-          <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "My Events", my_events_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
           <li class="nav-item">
@@ -32,7 +38,7 @@
           </li>
 
           <!-- Avatar dropdown -->
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown ms-auto">
             <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <% if current_user.avatar.attached? %>
                 <%= cl_image_tag current_user.avatar.key,
@@ -46,7 +52,6 @@
               <% end %>
             </a>
             <div class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
-              <!-- Larger avatar preview -->
               <div class="mb-2">
                 <% if current_user.avatar.attached? %>
                   <%= cl_image_tag current_user.avatar.key,
@@ -67,7 +72,6 @@
             </div>
           </li>
         <% else %>
-          <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Login", new_user_session_path, class: "nav-link" %></li>
         <% end %>
