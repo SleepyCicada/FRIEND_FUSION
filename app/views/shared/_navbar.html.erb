@@ -21,10 +21,27 @@
     </button>
 
 
-    <!-- Nav links + avatar -->
+   <!-- Nav links + avatar -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto">
         <% if user_signed_in? %>
+          <!-- Top row: name left, avatar right -->
+          <li class="nav-item d-flex justify-content-between align-items-center w-100 py-2">
+            <span class="fw-bold"><%= current_user.name || current_user.email %></span>
+            <% if current_user.avatar.attached? %>
+              <%= cl_image_tag current_user.avatar.key,
+                              width: 40, height: 40, crop: :fill, gravity: :face,
+                              class: "rounded-circle",
+                              alt: "User avatar" %>
+            <% else %>
+              <%= image_tag "def_avatar.jpg",
+                            width: 40, height: 40,
+                            class: "rounded-circle",
+                            alt: "Default avatar" %>
+            <% end %>
+          </li>
+
+          <!-- Menu links -->
           <li class="nav-item"><%= link_to "My Events", my_events_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
           <li class="nav-item">
@@ -36,40 +53,10 @@
               <% end %>
             <% end %>
           </li>
-
-          <!-- Avatar dropdown -->
-          <li class="nav-item dropdown ms-auto">
-            <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <% if current_user.avatar.attached? %>
-                <%= cl_image_tag current_user.avatar.key,
-                                 crop: :fill, gravity: :face,
-                                 class: "avatar rounded-circle",
-                                 alt: "User avatar" %>
-              <% else %>
-                <%= image_tag "def_avatar.jpg",
-                              class: "avatar rounded-circle",
-                              alt: "Default avatar" %>
-              <% end %>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
-              <div class="mb-2">
-                <% if current_user.avatar.attached? %>
-                  <%= cl_image_tag current_user.avatar.key,
-                                   width: 80, height: 80, crop: :fill, gravity: :face,
-                                   class: "rounded-circle mb-2",
-                                   alt: "User avatar large" %>
-                <% else %>
-                  <%= image_tag "def_avatar.png",
-                                class: "rounded-circle mb-2",
-                                alt: "Default avatar large" %>
-                <% end %>
-              </div>
-              <div class="dropdown-header"><%= current_user.name || current_user.email %></div>
-              <%= link_to "My Events", events_path, class: "dropdown-item" %>
-              <%= link_to "Notifications", notifications_path, class: "dropdown-item" %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
-            </div>
+          <li class="nav-item">
+            <%= link_to "Log out", destroy_user_session_path,
+                        data: { turbo_method: :delete },
+                        class: "nav-link" %>
           </li>
         <% else %>
           <li class="nav-item"><%= link_to "Events", events_path, class: "nav-link" %></li>
