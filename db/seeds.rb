@@ -35,19 +35,19 @@ user = User.create!(
 
 user2 = User.create!(
   name: "Middwin",
-  email: "middwin@example.com",
+  email: "middwin@gmail.com",
   password: "password"
 )
 
 user3 = User.create!(
   name: "Flo",
-  email: "Flo@example.com",
+  email: "florianediem@gmail.com",
   password: "password"
 )
 
 user4 = User.create!(
   name: "Pavel",
-  email: "pavel@example.com",
+  email: "paul.mikhailau@gmail.com",
   password: "password"
 )
 
