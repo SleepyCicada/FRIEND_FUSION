@@ -1,4 +1,4 @@
-<%= turbo_stream.prepend "ask-ai-responses" do %>
+<%= turbo_stream.append "ask-ai-responses" do %>
   <div class="kai-response">
     <div class="kai-response-header">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -13,15 +13,31 @@
 <% end %>
 
 <script>
-  // Clear the ask AI input field
-  const askAiInput = document.getElementById('ask-ai-input');
-  if (askAiInput) {
-    askAiInput.value = '';
+  // Clear the ask AI input field immediately and reliably
+  setTimeout(() => {
+    const askAiInput = document.getElementById('ask-ai-input');
+    if (askAiInput) {
+      askAiInput.value = '';
+      askAiInput.focus();
+    }
+  }, 10);
+
+  // Scroll to the bottom of the responses area to show the new response
+  // Use multiple attempts to ensure it works after content renders
+  function scrollToLatestResponse() {
+    const responsesArea = document.getElementById('ask-ai-responses');
+    if (responsesArea) {
+      responsesArea.scrollTop = responsesArea.scrollHeight;
+      // Also scroll the response into view on the page
+      const lastResponse = responsesArea.lastElementChild;
+      if (lastResponse) {
+        lastResponse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
   }
 
-  // Scroll to the top of the responses area to show the new response
-  const responsesArea = document.getElementById('ask-ai-responses');
-  if (responsesArea) {
-    responsesArea.scrollTop = 0;
-  }
+  // Scroll immediately and after short delays to ensure content is rendered
+  setTimeout(scrollToLatestResponse, 10);
+  setTimeout(scrollToLatestResponse, 100);
+  setTimeout(scrollToLatestResponse, 300);
 </script>
