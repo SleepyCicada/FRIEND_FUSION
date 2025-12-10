@@ -42,7 +42,12 @@
 
         <script>
         function goBack() {
-          if (window.history.length > 1) {
+          // Check if user just created this event (coming from new event form)
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('created')) {
+            // Redirect to events index instead of going back to the form
+            window.location.href = "<%= events_path %>";
+          } else if (window.history.length > 1) {
             window.history.back();
           } else {
             window.location.href = "/";

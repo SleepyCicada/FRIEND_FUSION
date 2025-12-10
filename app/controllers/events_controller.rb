@@ -69,7 +69,7 @@ class EventsController < ApplicationController
       # 👇 Trigger the mailer here
       EventMailer.event_created(@event, current_user).deliver_now
 
-      redirect_to event_path(@event), notice: 'Event was successfully created. A confirmation email has been sent.'
+      redirect_to event_path(@event, created: true), notice: 'Event was successfully created. A confirmation email has been sent.'
     else
       # Restore topics for the form
       if params[:event][:topic_id].present?
