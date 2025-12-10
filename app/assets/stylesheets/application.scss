@@ -101,11 +101,11 @@
   pointer-events: auto;
 }
 
-.navbar-brand {
-  align-items: center;
-}
-
-.logo-img {
-  vertical-align: middle;
-  margin-bottom: 0 !important;
+.site-footer {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  display: block;
 }
