@@ -15,6 +15,7 @@
 @import "events";
 @import "components/messages";
 @import "avatar";
+@import "navbar";
 
 
 // Conversation Starter Card Styling
@@ -98,4 +99,13 @@
 #back-to-top.show {
   opacity: 1;
   pointer-events: auto;
+}
+
+.site-footer {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  display: block;
 }
