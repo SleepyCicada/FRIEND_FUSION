@@ -246,6 +246,57 @@ function goBackChat() {
     const typingIndicator = document.getElementById('typing-indicator');
     const chatId = <%= @chat.id %>;
 
+    // Add Enter key support for Ask Kai textarea
+    const askAiInput = document.getElementById('ask-ai-input');
+    const askAiForm = document.getElementById('ask-ai-form');
+
+    if (askAiInput && askAiForm) {
+      askAiInput.addEventListener('keydown', function(e) {
+        // Submit on Enter (without Shift key)
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault(); // Prevent new line
+
+          // Check if there's text to submit
+          const question = askAiInput.value.trim();
+          if (question) {
+            // Submit the form
+            askAiForm.requestSubmit();
+          }
+        }
+        // Allow Shift+Enter for new line (default behavior)
+      });
+    }
+
+    // Handle Ask Kai form submission - clear input and scroll to response
+    document.addEventListener('turbo:submit-end', function(e) {
+      if (e.target.id === 'ask-ai-form') {
+        console.log('Ask Kai form submitted');
+
+        // Clear the input field immediately
+        const askAiInput = document.getElementById('ask-ai-input');
+        if (askAiInput) {
+          askAiInput.value = '';
+          askAiInput.focus();
+        }
+
+        // Scroll to the bottom of the responses area after content loads
+        function scrollAskAiResponses() {
+          const responsesArea = document.getElementById('ask-ai-responses');
+          if (responsesArea) {
+            // Scroll the container to the bottom
+            responsesArea.scrollTop = responsesArea.scrollHeight;
+            console.log('Scrolled Ask AI responses to bottom');
+          }
+        }
+
+        // Multiple scroll attempts to ensure it works after turbo stream renders
+        setTimeout(scrollAskAiResponses, 50);
+        setTimeout(scrollAskAiResponses, 200);
+        setTimeout(scrollAskAiResponses, 500);
+        setTimeout(scrollAskAiResponses, 1000);
+      }
+    });
+
     // Auto-scroll to bottom with smooth behavior
     function scrollToBottom(smooth = true) {
       if (chatMessages) {
