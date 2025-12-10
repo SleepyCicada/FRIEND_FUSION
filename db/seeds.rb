@@ -69,18 +69,18 @@ user7 = User.create!(
   password: "password"
 )
 # --- TOPICS ---
-english    = Topic.create!(topic_description: "Global lingua franca with words borrowed from every corner of the world", topic_name: "English")
-french     = Topic.create!(topic_description: "The language of diplomacy, romance, and culinary excellence", topic_name: "Français")
-spanish    = Topic.create!(topic_description: "Spoken across continents with passionate rhythm and vibrant expression", topic_name: "Español")
-japanese   = Topic.create!(topic_description: "Ancient traditions meet modern innovation in honorific harmony", topic_name: "Japanese")
-italian    = Topic.create!(topic_description: "Expressive gestures and melodic tones from the heart of art and cuisine", topic_name: "Italiano")
-polish     = Topic.create!(topic_description: "Slavic complexity with consonant clusters that challenge and delight", topic_name: "Polski")
-german     = Topic.create!(topic_description: "Precision engineering meets poetic compound words and philosophical depth", topic_name: "Deutsch")
-portuguese = Topic.create!(topic_description: "From Lisbon to Rio, music flows through every sentence and samba beat", topic_name: "Português")
-mandarin   = Topic.create!(topic_description: "Four tones unlock infinite meanings in the world's most spoken language", topic_name: "中文")
-korean     = Topic.create!(topic_description: "Systematic alphabet and nuanced honorifics that show respect in every word", topic_name: "한국어")
-arabic     = Topic.create!(topic_description: "Written right to left, flowing script connecting cultures across continents", topic_name: "العربية")
-russian    = Topic.create!(topic_description: "Cyrillic elegance carrying centuries of soul-stirring literature and tradition", topic_name: "Русский")
+english    = Topic.create!(topic_description: "🇬🇧 Hello! Learn a new language & meet now people today!", topic_name: "English")
+french     = Topic.create!(topic_description: "🇫🇷 Salut! Learn a new language & meet now people today!", topic_name: "Français")
+spanish    = Topic.create!(topic_description: "🇪🇸 ¡¡Hola!! Learn a new language & meet now people today!", topic_name: "Español")
+japanese   = Topic.create!(topic_description: "🇯🇵 こんにちは！Learn a new language & meet now people today!", topic_name: "Japanese")
+italian    = Topic.create!(topic_description: "🇮🇹 Ciao! Learn a new language & meet now people today!", topic_name: "Italiano")
+polish     = Topic.create!(topic_description: "🇵🇱 Cześć! Learn a new language & meet now people today!", topic_name: "Polski")
+german     = Topic.create!(topic_description: "🇩🇪 Hallo! Learn a new language & meet now people today!", topic_name: "Deutsch")
+portuguese = Topic.create!(topic_description: "🇵🇹 Olá!! Learn a new language & meet now people today!", topic_name: "Português")
+mandarin   = Topic.create!(topic_description: "🇨🇳 你好！Learn a new language & meet now people today!", topic_name: "中文")
+korean     = Topic.create!(topic_description: "🇰🇷 안녕하세요! Learn a new language & meet now people today!", topic_name: "한국어")
+arabic     = Topic.create!(topic_description: "🇦🇪 مرحباً! Learn a new language & meet now people today!", topic_name: "العربية")
+russian    = Topic.create!(topic_description: "🇷🇺 Привет! Learn a new language & meet now people today!", topic_name: "Русский")
 
 # If you want even distribution:
 topics = [english, french, spanish, japanese, italian, polish, german, portuguese, mandarin, korean, arabic, russian]
