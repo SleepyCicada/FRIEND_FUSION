@@ -99,6 +99,11 @@
     </div>
   </div>
 </div>
+<% content_for :custom_footer do %>
+  <footer class="site-footer-custom">
+    <p>&copy; <%= Time.current.year %> FriendFusion.</p>
+  </footer>
+<% end %>
 
 <style>
   .feedback-page {
