@@ -11,7 +11,7 @@
     <% end %>
 
     <!-- Mobile toggle -->
-   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon">
         <div></div>
@@ -20,21 +20,25 @@
       </span>
     </button>
 
-   <!-- Nav links + avatar -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mx-auto">
+    <!-- Nav links + avatar -->
+    <div class="collapse navbar-collapse flex-nowrap" id="navbarSupportedContent">
+      <!-- Updated line here -->
+      <ul class="navbar-nav flex-column flex-sm-row text-start text-sm-center mx-lg-auto align-items-sm-center">
         <% if user_signed_in? %>
-          <!-- Top row: name left, avatar right -->
-          <li class="nav-item d-flex justify-content-between align-items-center w-100 py-2">
-            <span class="fw-bold"><%= current_user.name || current_user.email %></span>
+          <!-- Inline row: name + avatar -->
+          <li class="nav-item profile-row d-flex align-items-center">
+            <span class="fw-bold me-2">
+              <%= current_user.name.present? ? current_user.name.split.first : current_user.email %>
+            </span>
+
             <% if current_user.avatar.attached? %>
               <%= cl_image_tag current_user.avatar.key,
-                              width: 40, height: 40, crop: :fill, gravity: :face,
+                              width: 32, height: 32, crop: :fill, gravity: :face,
                               class: "rounded-circle",
                               alt: "User avatar" %>
             <% else %>
               <%= image_tag "def_avatar.jpg",
-                            width: 40, height: 40,
+                            width: 32, height: 32,
                             class: "rounded-circle",
                             alt: "Default avatar" %>
             <% end %>

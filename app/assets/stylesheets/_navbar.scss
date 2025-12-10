@@ -30,3 +30,51 @@
   background: #fff; /* white bars for contrast on gradient background */
   border-radius: 2px;
 }
+
+/* Profile row styling inside navbar */
+.navbar-nav .profile-row {
+  display: flex;
+  justify-content: space-between; /* name left, avatar right */
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0;              /* consistent vertical spacing */
+  border-bottom: 1px solid #e0e0e0; /* subtle divider below */
+}
+
+/* Avatar image tweaks */
+.navbar-nav .profile-row img {
+  flex-shrink: 0;
+  border: 2px solid #ddd;          /* light border around avatar */
+  transition: transform 0.2s ease;
+}
+
+.navbar-nav .profile-row img:hover {
+  transform: scale(1.05);          /* slight zoom on hover */
+}
+
+/* Name styling */
+.navbar-nav .profile-row span {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Desktop adjustments */
+@media (min-width: 992px) {
+  .navbar-nav .profile-row {
+    margin-bottom: 0;              /* remove extra gap on desktop */
+    padding-right: 1rem;           /* breathing room before nav links */
+    border-bottom: none;           /* cleaner look on desktop */
+  }
+
+  .navbar-nav .nav-link {
+  white-space: nowrap;       /* keep text on one line */
+  display: inline-flex;      /* allow icon/text alignment if needed */
+  align-items: center;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 1rem; /* adjust spacing between menu options */
+}
+
+}
