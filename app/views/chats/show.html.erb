@@ -1,34 +1,33 @@
-<div class="chat-container">
+<div class="chat-container mb-0">
   <!-- Chat Header -->
-  <div class="chat-header mb-3">
-    <!-- Title row -->
-    <div class="d-flex align-items-center mb-1">
-      <!-- Back button -->
-      <button class="btn btn-outline-secondary btn-sm me-2 rounded-pill go-back-chat" onclick="goBackChat()" style="padding: 0.4rem 1rem; display: inline-flex; align-items: center; gap: 0.3rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+  <div class="chat-header mb-1">
+
+  <div class="d-flex align-items-center justify-content-between w-100 mb-1">
+
+    <!-- Left side: Back button + Title -->
+    <div class="d-flex align-items-center">
+      <button class="btn go-back-chat me-2" onclick="goBackChat()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
         </svg>
-        <span>Back</span>
       </button>
-      <h3 class="mb-0 d-flex align-items-center flex-wrap">
-        <%# <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots me-2" viewBox="0 0 16 16">
-          <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-          <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
-        </svg> %>
-        <%= @chat.event.title %>
-      </h3>
+
+      <h3 class="mb-0"><%= @chat.event.title %></h3>
     </div>
 
-    <!-- Event Details Button -->
-    <div class="mb-1 d-flex justify-content-end">
-      <%= link_to "Event Details", event_path(@chat.event), class: "btn btn-sm btn-outline-primary rounded-pill" %>
-    </div>
-
-    <!-- Attendees Info -->
+    <!-- Right side: Attendees info -->
     <p class="text-muted mb-0 small">
       <span id="online-count"><%= @chat.event.confirmations.count %></span> attendees
     </p>
+
   </div>
+
+  <!-- Event Details Button (still centered) -->
+  <div class="mb-2 d-flex justify-content-center">
+    <%= link_to "Event Details", event_path(@chat.event), class: "btn btn-sm btn-outline-primary rounded-pill" %>
+  </div>
+
+</div>
 
 
 <script>
@@ -87,6 +86,7 @@ function goBackChat() {
         <%= form.hidden_field :chat_id, value: @chat.id %>
 
         <%= form.submit "Send", class: "btn btn-primary", id: "send-btn" %>
+
       </div>
     <% end %>
   </div>
@@ -94,7 +94,7 @@ function goBackChat() {
 
  <!-- Bootstrap Tabs Section (spaced from input using mt-3) -->
   <div class="mt-1">
-    <ul class="nav nav-pills mb-3 d-flex justify-content-evenly w-100" id="pills-tab" role="tablist">
+    <ul class="nav nav-pills mb-1 d-flex justify-content-evenly w-100" id="pills-tab" role="tablist">
       <li class="nav-item" role="presentation">
         <%# <button class="nav-link active"
                 id="pills-chat-tab"
