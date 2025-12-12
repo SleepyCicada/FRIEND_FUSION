@@ -7,6 +7,9 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: 'friendfusion.online', protocol: 'https' }
 
+  # Set default URL options for the entire application (controllers, mailers, etc.)
+  config.action_controller.default_url_options = { host: 'friendfusion.online', protocol: 'https' }
+
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
