@@ -18,9 +18,13 @@ class ConfirmationsController < ApplicationController
     @confirmation = @event.confirmations.build(user: current_user)
 
     if @confirmation.save
-      # Broadcast new attendee to all event subscribers
-      broadcast_attendee_update
-      redirect_to @event, notice: "You've successfully joined this event!"
+      @attendees_count = calculate_attendees_count
+      broadcast_new_attendee
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to @event, notice: "You've successfully joined this event!" }
+      end
     else
       redirect_to @event, alert: "Unable to join event. Please try again."
     end
@@ -35,9 +39,13 @@ class ConfirmationsController < ApplicationController
     end
 
     if @confirmation.destroy
-      # Broadcast attendee update to all event subscribers
-      broadcast_attendee_update
-      redirect_to @event, notice: "You've left this event."
+      @attendees_count = calculate_attendees_count
+      broadcast_remove_attendee
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to @event, notice: "You've left this event." }
+      end
     else
       redirect_to @event, alert: "Unable to leave event. Please try again."
     end
@@ -51,13 +59,37 @@ class ConfirmationsController < ApplicationController
     redirect_to events_path, alert: "Event not found."
   end
 
-  def broadcast_attendee_update
-    EventChannel.broadcast_to(
+  def calculate_attendees_count
+    total = @event.confirmations.count
+    total += 1 if @event.user.present? && !@event.users.include?(@event.user)
+    total
+  end
+
+  def broadcast_new_attendee
+    Turbo::StreamsChannel.broadcast_append_to(
       @event,
-      {
-        type: 'attendee_update',
-        attendee_count: @event.confirmations.count
-      }
+      target: "event-attendees",
+      partial: "events/attendee_badge",
+      locals: { user: current_user, event: @event }
+    )
+
+    Turbo::StreamsChannel.broadcast_update_to(
+      @event,
+      target: "attendees-count",
+      html: @attendees_count.to_s
+    )
+  end
+
+  def broadcast_remove_attendee
+    Turbo::StreamsChannel.broadcast_remove_to(
+      @event,
+      target: "attendee-badge-#{current_user.id}"
+    )
+
+    Turbo::StreamsChannel.broadcast_update_to(
+      @event,
+      target: "attendees-count",
+      html: @attendees_count.to_s
     )
   end
 end

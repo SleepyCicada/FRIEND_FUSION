@@ -1,0 +1,7 @@
+<%= turbo_stream.remove "attendee-badge-#{current_user.id}" %>
+
+<%= turbo_stream.update "attendees-count", @attendees_count.to_s %>
+
+<%= turbo_stream.replace "action-buttons" do %>
+  <%= render "events/action_buttons", event: @event, user_confirmed: false %>
+<% end %>
