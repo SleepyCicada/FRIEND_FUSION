@@ -268,7 +268,7 @@
             use_carousel = total_attendees > desktop_limit
           %>
 
-          <div class="attendees-section mt-0">
+          <div class="attendees-section mt-0" id="attendees-section">
             <h3 class="section-title">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -276,7 +276,7 @@
                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
               </svg>
               Confirmed Attendees
-              <span class="count-badge"><%= all_attendees.count %></span>
+              <span class="count-badge" id="attendees-count"><%= all_attendees.count %></span>
             </h3>
 
             <% if use_carousel %>
@@ -440,6 +440,51 @@
     convertToLocalTime();
     if (typeof google !== "undefined" && google.maps) {
       initMap();
+    }
+
+    // Subscribe to EventChannel for real-time attendee updates
+    const eventId = <%= @event.id %>;
+    const attendeesSection = document.getElementById('attendees-section');
+
+    if (attendeesSection && !window.eventPageSubscription) {
+      window.eventPageSubscription = App.cable.subscriptions.create(
+        { channel: "EventChannel", event_id: eventId },
+        {
+          connected() {
+            console.log("Connected to EventChannel for event", eventId);
+          },
+
+          disconnected() {
+            console.log("Disconnected from EventChannel");
+          },
+
+          received(data) {
+            console.log("Received broadcast on event page:", data);
+
+            if (data.type === 'attendee_update') {
+              // Update attendee count
+              const attendeesCount = document.getElementById('attendees-count');
+              if (attendeesCount) {
+                attendeesCount.textContent = data.attendee_count;
+              }
+
+              // Reload the page to update the attendees list
+              // This ensures we show the correct avatars and names
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            }
+          }
+        }
+      );
+
+      // Clean up subscription when navigating away
+      document.addEventListener('turbo:before-visit', function() {
+        if (window.eventPageSubscription) {
+          window.eventPageSubscription.unsubscribe();
+          window.eventPageSubscription = null;
+        }
+      }, { once: true });
     }
   });
 

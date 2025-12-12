@@ -246,6 +246,66 @@ function goBackChat() {
     const typingIndicator = document.getElementById('typing-indicator');
     const chatId = <%= @chat.id %>;
 
+    // Subscribe to EventChannel for real-time updates
+    const eventId = <%= @chat.event.id %>;
+
+    // Create ActionCable consumer if not exists
+    if (!window.eventChannelSubscription) {
+      window.eventChannelSubscription = App.cable.subscriptions.create(
+        { channel: "EventChannel", event_id: eventId },
+        {
+          connected() {
+            console.log("Connected to EventChannel for event", eventId);
+          },
+
+          disconnected() {
+            console.log("Disconnected from EventChannel");
+          },
+
+          received(data) {
+            console.log("Received broadcast:", data);
+
+            if (data.type === 'new_message') {
+              // Only append if we're on the chat page
+              if (chatMessages) {
+                // Check if message already exists (avoid duplicates)
+                const messageHtml = data.message;
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = messageHtml;
+                const messageId = tempDiv.querySelector('.message-wrapper')?.dataset?.messageId;
+
+                if (!messageId || !document.querySelector(`[data-message-id="${messageId}"]`)) {
+                  chatMessages.insertAdjacentHTML('beforeend', messageHtml);
+
+                  // Auto-scroll to show new message
+                  setTimeout(() => {
+                    chatMessages.scrollTo({
+                      top: chatMessages.scrollHeight,
+                      behavior: 'smooth'
+                    });
+                  }, 100);
+                }
+              }
+            } else if (data.type === 'attendee_update') {
+              // Update attendee count
+              const onlineCount = document.getElementById('online-count');
+              if (onlineCount) {
+                onlineCount.textContent = data.attendee_count;
+              }
+            }
+          }
+        }
+      );
+    }
+
+    // Clean up subscription when navigating away
+    document.addEventListener('turbo:before-visit', function() {
+      if (window.eventChannelSubscription) {
+        window.eventChannelSubscription.unsubscribe();
+        window.eventChannelSubscription = null;
+      }
+    }, { once: true });
+
     // Add Enter key support for Ask Kai textarea
     const askAiInput = document.getElementById('ask-ai-input');
     const askAiForm = document.getElementById('ask-ai-form');

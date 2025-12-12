@@ -18,6 +18,8 @@ class ConfirmationsController < ApplicationController
     @confirmation = @event.confirmations.build(user: current_user)
 
     if @confirmation.save
+      # Broadcast new attendee to all event subscribers
+      broadcast_attendee_update
       redirect_to @event, notice: "You've successfully joined this event!"
     else
       redirect_to @event, alert: "Unable to join event. Please try again."
@@ -33,6 +35,8 @@ class ConfirmationsController < ApplicationController
     end
 
     if @confirmation.destroy
+      # Broadcast attendee update to all event subscribers
+      broadcast_attendee_update
       redirect_to @event, notice: "You've left this event."
     else
       redirect_to @event, alert: "Unable to leave event. Please try again."
@@ -45,5 +49,15 @@ class ConfirmationsController < ApplicationController
     @event = Event.find(params[:event_id])
   rescue ActiveRecord::RecordNotFound
     redirect_to events_path, alert: "Event not found."
+  end
+
+  def broadcast_attendee_update
+    EventChannel.broadcast_to(
+      @event,
+      {
+        type: 'attendee_update',
+        attendee_count: @event.confirmations.count
+      }
+    )
   end
 end
