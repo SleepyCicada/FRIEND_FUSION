@@ -73,7 +73,9 @@ class MessagesController < ApplicationController
         message: ApplicationController.render(
           partial: 'messages/message',
           locals: { message: message }
-        )
+        ),
+        message_id: message.id,
+        sender_id: message.user_id
       }
     )
   end
