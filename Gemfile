@@ -58,6 +58,9 @@ gem "pundit"
 gem 'geocoder'
 gem "image_processing"
 
+# We add solid cable and because of that it is not necessary to add a redis server on heroku
+gem "solid_cable"
+
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

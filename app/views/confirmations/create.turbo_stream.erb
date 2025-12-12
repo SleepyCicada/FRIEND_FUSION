@@ -1,0 +1,9 @@
+<%= turbo_stream.append "event-attendees" do %>
+  <%= render "events/attendee_badge", user: current_user, event: @event %>
+<% end %>
+
+<%= turbo_stream.update "attendees-count", @attendees_count.to_s %>
+
+<%= turbo_stream.replace "action-buttons" do %>
+  <%= render "events/action_buttons", event: @event, user_confirmed: true %>
+<% end %>
