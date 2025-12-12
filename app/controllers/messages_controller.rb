@@ -10,6 +10,9 @@ class MessagesController < ApplicationController
       ai: false
     )
 
+    # Broadcast user message to all event attendees
+    broadcast_message(@message)
+
     # Check if AI assistant mode is enabled
     if params[:ai_mode] == "true"
       # Generate AI response
@@ -26,6 +29,9 @@ class MessagesController < ApplicationController
         content: ai_response,
         ai: true
       )
+
+      # Broadcast AI message to all event attendees
+      broadcast_message(@ai_message)
     end
 
     respond_to do |format|
@@ -57,5 +63,18 @@ class MessagesController < ApplicationController
     unless event.user == current_user || event.confirmations.exists?(user: current_user)
       redirect_to root_path, alert: "You don't have access to this chat."
     end
+  end
+
+  def broadcast_message(message)
+    EventChannel.broadcast_to(
+      @chat.event,
+      {
+        type: 'new_message',
+        message: ApplicationController.render(
+          partial: 'messages/message',
+          locals: { message: message }
+        )
+      }
+    )
   end
 end
