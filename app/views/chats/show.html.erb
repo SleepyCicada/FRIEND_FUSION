@@ -245,66 +245,79 @@ function goBackChat() {
     const messageInput = document.getElementById('message-input');
     const typingIndicator = document.getElementById('typing-indicator');
     const chatId = <%= @chat.id %>;
+    const currentUserId = <%= current_user.id %>;
 
     // Subscribe to EventChannel for real-time updates
     const eventId = <%= @chat.event.id %>;
 
-    // Create ActionCable consumer if not exists
-    if (!window.eventChannelSubscription) {
-      window.eventChannelSubscription = App.cable.subscriptions.create(
-        { channel: "EventChannel", event_id: eventId },
-        {
-          connected() {
-            console.log("Connected to EventChannel for event", eventId);
-          },
+    // Unsubscribe from any existing subscription first
+    if (window.eventChannelSubscription) {
+      console.log("Unsubscribing from previous EventChannel");
+      window.eventChannelSubscription.unsubscribe();
+      window.eventChannelSubscription = null;
+    }
 
-          disconnected() {
-            console.log("Disconnected from EventChannel");
-          },
+    // Create new subscription for this event
+    window.eventChannelSubscription = App.cable.subscriptions.create(
+      { channel: "EventChannel", event_id: eventId },
+      {
+        connected() {
+          console.log("Connected to EventChannel for event", eventId);
+        },
 
-          received(data) {
-            console.log("Received broadcast:", data);
+        disconnected() {
+          console.log("Disconnected from EventChannel");
+        },
 
-            if (data.type === 'new_message') {
-              // Only append if we're on the chat page
-              if (chatMessages) {
-                // Check if message already exists (avoid duplicates)
-                const messageHtml = data.message;
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = messageHtml;
-                const messageId = tempDiv.querySelector('.message-wrapper')?.dataset?.messageId;
+        received(data) {
+          console.log("Received broadcast:", data);
 
-                if (!messageId || !document.querySelector(`[data-message-id="${messageId}"]`)) {
-                  chatMessages.insertAdjacentHTML('beforeend', messageHtml);
+          if (data.type === 'new_message') {
+            // Skip if this message is from the current user (already rendered via Turbo Stream)
+            if (data.sender_id === currentUserId) {
+              console.log("Skipping own message from broadcast");
+              return;
+            }
 
-                  // Auto-scroll to show new message
-                  setTimeout(() => {
-                    chatMessages.scrollTo({
-                      top: chatMessages.scrollHeight,
-                      behavior: 'smooth'
-                    });
-                  }, 100);
-                }
+            // Only append if we're on the chat page
+            if (chatMessages) {
+              // Check if message already exists (avoid duplicates)
+              const messageId = data.message_id;
+
+              if (!messageId || !document.querySelector(`[data-message-id="${messageId}"]`)) {
+                chatMessages.insertAdjacentHTML('beforeend', data.message);
+
+                // Auto-scroll to show new message
+                setTimeout(() => {
+                  chatMessages.scrollTo({
+                    top: chatMessages.scrollHeight,
+                    behavior: 'smooth'
+                  });
+                }, 100);
+              } else {
+                console.log("Message already exists, skipping");
               }
-            } else if (data.type === 'attendee_update') {
-              // Update attendee count
-              const onlineCount = document.getElementById('online-count');
-              if (onlineCount) {
-                onlineCount.textContent = data.attendee_count;
-              }
+            }
+          } else if (data.type === 'attendee_update') {
+            // Update attendee count
+            const onlineCount = document.getElementById('online-count');
+            if (onlineCount) {
+              onlineCount.textContent = data.attendee_count;
             }
           }
         }
-      );
-    }
+      }
+    );
 
     // Clean up subscription when navigating away
-    document.addEventListener('turbo:before-visit', function() {
+    document.addEventListener('turbo:before-visit', function cleanup() {
       if (window.eventChannelSubscription) {
+        console.log("Cleaning up EventChannel subscription on navigation");
         window.eventChannelSubscription.unsubscribe();
         window.eventChannelSubscription = null;
       }
-    }, { once: true });
+      document.removeEventListener('turbo:before-visit', cleanup);
+    });
 
     // Add Enter key support for Ask Kai textarea
     const askAiInput = document.getElementById('ask-ai-input');
