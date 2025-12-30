@@ -1,0 +1,3 @@
+[submodule "trego"]
+	path = trego
+	url = https://github.com/middwinantony/trego.git
