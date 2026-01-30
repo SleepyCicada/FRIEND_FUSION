@@ -183,15 +183,30 @@
   }
 
   .reviews-list {
-    display: grid;
-    gap: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+  }
+
+  .reviews-list::-webkit-scrollbar {
+  display: none;
+  }
+
+  .reviews-list {
+  scrollbar-width: none;
   }
 
   .review-card {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-    padding: 1.75rem;
-    transition: all 0.3s ease;
+  flex: 0 0 85%;
+  max-width: 85%;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   }
 
   .review-card:hover {
@@ -200,36 +215,33 @@
   }
 
   .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
   }
 
   .review-user-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  gap: 0.75rem;
   }
 
   .review-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.25rem;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
   }
 
   .review-user-name {
-    font-weight: 700;
-    color: #1a202c;
-    font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 1.125rem;
   }
 
   .review-event-name {
@@ -238,8 +250,9 @@
   }
 
   .review-event-link {
-    color: #667eea;
-    text-decoration: none;
+  font-size: 0.85rem;
+  color: #667eea;
+  text-decoration: none;
   }
 
   .review-event-link:hover {
@@ -247,15 +260,14 @@
   }
 
   .review-rating {
-    font-size: 1.25rem;
-    line-height: 1;
+  white-space: nowrap;
   }
 
   .review-comment {
-    color: #4a5568;
-    line-height: 1.7;
-    font-size: 1rem;
-    margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #4a5568;
+  margin: 0;
   }
 
   @media (max-width: 768px) {
@@ -281,3 +293,16 @@
     margin-bottom: 1rem;
   }
 }
+
+  @media (min-width: 768px) {
+    .reviews-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      overflow-x: visible;
+    }
+
+    .review-card {
+      max-width: 100%;
+      flex: none;
+    }
+  }
