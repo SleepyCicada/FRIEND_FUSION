@@ -17,6 +17,22 @@
             </button>
           </div>
 
+          <script>
+        function goBack() {
+          if (document.referrer) {
+            window.history.back();
+              setTimeout(() => {
+                // If still on same page, fallback
+                if (document.referrer === "") {
+                  window.location.href = "/";
+                }
+            }, 100);
+          } else {
+            window.location.href = "/";
+        }
+      }
+      </script>
+
   <!-- Edit/Delete Buttons -->
       <div class="d-flex align-items-center gap-2">
         <% if policy(@event).edit? %>

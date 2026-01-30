@@ -13,15 +13,21 @@
           </button>
         </div>
 
-        <script>
+       <script>
         function goBack() {
-          if (window.history.length > 1) {
+          if (document.referrer) {
             window.history.back();
+              setTimeout(() => {
+                // If still on same page, fallback
+                if (document.referrer === "") {
+                  window.location.href = "/";
+                }
+            }, 100);
           } else {
-            window.location.href = "/"; // fallback URL
-          }
+            window.location.href = "/";
         }
-        </script>
+      }
+      </script>
 
         <!-- Organizer Hero Section -->
         <div class="organizer-hero mb-5">
