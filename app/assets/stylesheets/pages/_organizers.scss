@@ -1,0 +1,345 @@
+.organizer-profile-page {
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    min-height: 100vh;
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.organizer-hero {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.organizer-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 3rem;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.organizer-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+}
+
+.organizer-subtitle {
+    font-size: 1.25rem;
+    color: #718096;
+    margin-bottom: 2.5rem;
+}
+
+.organizer-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #667eea;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 0.25rem;
+}
+
+.organizer-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.organizer-section-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .events-table table,
+  .events-table thead,
+  .events-table tbody,
+  .events-table th,
+  .events-table td,
+  .events-table tr {
+    display: block;
+  }
+}
+
+.events-table {
+    width: 100%;
+}
+
+.events-table tr {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.events-table td {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border: none;
+  align-items: center;
+}
+
+.events-table table {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.events-table td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.events-table thead {
+  display: none;
+}
+
+.event-link {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.event-link:hover {
+  text-decoration: underline;
+}
+
+.badge-attendees {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.375rem 0.875rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.badge-rating {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 0.375rem 0.875rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.photo-item {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.photo-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 2rem 1rem 1rem;
+}
+
+.photo-event-link {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.photo-event-link:hover {
+  text-decoration: underline;
+}
+
+.reviews-list {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.reviews-list::-webkit-scrollbar {
+  display: none;
+}
+
+.reviews-list {
+  scrollbar-width: none;
+}
+
+.review-card {
+  flex: 0 0 85%;
+  max-width: 85%;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.review-user-info {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+}
+
+.review-user-name {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 1.125rem;
+}
+
+.review-event-name {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.review-event-link {
+  font-size: 0.85rem;
+  color: #667eea;
+  text-decoration: none;
+}
+
+.review-event-link:hover {
+    text-decoration: underline;
+}
+
+.review-rating {
+  white-space: nowrap;
+}
+
+.review-comment {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #4a5568;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .organizer-name {
+    font-size: 2rem;
+  }
+
+  .organizer-stats {
+      grid-template-columns: 1fr;
+   }
+
+  .photos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .go-back-container {
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .reviews-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+  }
+
+  .review-card {
+    max-width: 100%;
+    flex: none;
+  }
+}
