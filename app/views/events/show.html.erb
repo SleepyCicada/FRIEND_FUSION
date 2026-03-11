@@ -201,16 +201,17 @@
 
             <div class="map-container">
               <div id="event-map" data-location="<%= @event.location %>" style="height: 300px;"></div>
+                <p class="map-instruction">Click on the map to get directions in Google Maps.</p>
+              </div>
             </div>
-          </div>
+        <% end %>
 
-          <% if ENV['GOOGLE_API_SERVER_KEY'].present? %>
-            <script async defer loading="lazy"
-                    src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMaps">
-            </script>
-          <% else %>
-            <p style="color: red;">Google Maps API key is missing.</p>
-          <% end %>
+        <% if ENV['GOOGLE_API_SERVER_KEY'].present? %>
+          <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMap">
+          </script>
+        <% else %>
+          <p style="color: red;">Google Maps API key is missing.</p>
         <% end %>
 
         <!-- Action Buttons -->
@@ -427,29 +428,51 @@
   }
 
   function initMap() {
-    const mapElement = document.getElementById("event-map");
-    if (!mapElement) return;
+  const mapElement = document.getElementById("event-map");
+  if (!mapElement) return;
 
-    const address = mapElement.dataset.location;
-    const geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ address: address }, function(results, status) {
-      if (status === "OK") {
-        const map = new google.maps.Map(mapElement, {
-          zoom: 14,
-          center: results[0].geometry.location
-        });
-
-        new google.maps.Marker({
-          position: results[0].geometry.location,
-          map: map
-        });
-      } else {
-        console.error("Geocode failed: " + status);
-        mapElement.innerHTML = "Map cannot be loaded for this location.";
-      }
-    });
+  const address = mapElement.dataset.location;
+  if (!address) {
+    console.error("No location provided in data-location attribute");
+    mapElement.innerHTML = "Map cannot be loaded: no location provided.";
+    return;
   }
+
+  const geocoder = new google.maps.Geocoder();
+
+  geocoder.geocode({ address: address }, function(results, status) {
+    if (status === "OK" && results[0]) {
+      const location = results[0].geometry.location;
+
+      const map = new google.maps.Map(mapElement, {
+        zoom: 14,
+        center: location
+      });
+
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "Click to get directions"
+      });
+
+      // Clic sur le marker → Google Maps
+      marker.addListener("click", function() {
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+        window.open(url, "_blank");
+      });
+
+      // Clic sur la carte → Google Maps
+      map.addListener("click", function() {
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+        window.open(url, "_blank");
+      });
+
+    } else {
+      console.error("Geocode failed: " + status);
+      mapElement.innerHTML = "Map cannot be loaded for this location.";
+    }
+  });
+}
 
   // Initialize on page load
   document.addEventListener("turbo:load", function() {
@@ -513,6 +536,6 @@
 
 </script>
 
-<script async defer loading="lazy"
+<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_SERVER_KEY'] %>&callback=initMap">
 </script>
